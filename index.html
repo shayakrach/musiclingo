@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MusicLingo v3.41.0</title>
+  <title>MusicLingo v3.42.0</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/icon.svg">
   <link rel="apple-touch-icon" href="assets/icons/icon.svg">
@@ -24,7 +24,7 @@
     <div class="voice-warning-toast" id="voiceWarningToast"></div>
     <div class="top-bar" id="topBar">
       <div class="app-title" id="appTitleBar" onclick="returnToLibrary()">
-        🎵 MusicLingo <span class="version-badge">v3.41.0</span>
+        🎵 MusicLingo <span class="version-badge">v3.42.0</span>
       </div>
       <button class="icon-btn" id="librarySettingsGearBtn" title="Settings" onclick="openSettingsFromLibrary()">⚙️</button>
     </div>
@@ -109,19 +109,11 @@
           <p class="danger-zone-desc" id="accountSignedOutNote">Sign in to add songs from the catalog to your library.</p>
 
           <div id="accountSignedOutForm">
-            <div class="settings-field" style="margin-bottom: 0.5rem;">
-              <label for="accountEmailInput" style="font-size: 0.85rem;">Email</label>
-              <input type="email" id="accountEmailInput" class="settings-input" placeholder="you@example.com" />
-            </div>
-            <div class="settings-field" style="margin-bottom: 0.5rem;">
-              <label for="accountPasswordInput" style="font-size: 0.85rem;">Password</label>
-              <input type="password" id="accountPasswordInput" class="settings-input" placeholder="••••••••" />
-            </div>
             <p class="field-error" id="accountAuthError"></p>
-            <div style="display:flex; gap:0.5rem;">
-              <button class="start-round-btn" style="padding: 0.6rem;" onclick="handleSignIn()">Sign In</button>
-              <button class="tab-btn" style="border:1px solid var(--border);" onclick="handleSignUp()">Sign Up</button>
-            </div>
+            <button class="start-round-btn" style="padding: 0.6rem; display:flex; align-items:center; justify-content:center; gap:0.5rem;" onclick="handleGoogleSignIn()">
+              <svg width="18" height="18" viewBox="0 0 18 18" style="flex-shrink:0;"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.81.54-1.85.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.97l2.99 2.33C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
+              Continue with Google
+            </button>
           </div>
 
           <div id="accountSignedInInfo" style="display:none;">

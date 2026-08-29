@@ -748,27 +748,15 @@ function resolveWordLine(word) {
       el.classList.toggle("visible", !!message);
     }
 
-    async function handleSignIn() {
+    async function handleGoogleSignIn() {
       if (!supabaseClient) return;
       showAccountAuthError("");
-      const email = document.getElementById("accountEmailInput").value.trim();
-      const password = document.getElementById("accountPasswordInput").value;
-      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: window.location.href }
+      });
       if (error) {
         showAccountAuthError(error.message);
-      }
-    }
-
-    async function handleSignUp() {
-      if (!supabaseClient) return;
-      showAccountAuthError("");
-      const email = document.getElementById("accountEmailInput").value.trim();
-      const password = document.getElementById("accountPasswordInput").value;
-      const { error } = await supabaseClient.auth.signUp({ email, password });
-      if (error) {
-        showAccountAuthError(error.message);
-      } else {
-        showAccountAuthError("Check your email to confirm your account, then sign in.");
       }
     }
 
@@ -809,8 +797,6 @@ function resolveWordLine(word) {
         currentUser = session ? session.user : null;
         updateAccountUI();
         if (currentUser) {
-          document.getElementById("accountEmailInput").value = "";
-          document.getElementById("accountPasswordInput").value = "";
           syncMyCatalogSongsIntoLibrary();
         }
       });
