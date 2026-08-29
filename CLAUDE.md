@@ -42,6 +42,27 @@ gitignored out of caution — see repo history / README before removing it).
 **Never print, quote, or reproduce contents of `data/*.json` or `data.js` in
 chat or commit them to git** — they contain real copyrighted lyrics.
 
+## Supabase (shared song catalog + per-user libraries)
+
+`assets/app.js` also loads songs from Supabase (see `supabase/schema.sql`,
+`supabase/README.md`) — a `songs` table (shared, publicly readable catalog)
+and a `user_songs` table (which catalog songs each signed-in user has added
+to their own library). The Supabase project URL and anon/publishable key are
+hardcoded near the top of `assets/app.js` (`SUPABASE_URL`/`SUPABASE_ANON_KEY`)
+— safe to be public, not secret.
+
+There's no in-app admin flow to add catalog songs yet — they're added by
+running `insert` statements directly in the Supabase SQL Editor (see
+`supabase/README.md`). This integration is optional like the `data/` fetch:
+if the Supabase CDN script fails to load, every Supabase-related function in
+`assets/app.js` becomes a no-op and the app still works on demo/custom songs.
+
+Vocabulary/line field names in the `songs` table intentionally match what
+`assets/app.js` actually renders (`es`/`en`/`tenses`) — not the newer
+`word`/`meaning`/`forms` naming the (currently unused, still broken) in-app
+"➕ Add New Song" prompt generates. Don't build a schema or feature around
+that prompt's shape without fixing this mismatch first.
+
 ## Editing the app
 
 - Edit `assets/app.js` and `assets/style.css` directly — do not reintroduce

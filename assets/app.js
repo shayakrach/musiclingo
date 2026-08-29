@@ -685,6 +685,223 @@ function resolveWordLine(word) {
     };
 
     // ============================================================================
+    // 2.5 SUPABASE — auth + shared song catalog
+    // ============================================================================
+    // Optional, like the data repo above: if the Supabase CDN script didn't
+    // load (offline, blocked, opened via file://), every function below is a
+    // silent no-op and the app works exactly the same on demo/custom songs.
+    //
+    // Model: `songs` is a shared, publicly-readable catalog (see
+    // supabase/schema.sql). Signed-in users can add a catalog song to their
+    // own library, which both (a) saves it locally via DB.songs.add — same
+    // mechanism as manually-added custom songs — and (b) records it in the
+    // `user_songs` table so it's still there if they sign in on another
+    // device. There's no in-app way to add to the catalog itself yet.
+    const SUPABASE_URL = "https://fxjjouvympnrlxcqvyyb.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_WHS2PtK4LegFVYiNEjsM6A_sLKy5gP_";
+
+    const supabaseClient = (typeof window.supabase !== "undefined")
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
+    let currentUser = null;
+    let catalogSongsCache = null; // null = not fetched yet
+
+    function supabaseRowToSong(row) {
+      return {
+        id: row.id,
+        title: row.title,
+        artist: row.artist,
+        difficulty: row.difficulty,
+        sourceLang: row.source_lang,
+        targetLang: row.target_lang,
+        accentLabel: row.accent_label || "",
+        streamingLinks: row.streaming_links || {},
+        isDemo: false,
+        lines: row.lines || [],
+        vocabulary: row.vocabulary || []
+      };
+    }
+
+    function updateAccountUI() {
+      const signedOutForm = document.getElementById("accountSignedOutForm");
+      const signedInInfo = document.getElementById("accountSignedInInfo");
+      const signedOutNote = document.getElementById("accountSignedOutNote");
+      if (!signedOutForm || !signedInInfo) return;
+
+      if (currentUser) {
+        signedOutForm.style.display = "none";
+        signedOutNote.style.display = "none";
+        signedInInfo.style.display = "block";
+        document.getElementById("accountEmailDisplay").textContent = currentUser.email || "";
+      } else {
+        signedOutForm.style.display = "block";
+        signedOutNote.style.display = "block";
+        signedInInfo.style.display = "none";
+      }
+    }
+
+    function showAccountAuthError(message) {
+      const el = document.getElementById("accountAuthError");
+      if (!el) return;
+      el.textContent = message || "";
+      el.classList.toggle("visible", !!message);
+    }
+
+    async function handleSignIn() {
+      if (!supabaseClient) return;
+      showAccountAuthError("");
+      const email = document.getElementById("accountEmailInput").value.trim();
+      const password = document.getElementById("accountPasswordInput").value;
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        showAccountAuthError(error.message);
+      }
+    }
+
+    async function handleSignUp() {
+      if (!supabaseClient) return;
+      showAccountAuthError("");
+      const email = document.getElementById("accountEmailInput").value.trim();
+      const password = document.getElementById("accountPasswordInput").value;
+      const { error } = await supabaseClient.auth.signUp({ email, password });
+      if (error) {
+        showAccountAuthError(error.message);
+      } else {
+        showAccountAuthError("Check your email to confirm your account, then sign in.");
+      }
+    }
+
+    async function handleSignOut() {
+      if (!supabaseClient) return;
+      await supabaseClient.auth.signOut();
+    }
+
+    // Pulls the signed-in user's previously-added catalog songs (from
+    // user_songs, joined against songs) and merges them into the local
+    // library — this is what makes "add to my library" show up again after
+    // signing in on a different device/browser.
+    async function syncMyCatalogSongsIntoLibrary() {
+      if (!supabaseClient || !currentUser) return;
+      try {
+        const { data, error } = await supabaseClient
+          .from("user_songs")
+          .select("songs(*)");
+        if (error || !Array.isArray(data)) return;
+        data.forEach(row => {
+          if (row.songs) {
+            DB.songs.add(supabaseRowToSong(row.songs));
+          }
+        });
+        const libraryView = document.getElementById("libraryView");
+        if (libraryView && libraryView.style.display !== "none") {
+          renderSongLibrary();
+        }
+      } catch (e) {
+        // Network hiccup or table missing — never block the app over this.
+      }
+    }
+
+    function initSupabaseAuth() {
+      if (!supabaseClient) return;
+
+      supabaseClient.auth.onAuthStateChange((event, session) => {
+        currentUser = session ? session.user : null;
+        updateAccountUI();
+        if (currentUser) {
+          document.getElementById("accountEmailInput").value = "";
+          document.getElementById("accountPasswordInput").value = "";
+          syncMyCatalogSongsIntoLibrary();
+        }
+      });
+
+      supabaseClient.auth.getSession().then(({ data }) => {
+        currentUser = data.session ? data.session.user : null;
+        updateAccountUI();
+        if (currentUser) syncMyCatalogSongsIntoLibrary();
+      });
+    }
+
+    async function fetchCatalogSongs() {
+      if (!supabaseClient) return [];
+      if (catalogSongsCache) return catalogSongsCache;
+      try {
+        const { data, error } = await supabaseClient.from("songs").select("*");
+        if (error || !Array.isArray(data)) return [];
+        catalogSongsCache = data;
+        return data;
+      } catch (e) {
+        return [];
+      }
+    }
+
+    async function openCatalogModal() {
+      const modal = document.getElementById("catalogModal");
+      const signedOutNote = document.getElementById("catalogSignedOutNote");
+      const loadingNote = document.getElementById("catalogLoadingNote");
+      const emptyNote = document.getElementById("catalogEmptyNote");
+      const list = document.getElementById("catalogList");
+
+      modal.style.display = "flex";
+      signedOutNote.style.display = supabaseClient && !currentUser ? "block" : "none";
+      loadingNote.style.display = "block";
+      emptyNote.style.display = "none";
+      list.innerHTML = "";
+
+      const rows = await fetchCatalogSongs();
+      loadingNote.style.display = "none";
+
+      const notYetAdded = rows.filter(row => !SongLibrary[row.id]);
+      if (notYetAdded.length === 0) {
+        emptyNote.style.display = "block";
+        return;
+      }
+
+      notYetAdded.forEach(row => {
+        const item = document.createElement("div");
+        item.className = "song-card";
+        item.style.marginBottom = "0.6rem";
+        item.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.6rem;">
+            <div>
+              <div style="font-weight:600;">${escapeHtml(row.title)}</div>
+              <div style="color: var(--text-muted); font-size: 0.85rem;">${escapeHtml(row.artist)}</div>
+            </div>
+            <button class="practice-btn" style="white-space:nowrap;" ${currentUser ? "" : "disabled"}
+              onclick="addCatalogSongToLibrary('${row.id}')">➕ Add</button>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function closeCatalogModal() {
+      document.getElementById("catalogModal").style.display = "none";
+    }
+
+    async function addCatalogSongToLibrary(songId) {
+      if (!supabaseClient || !currentUser) return;
+      const rows = await fetchCatalogSongs();
+      const row = rows.find(r => r.id === songId);
+      if (!row) return;
+
+      DB.songs.add(supabaseRowToSong(row));
+
+      const { error } = await supabaseClient
+        .from("user_songs")
+        .insert({ user_id: currentUser.id, song_id: songId });
+      if (error && error.code !== "23505") {
+        // 23505 = already added (unique violation) — fine, treat as success.
+      }
+
+      closeCatalogModal();
+      const libraryView = document.getElementById("libraryView");
+      if (libraryView && libraryView.style.display !== "none") {
+        renderSongLibrary();
+      }
+    }
+
+    // ============================================================================
     // 3. APP STATE — in-memory only. Reset on page reload; not persisted directly
     // (the DB layer above handles what gets saved and when).
     // ============================================================================
@@ -3753,6 +3970,7 @@ function resolveWordLine(word) {
     applyHiddenSongs();
     populateLanguageSelect(document.getElementById("settingsLanguageInput"));
     applyTranslations();
+    initSupabaseAuth();
 
     // Lazily fetch any songs from the external data repo, if one is present
     // alongside this file (see the DATA REPO section above). This runs in

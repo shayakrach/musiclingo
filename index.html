@@ -16,6 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -66,9 +67,14 @@
           <p id="libraryGreetingText" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.2rem;"></p>
           <p id="libraryTicketCount" class="library-ticket-count"></p>
         </div>
-        <button class="add-song-btn" id="addNewSongBtnText" onclick="openAddSongModal()">
-          ➕ Add New Song
-        </button>
+        <div style="display:flex; gap:0.5rem; flex-wrap: wrap;">
+          <button class="add-song-btn" id="browseCatalogBtnText" onclick="openCatalogModal()">
+            📚 Browse Catalog
+          </button>
+          <button class="add-song-btn" id="addNewSongBtnText" onclick="openAddSongModal()">
+            ➕ Add New Song
+          </button>
+        </div>
       </div>
 
       <div class="song-grid" id="songCardsContainer">
@@ -97,6 +103,32 @@
             onchange="saveSettingsField(false, 'language')"></select>
         </div>
         <div class="settings-saved-indicator" id="settingsSavedIndicator">✓ Saved</div>
+
+        <div class="danger-zone" id="accountSection" style="margin-bottom: 1rem;">
+          <div class="danger-zone-label">Account</div>
+          <p class="danger-zone-desc" id="accountSignedOutNote">Sign in to add songs from the catalog to your library.</p>
+
+          <div id="accountSignedOutForm">
+            <div class="settings-field" style="margin-bottom: 0.5rem;">
+              <label for="accountEmailInput" style="font-size: 0.85rem;">Email</label>
+              <input type="email" id="accountEmailInput" class="settings-input" placeholder="you@example.com" />
+            </div>
+            <div class="settings-field" style="margin-bottom: 0.5rem;">
+              <label for="accountPasswordInput" style="font-size: 0.85rem;">Password</label>
+              <input type="password" id="accountPasswordInput" class="settings-input" placeholder="••••••••" />
+            </div>
+            <p class="field-error" id="accountAuthError"></p>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="start-round-btn" style="padding: 0.6rem;" onclick="handleSignIn()">Sign In</button>
+              <button class="tab-btn" style="border:1px solid var(--border);" onclick="handleSignUp()">Sign Up</button>
+            </div>
+          </div>
+
+          <div id="accountSignedInInfo" style="display:none;">
+            <p class="danger-zone-desc">Signed in as <strong id="accountEmailDisplay"></strong></p>
+            <button class="tab-btn" style="border:1px solid var(--border);" onclick="handleSignOut()">Sign Out</button>
+          </div>
+        </div>
 
         <div class="danger-zone">
           <div class="danger-zone-label" id="dangerZoneLabelText">Danger Zone</div>
@@ -363,6 +395,29 @@
       <p class="field-error" id="addSongCopyFallbackNote" style="display:none; text-align:center; margin-top: 0.6rem;"></p>
       <button type="button" id="addSongShowTextBtn" onclick="toggleAddSongPromptText()" style="display:block; margin: 0.5rem auto 0; background:none; border:none; color: var(--text-muted); font-size: 0.78rem; text-decoration: underline; cursor: pointer; font-family: inherit;">Didn't copy? Tap to view the text</button>
       <textarea id="addSongPromptVisible" class="settings-input generated-prompt-textarea" rows="6" readonly style="margin-top:0.6rem; display:none;"></textarea>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="catalogModal">
+    <div class="modal-content" style="max-width: 420px; padding: 1.2rem;">
+      <div class="modal-header" style="justify-content: center; position: relative; margin-bottom: 0.6rem;">
+        <h3 style="color: var(--accent); font-size: 1.1rem;">📚 Song Catalog</h3>
+        <button class="modal-close-btn" style="position: absolute; right: 0;" onclick="closeCatalogModal()">✕</button>
+      </div>
+
+      <p id="catalogSignedOutNote" class="prompt-note-text" style="margin: 0 0 0.8rem; text-align: center; display:none;">
+        Sign in from Settings to add songs from the catalog to your library.
+      </p>
+
+      <p id="catalogLoadingNote" class="prompt-note-text" style="margin: 0 0 0.8rem; text-align: center;">
+        Loading catalog…
+      </p>
+
+      <p id="catalogEmptyNote" class="prompt-note-text" style="margin: 0 0 0.8rem; text-align: center; display:none;">
+        No new songs in the catalog right now.
+      </p>
+
+      <div id="catalogList"></div>
     </div>
   </div>
 
