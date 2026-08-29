@@ -13,44 +13,56 @@ Learn vocabulary from song lyrics — flashcards, multiple-choice quizzes, gramm
 ## Project structure
 
 ```
-index.html   — the entire app (HTML, CSS, JS in one file)
-data.js      — real song data (NOT included in this repo — see below)
-sw.js        — service worker, enables offline support
+index.html              — HTML shell (markup only, no inline CSS/JS)
+assets/
+  style.css              — all app styles
+  app.js                  — all app logic
+  icons/icon.svg           — app icon (favicon, apple-touch-icon, PWA manifest icons)
+manifest.webmanifest    — PWA manifest
+sw.js                   — service worker, enables offline support
+data/                   — real song data, fetched at runtime (NOT included in this repo — see below)
 ```
 
-## About `data.js`
+## About the `data/` folder
 
-This repo does **not** include real song data, since song lyrics are copyrighted. `index.html` ships with a small placeholder "demo" song so the app runs out of the box, but the actual song content lives in a separate `data.js` file that is deliberately excluded via `.gitignore`.
+This repo does **not** include real song data, since song lyrics are copyrighted. `index.html` ships with a small placeholder "demo" song so the app runs out of the box, but the actual song content is loaded at runtime from a `data/` folder that is deliberately excluded via `.gitignore`.
 
-If `data.js` is present in the same folder as `index.html`, it's loaded automatically and overrides the placeholder data. If it's missing, the app just runs on the demo song instead of breaking.
+If `data/manifest.json` is present alongside `index.html`, its songs are fetched and merged into the library. If it's missing, the app just runs on the demo song instead of breaking.
 
-**`data.js` shape:**
+**Expected layout:**
+
+```
+data/manifest.json     — { "songs": ["some_song.json", ...] }
+data/some_song.json    — one song object per file, shape below
+```
+
+**Song object shape:**
 
 ```js
-const ExternalSongLibraryOverride = {
-  "song_id": {
-    id: "song_id",
-    title: "Song Title",
-    artist: "Artist Name",
-    difficulty: "Beginner / Intermediate",
-    sourceLang: "Spanish",
-    targetLang: "English",
-    accentLabel: "",
-    lines: [
-      { id: 1, es: "...", en: "...", order: 1 }
-    ],
-    vocabulary: [
-      {
-        es: "word", en: "meaning", clue: "...",
-        lineId: 1,
-        confusableWith: { word: "...", meaning: "...", difference: "..." },
-        distractors: ["...", "...", "..."],
-        tenses: [{ label: "...", word: "...", meaning: "..." }]
-      }
-    ]
-  }
-};
+{
+  id: "song_id",
+  title: "Song Title",
+  artist: "Artist Name",
+  difficulty: "Beginner / Intermediate",
+  sourceLang: "Spanish",
+  targetLang: "English",
+  accentLabel: "",
+  lines: [
+    { id: 1, es: "...", en: "...", order: 1 }
+  ],
+  vocabulary: [
+    {
+      es: "word", en: "meaning", clue: "...",
+      lineId: 1,
+      confusableWith: { word: "...", meaning: "...", difference: "..." },
+      distractors: ["...", "...", "..."],
+      tenses: [{ label: "...", word: "...", meaning: "..." }]
+    }
+  ]
+}
 ```
+
+> Note: an older version of this app loaded a single gitignored `data.js` file instead. That mechanism has been superseded by the `data/` folder above.
 
 ## Running locally
 
@@ -60,8 +72,8 @@ For full offline/PWA support (install to home screen), the file needs to be serv
 
 ## Adding a new song
 
-The in-app "➕ Add New Song" button generates a prompt (with a fixed JSON schema) that you paste into an AI assistant along with a short excerpt of the song's lyrics. The AI's response can then be merged into `data.js` by hand. This part of the workflow is still evolving.
+The in-app "➕ Add New Song" button generates a prompt (with a fixed JSON schema) that you paste into an AI assistant along with a short excerpt of the song's lyrics. The AI's response can then be saved as a new `data/<song_id>.json` file and added to `data/manifest.json`'s `songs` array by hand. This part of the workflow is still evolving.
 
 ## Tech
 
-Vanilla JS, no frameworks, no build tools — everything runs from a single HTML file plus the optional data/service-worker files above.
+Vanilla JS, no frameworks, no build tools — static HTML/CSS/JS served as-is, plus the optional `data/`/service-worker files above.
