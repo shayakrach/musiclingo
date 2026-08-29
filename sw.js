@@ -2,10 +2,14 @@
 // Caches the app shell so it can still open without a network connection
 // once it's been visited at least once.
 
-const CACHE_NAME = "musiclingo-cache-v1";
+const CACHE_NAME = "musiclingo-cache-v2";
 const APP_SHELL = [
   "./",
-  "./index.html"
+  "./index.html",
+  "./manifest.webmanifest",
+  "./assets/style.css",
+  "./assets/app.js",
+  "./assets/icons/icon.svg"
 ];
 
 self.addEventListener("install", (event) => {
