@@ -587,13 +587,13 @@ function resolveWordLine(word) {
 
     async function openCatalogModal() {
       const modal = document.getElementById("catalogModal");
-      const signedOutNote = document.getElementById("catalogSignedOutNote");
+      const signedOutBanner = document.getElementById("catalogSignedOutBanner");
       const loadingNote = document.getElementById("catalogLoadingNote");
       const emptyNote = document.getElementById("catalogEmptyNote");
       const list = document.getElementById("catalogList");
 
       modal.style.display = "flex";
-      signedOutNote.style.display = supabaseClient && !currentUser ? "block" : "none";
+      signedOutBanner.style.display = supabaseClient && !currentUser ? "block" : "none";
       loadingNote.style.display = "block";
       emptyNote.style.display = "none";
       list.innerHTML = "";
@@ -607,6 +607,8 @@ function resolveWordLine(word) {
         return;
       }
 
+      // "Add" is always clickable, signed in or not — if signed out, it
+      // starts Google sign-in right here instead of sitting there disabled.
       notYetAdded.forEach(row => {
         const song = row.songs;
         const item = document.createElement("div");
@@ -619,7 +621,7 @@ function resolveWordLine(word) {
               <div style="color: var(--text-muted); font-size: 0.85rem;">${escapeHtml(song.artist)}</div>
               <div style="color: var(--azul); font-size: 0.8rem;">${escapeHtml(song.source_lang)} → ${escapeHtml(row.target_lang)}</div>
             </div>
-            <button class="practice-btn" style="white-space:nowrap;" ${currentUser ? "" : "disabled"}
+            <button class="practice-btn" style="white-space:nowrap;"
               onclick="addCatalogSongToLibrary('${song.id}', '${row.target_lang}')">➕ Add</button>
           </div>
         `;
@@ -632,7 +634,11 @@ function resolveWordLine(word) {
     }
 
     async function addCatalogSongToLibrary(songId, targetLang) {
-      if (!supabaseClient || !currentUser) return;
+      if (!supabaseClient) return;
+      if (!currentUser) {
+        handleGoogleSignIn();
+        return;
+      }
       const rows = await fetchCatalogTranslations();
       const row = rows.find(r => r.songs && r.songs.id === songId && r.target_lang === targetLang);
       if (!row) return;
