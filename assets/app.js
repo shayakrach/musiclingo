@@ -535,7 +535,12 @@ function resolveWordLine(word) {
         if (mineError || !Array.isArray(mine) || mine.length === 0) return;
 
         const translations = await fetchCatalogTranslations();
+        const hidden = getHiddenSongIds();
         mine.forEach(({ song_id, target_lang }) => {
+          // Respect local deletions even if the Supabase-side delete (see
+          // deleteSong) didn't go through for some reason — a song the
+          // user deleted should never silently reappear on next load.
+          if (hidden.includes(catalogLibraryId(song_id, target_lang))) return;
           const row = translations.find(r => r.songs && r.songs.id === song_id && r.target_lang === target_lang);
           if (row) DB.songs.add(mergeSongTranslation(row));
         });
@@ -1942,7 +1947,32 @@ function resolveWordLine(word) {
         DB.clearSongData(id);
         DB.songs.remove(id);
         renderSongLibrary();
+        removeCatalogSongFromAccount(id);
       });
+    }
+
+    // If this id is a catalog-sourced entry (songId__targetLang — see
+    // catalogLibraryId) and the user is signed in, also delete the
+    // matching user_songs row in Supabase. Without this, the song would
+    // reappear next time the library syncs from the account (e.g. on
+    // another device) even though it's gone locally. Best-effort: local
+    // deletion + the hidden-songs suppression in syncMyCatalogSongsIntoLibrary
+    // already keep it gone on THIS device even if this call fails.
+    async function removeCatalogSongFromAccount(id) {
+      if (!supabaseClient || !currentUser) return;
+      const parts = id.split("__");
+      if (parts.length !== 2) return;
+      const [songId, targetLang] = parts;
+      try {
+        await supabaseClient
+          .from("user_songs")
+          .delete()
+          .eq("user_id", currentUser.id)
+          .eq("song_id", songId)
+          .eq("target_lang", targetLang);
+      } catch (e) {
+        // Offline or network hiccup — the local hide still holds.
+      }
     }
 
     function selectSong(songId) {
