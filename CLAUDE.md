@@ -75,6 +75,20 @@ intentionally match what `assets/app.js` actually renders (`es`/`en`/
 "Add New Song" prompt generator that used the latter naming and was removed
 for being disconnected from the renderer.
 
+## Theming (light/dark)
+
+`assets/style.css` defines every color as a custom property, three times:
+`:root` (light, the default), `:root[data-theme="dark"]` (explicit dark —
+set via the topbar sun/moon button, `toggleTheme()` in `assets/app.js`,
+persisted to `localStorage` as `spa_theme`), and a `@media
+(prefers-color-scheme: dark)` block guarded by `:root:not([data-theme="light"])`
+(system default, before the user has ever toggled anything). All three
+blocks must stay in sync — if you add a new color token, define it in all
+three places, and never hardcode a hex/rgba color outside of them (use
+`color-mix(in srgb, var(--x) N%, transparent)` for tints instead, which is
+how every hover/soft-background state in this file is built). The only
+hardcoded colors in the file on purpose are Spotify's actual brand green.
+
 ## Editing the app
 
 - Edit `assets/app.js` and `assets/style.css` directly — do not reintroduce

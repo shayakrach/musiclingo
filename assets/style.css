@@ -1,17 +1,61 @@
+    /* ============================================================
+       Color system — light "paper" theme by default, dark "medianoche"
+       theme via :root[data-theme="dark"] or prefers-color-scheme. Every
+       surface/text/accent token is redefined in both blocks below so the
+       whole app repaints correctly when the toggle is used. Structure
+       follows the same pattern our topbar/theme-toggle code expects.
+       ============================================================ */
     :root {
+      /* Surfaces — warm paper, like a printed songbook page */
+      --bg: #faf6f0;
+      --card-bg: #ffffff;
+      --panel-raised: #fdf7ea;
+      --surface-2: #f2ebdd;
+      --border: #e8dfd0;
+
+      /* Brand accents — cobre (tango-lamp copper), azul (the song's own name), rosa (used sparingly) */
+      --accent: #b8701f;
+      --accent-hover: #9c5e18;
+      --azul: #2f6fa3;
+      --rosa: #ad4568;
+
+      /* Semantic, tuned to sit inside the same warm-cool family */
+      --success: #2f8a5c;
+      --error: #c8434a;
+      --skip: #b8701f;
+      --text: #241a12;
+      --text-muted: #7c6f5e;
+      --highlight: #b8701f;
+
+      /* Text/icon color sitting on top of a bright accent-filled surface */
+      --on-accent: #ffffff;
+
+      --sunken: color-mix(in srgb, var(--text) 6%, transparent);
+      --scrim: rgba(20, 14, 8, 0.5);
+
+      --context-bg: color-mix(in srgb, var(--azul) 10%, transparent);
+      --tense-bg: color-mix(in srgb, var(--azul) 7%, transparent);
+      --tense-border: var(--azul);
+
+      --radius-sm: 9px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --shadow-ink: 30 25% 8%;
+    }
+
+    :root[data-theme="dark"] {
       /* Surfaces — "medianoche": a Buenos Aires dusk, deep indigo-plum rather than plain navy */
       --bg: #16112e;
       --card-bg: #221b43;
       --panel-raised: #2b234f;
+      --surface-2: #2b234f;
       --border: #3b2f66;
 
-      /* Brand accents — cobre (tango-lamp copper), azul (the song's own name), rosa (used sparingly) */
       --accent: #e2a24d;
       --accent-hover: #eeb567;
       --azul: #5fa8d3;
       --rosa: #e2748f;
 
-      /* Semantic, tuned to sit inside the same warm-cool family */
       --success: #6fbf8b;
       --error: #e2646b;
       --skip: #e2a24d;
@@ -19,19 +63,54 @@
       --text-muted: #a89dcb;
       --highlight: #e2a24d;
 
-      --context-bg: rgba(95, 168, 211, 0.14);
-      --tense-bg: rgba(95, 168, 211, 0.10);
-      --tense-border: #5fa8d3;
+      --on-accent: #201434;
 
-      --radius-sm: 9px;
-      --radius-md: 14px;
-      --radius-lg: 22px;
+      --sunken: rgba(0, 0, 0, 0.16);
+      --scrim: rgba(12, 8, 26, 0.78);
+
+      --context-bg: color-mix(in srgb, var(--azul) 14%, transparent);
+      --tense-bg: color-mix(in srgb, var(--azul) 10%, transparent);
+      --tense-border: var(--azul);
+
       --shadow-ink: 245 60% 4%;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #16112e;
+        --card-bg: #221b43;
+        --panel-raised: #2b234f;
+        --surface-2: #2b234f;
+        --border: #3b2f66;
+
+        --accent: #e2a24d;
+        --accent-hover: #eeb567;
+        --azul: #5fa8d3;
+        --rosa: #e2748f;
+
+        --success: #6fbf8b;
+        --error: #e2646b;
+        --skip: #e2a24d;
+        --text: #f5f2ff;
+        --text-muted: #a89dcb;
+        --highlight: #e2a24d;
+
+        --on-accent: #201434;
+
+        --sunken: rgba(0, 0, 0, 0.16);
+        --scrim: rgba(12, 8, 26, 0.78);
+
+        --context-bg: color-mix(in srgb, var(--azul) 14%, transparent);
+        --tense-bg: color-mix(in srgb, var(--azul) 10%, transparent);
+        --tense-border: var(--azul);
+
+        --shadow-ink: 245 60% 4%;
+      }
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    ::selection { background: var(--accent); color: #1c1433; }
+    ::selection { background: var(--accent); color: var(--on-accent); }
 
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -47,8 +126,8 @@
     body {
       font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background:
-        radial-gradient(ellipse 900px 500px at 15% -10%, rgba(226, 162, 77, 0.10), transparent 60%),
-        radial-gradient(ellipse 900px 600px at 100% 10%, rgba(95, 168, 211, 0.10), transparent 55%),
+        radial-gradient(ellipse 900px 500px at 15% -10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 100% 10%, color-mix(in srgb, var(--azul) 10%, transparent), transparent 55%),
         var(--bg);
       background-attachment: fixed;
       color: var(--text);
@@ -71,7 +150,7 @@
       padding: 2.25rem 2.1rem;
       box-shadow:
         0 40px 80px -30px hsl(var(--shadow-ink) / 0.75),
-        0 1px 0 rgba(255, 255, 255, 0.03) inset;
+        0 1px 0 color-mix(in srgb, var(--text) 3%, transparent) inset;
       position: relative;
       overflow: hidden;
     }
@@ -134,14 +213,72 @@
 
     .version-badge {
       font-family: 'JetBrains Mono', monospace;
-      background: rgba(95, 168, 211, 0.16);
+      background: color-mix(in srgb, var(--azul) 16%, transparent);
       color: var(--azul);
-      border: 1px solid rgba(95, 168, 211, 0.4);
+      border: 1px solid color-mix(in srgb, var(--azul) 40%, transparent);
       padding: 0.18rem 0.55rem;
       border-radius: 999px;
       font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.02em;
+    }
+
+    .top-bar-search {
+      flex: 1;
+      min-width: 140px;
+      max-width: 320px;
+    }
+
+    .top-bar-search input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .top-bar-search input::placeholder { color: var(--text-muted); }
+
+    .top-bar-search input:focus {
+      outline: none;
+      border-color: var(--azul);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--azul) 20%, transparent);
+    }
+
+    .offline-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--error);
+      background: color-mix(in srgb, var(--error) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--error) 40%, transparent);
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    #themeToggleBtn .ico-sun,
+    #themeToggleBtn .ico-moon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #themeToggleBtn .ico-moon { display: none; }
+
+    :root[data-theme="dark"] #themeToggleBtn .ico-sun { display: none; }
+    :root[data-theme="dark"] #themeToggleBtn .ico-moon { display: block; }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) #themeToggleBtn .ico-sun { display: none; }
+      :root:not([data-theme="light"]) #themeToggleBtn .ico-moon { display: block; }
     }
 
     .song-info-bar {
@@ -179,7 +316,7 @@
     }
 
     .song-info-chip {
-      background: rgba(255, 255, 255, 0.04);
+      background: color-mix(in srgb, var(--text) 4%, transparent);
       border: 1px solid var(--border);
       color: var(--text-muted);
       padding: 0.24rem 0.65rem;
@@ -194,8 +331,8 @@
     .song-info-chip strong { color: var(--text); font-weight: 700; }
 
     #songInfoAccentChip {
-      background: rgba(95, 168, 211, 0.14);
-      border-color: rgba(95, 168, 211, 0.4);
+      background: color-mix(in srgb, var(--azul) 14%, transparent);
+      border-color: color-mix(in srgb, var(--azul) 40%, transparent);
       color: var(--azul);
     }
 
@@ -236,7 +373,7 @@
     }
 
     .nav-menu-item:last-child { border-bottom: none; }
-    .nav-menu-item:hover { background: rgba(255, 255, 255, 0.05); }
+    .nav-menu-item:hover { background: color-mix(in srgb, var(--text) 5%, transparent); }
 
     .tab-btn {
       background: transparent;
@@ -251,12 +388,12 @@
       font-family: inherit;
     }
 
-    .tab-btn:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+    .tab-btn:hover { color: var(--text); background: color-mix(in srgb, var(--text) 4%, transparent); }
 
     .tab-btn.active {
       background: var(--accent);
-      color: #201434;
-      box-shadow: 0 4px 14px -4px rgba(226, 162, 77, 0.55);
+      color: var(--on-accent);
+      box-shadow: 0 4px 14px -4px color-mix(in srgb, var(--accent) 55%, transparent);
     }
 
     .library-header {
@@ -283,8 +420,8 @@
     }
 
     .add-song-btn {
-      background: rgba(111, 191, 139, 0.14);
-      border: 1px solid rgba(111, 191, 139, 0.5);
+      background: color-mix(in srgb, var(--success) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--success) 50%, transparent);
       color: var(--success);
       padding: 0.6rem 1.15rem;
       border-radius: var(--radius-sm);
@@ -298,11 +435,11 @@
       font-family: inherit;
     }
 
-    .add-song-btn:hover { background: var(--success); color: #16112e; transform: translateY(-1px); }
+    .add-song-btn:hover { background: var(--success); color: var(--on-accent); transform: translateY(-1px); }
     .add-song-btn:disabled {
       cursor: not-allowed;
       opacity: 0.5;
-      background: rgba(255, 255, 255, 0.04);
+      background: color-mix(in srgb, var(--text) 4%, transparent);
       border-color: var(--border);
       color: var(--text-muted);
       transform: none;
@@ -348,7 +485,7 @@
       opacity: 0.6;
     }
 
-    .song-delete-btn:hover { color: var(--error); background: rgba(226, 100, 107, 0.12); opacity: 1; }
+    .song-delete-btn:hover { color: var(--error); background: color-mix(in srgb, var(--error) 12%, transparent); opacity: 1; }
 
     .song-card:hover {
       border-color: var(--azul);
@@ -370,8 +507,8 @@
       font-size: 0.62rem;
       font-weight: 700;
       color: var(--rosa);
-      background: rgba(226, 116, 143, 0.14);
-      border: 1px solid rgba(226, 116, 143, 0.4);
+      background: color-mix(in srgb, var(--rosa) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rosa) 40%, transparent);
       padding: 0.08rem 0.4rem;
       border-radius: 999px;
       vertical-align: middle;
@@ -380,7 +517,7 @@
     .song-meta { display: flex; gap: 0.35rem; flex-wrap: wrap; }
 
     .meta-chip {
-      background: rgba(226, 162, 77, 0.1);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
       border: 1px solid var(--border);
       padding: 0.12rem 0.5rem;
       border-radius: 999px;
@@ -392,7 +529,7 @@
 
     .practice-btn {
       background: var(--accent);
-      color: #201434;
+      color: var(--on-accent);
       border: none;
       padding: 0.5rem 1rem;
       border-radius: var(--radius-sm);
@@ -405,7 +542,7 @@
       flex-shrink: 0;
     }
 
-    .practice-btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 8px 20px -8px rgba(226, 162, 77, 0.6); }
+    .practice-btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--accent) 60%, transparent); }
 
     .setup-card {
       background: var(--panel-raised);
@@ -424,7 +561,7 @@
       align-items: center;
       gap: 1rem;
       flex-wrap: wrap;
-      background: rgba(95, 168, 211, 0.1);
+      background: color-mix(in srgb, var(--azul) 10%, transparent);
       border: 1px solid var(--azul);
       border-radius: var(--radius-sm);
       padding: 0.9rem 1.1rem;
@@ -508,7 +645,7 @@
     .start-round-btn {
       width: 100%;
       background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-      color: #201434;
+      color: var(--on-accent);
       border: none;
       padding: 0.95rem;
       border-radius: var(--radius-sm);
@@ -526,7 +663,7 @@
       letter-spacing: 0.01em;
     }
 
-    .start-round-btn:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 10px 24px -10px rgba(226, 162, 77, 0.6); }
+    .start-round-btn:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent) 60%, transparent); }
     .start-round-btn:disabled { cursor: not-allowed; }
 
     /* Word card: styled like a torn concert-ticket / lyric stub, the app's signature motif */
@@ -575,8 +712,8 @@
       display: inline-block;
       padding: 0.3rem 1rem;
       border-radius: var(--radius-sm);
-      background: rgba(226, 162, 77, 0.1);
-      border: 1px solid rgba(226, 162, 77, 0.35);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
     }
 
     .audio-btn {
@@ -595,7 +732,7 @@
     }
 
     .audio-btn:hover { transform: scale(1.08); background: var(--accent-hover); }
-    .audio-btn svg { fill: #201434; width: 22px; height: 22px; }
+    .audio-btn svg { fill: var(--on-accent); width: 22px; height: 22px; }
 
     .top-actions-row {
       display: flex;
@@ -606,7 +743,7 @@
     }
 
     button.top-action-btn {
-      background: rgba(255, 255, 255, 0.04);
+      background: color-mix(in srgb, var(--text) 4%, transparent);
       border: 1px solid var(--border);
       color: var(--text-muted);
       padding: 0.48rem 0.85rem;
@@ -619,11 +756,11 @@
     }
 
     button.top-action-btn:hover { color: var(--text); border-color: var(--azul); }
-    button.top-action-btn.active-btn { border-color: var(--azul); color: var(--azul); background: rgba(95, 168, 211, 0.14); }
+    button.top-action-btn.active-btn { border-color: var(--azul); color: var(--azul); background: color-mix(in srgb, var(--azul) 14%, transparent); }
 
     button.top-dont-know-btn {
       width: 100%;
-      background: rgba(226, 116, 143, 0.1);
+      background: color-mix(in srgb, var(--rosa) 10%, transparent);
       border: 1px dashed var(--rosa);
       color: var(--rosa);
       padding: 0.75rem 0.9rem;
@@ -636,14 +773,14 @@
       margin-top: 0.7rem;
     }
 
-    button.top-dont-know-btn:hover:not(:disabled) { background: var(--rosa); color: #fff; border-style: solid; }
+    button.top-dont-know-btn:hover:not(:disabled) { background: var(--rosa); color: var(--on-accent); border-style: solid; }
     button.top-dont-know-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
     .clue-notes-box {
       margin-top: 0.9rem;
       padding: 1rem 1.1rem;
-      background: rgba(226, 162, 77, 0.08);
-      border: 1px dashed rgba(226, 162, 77, 0.5);
+      background: color-mix(in srgb, var(--accent) 8%, transparent);
+      border: 1px dashed color-mix(in srgb, var(--accent) 50%, transparent);
       border-radius: var(--radius-sm);
       display: none;
       text-align: left;
@@ -666,7 +803,7 @@
     }
 
     .add-clue-btn {
-      background: rgba(226, 162, 77, 0.18);
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
       border: 1px solid var(--accent);
       color: var(--accent);
       padding: 0.3rem 0.7rem;
@@ -677,7 +814,7 @@
       font-family: inherit;
     }
 
-    .add-clue-btn:hover { background: var(--accent); color: #201434; }
+    .add-clue-btn:hover { background: var(--accent); color: var(--on-accent); }
 
     .clue-notes-list {
       display: flex;
@@ -688,7 +825,7 @@
     .confusable-hint {
       margin-top: 0.7rem;
       padding: 0.6rem 0.8rem;
-      background: rgba(226, 116, 143, 0.1);
+      background: color-mix(in srgb, var(--rosa) 10%, transparent);
       border: 1px solid var(--rosa);
       border-radius: var(--radius-sm);
       color: var(--rosa);
@@ -703,8 +840,8 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 0.6rem;
-      background: rgba(0, 0, 0, 0.16);
-      border: 1px solid rgba(226, 162, 77, 0.3);
+      background: var(--sunken);
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
       border-radius: var(--radius-sm);
       padding: 0.55rem 0.7rem;
     }
@@ -726,7 +863,7 @@
 
     .clue-note-action-btn {
       background: transparent;
-      border: 1px solid rgba(226, 162, 77, 0.4);
+      border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
       color: var(--accent);
       border-radius: 6px;
       padding: 0.2rem 0.45rem;
@@ -735,9 +872,9 @@
       font-family: inherit;
     }
 
-    .clue-note-action-btn:hover { background: rgba(226, 162, 77, 0.22); }
-    .clue-note-action-btn.delete-btn { border-color: rgba(226, 100, 107, 0.5); color: var(--error); }
-    .clue-note-action-btn.delete-btn:hover { background: rgba(226, 100, 107, 0.2); }
+    .clue-note-action-btn:hover { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+    .clue-note-action-btn.delete-btn { border-color: color-mix(in srgb, var(--error) 50%, transparent); color: var(--error); }
+    .clue-note-action-btn.delete-btn:hover { background: color-mix(in srgb, var(--error) 20%, transparent); }
 
     .clue-note-edit-input {
       flex: 1;
@@ -806,7 +943,7 @@
 
     .context-modal-line.current {
       opacity: 1;
-      background: rgba(95, 168, 211, 0.12);
+      background: color-mix(in srgb, var(--azul) 12%, transparent);
       border: 1px solid var(--azul);
     }
 
@@ -861,7 +998,7 @@
     }
 
     .context-audio-btn {
-      background: rgba(95, 168, 211, 0.16);
+      background: color-mix(in srgb, var(--azul) 16%, transparent);
       border: 1px solid var(--azul);
       border-radius: 999px;
       color: var(--azul);
@@ -876,7 +1013,7 @@
       white-space: nowrap;
     }
 
-    .context-audio-btn:hover { background: var(--azul); color: #16112e; }
+    .context-audio-btn:hover { background: var(--azul); color: var(--on-accent); }
     .context-english-line { color: var(--text-muted); font-size: 0.92rem; margin-top: 0.3rem; }
 
     .spoiler-hidden {
@@ -888,7 +1025,7 @@
 
     .context-box mark {
       background: var(--azul);
-      color: #16112e;
+      color: var(--on-accent);
       font-weight: 800;
       padding: 0.1rem 0.4rem;
       border-radius: 4px;
@@ -913,7 +1050,7 @@
     }
 
     .tense-item {
-      background: rgba(0, 0, 0, 0.16);
+      background: var(--sunken);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       padding: 0.55rem 0.6rem;
@@ -991,7 +1128,7 @@
     .mode-toggle-btn:hover { border-color: var(--azul); color: var(--text); }
 
     .mode-toggle-btn.active {
-      background: rgba(226, 162, 77, 0.14);
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -1000,7 +1137,7 @@
       display: none;
       margin-top: 1rem;
       padding: 0.85rem 1rem;
-      background: rgba(95, 168, 211, 0.1);
+      background: color-mix(in srgb, var(--azul) 10%, transparent);
       border: 1px dashed var(--azul);
       border-radius: var(--radius-sm);
       color: var(--azul);
@@ -1093,7 +1230,7 @@
     .next-btn {
       width: 100%;
       background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-      color: #201434;
+      color: var(--on-accent);
       border: none;
       padding: 0.95rem;
       border-radius: var(--radius-sm);
@@ -1106,7 +1243,7 @@
       margin-top: 1rem;
     }
 
-    .next-btn:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 10px 24px -10px rgba(226, 162, 77, 0.6); }
+    .next-btn:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent) 60%, transparent); }
     .next-btn.visible { display: block; }
 
     .feedback-banner {
@@ -1132,9 +1269,9 @@
     .feedback-banner .feedback-line1 { font-size: 1.05rem; }
     .feedback-banner .feedback-line2 { font-weight: 600; font-size: 0.92rem; opacity: 0.9; margin-top: 0.25rem; }
 
-    .feedback-banner.feedback-correct { background: rgba(111, 191, 139, 0.14); border: 1px solid var(--success); color: var(--success); }
-    .feedback-banner.feedback-wrong { background: rgba(226, 100, 107, 0.14); border: 1px solid var(--error); color: var(--error); }
-    .feedback-banner.feedback-skip { background: rgba(226, 162, 77, 0.14); border: 1px solid var(--skip); color: var(--skip); }
+    .feedback-banner.feedback-correct { background: color-mix(in srgb, var(--success) 14%, transparent); border: 1px solid var(--success); color: var(--success); }
+    .feedback-banner.feedback-wrong { background: color-mix(in srgb, var(--error) 14%, transparent); border: 1px solid var(--error); color: var(--error); }
+    .feedback-banner.feedback-skip { background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid var(--skip); color: var(--skip); }
 
     .options-grid {
       display: grid;
@@ -1165,9 +1302,9 @@
       font-family: inherit;
     }
 
-    .option-btn:hover:not(:disabled) { border-color: var(--azul); background: rgba(95, 168, 211, 0.1); transform: translateY(-1px); }
-    .option-btn.correct { background: var(--success) !important; border-color: var(--success) !important; color: #16112e; font-weight: 700; }
-    .option-btn.wrong { background: var(--error) !important; border-color: var(--error) !important; color: #16112e; font-weight: 700; }
+    .option-btn:hover:not(:disabled) { border-color: var(--azul); background: color-mix(in srgb, var(--azul) 10%, transparent); transform: translateY(-1px); }
+    .option-btn.correct { background: var(--success) !important; border-color: var(--success) !important; color: var(--on-accent); font-weight: 700; }
+    .option-btn.wrong { background: var(--error) !important; border-color: var(--error) !important; color: var(--on-accent); font-weight: 700; }
 
     .exit-icon-btn {
       background: transparent;
@@ -1182,10 +1319,10 @@
       vertical-align: middle;
     }
 
-    .exit-icon-btn:hover { color: var(--error); background: rgba(226, 100, 107, 0.12); }
+    .exit-icon-btn:hover { color: var(--error); background: color-mix(in srgb, var(--error) 12%, transparent); }
 
     .icon-btn {
-      background: rgba(255, 255, 255, 0.04);
+      background: color-mix(in srgb, var(--text) 4%, transparent);
       border: 1px solid var(--border);
       color: var(--text-muted);
       width: 34px;
@@ -1218,7 +1355,7 @@
     .danger-zone {
       margin-top: 1.8rem;
       padding-top: 1.4rem;
-      border-top: 1px dashed rgba(226, 100, 107, 0.4);
+      border-top: 1px dashed color-mix(in srgb, var(--error) 40%, transparent);
     }
 
     .danger-zone-label {
@@ -1246,7 +1383,7 @@
       font-family: inherit;
     }
 
-    .danger-btn:hover { background: var(--error); color: #16112e; }
+    .danger-btn:hover { background: var(--error); color: var(--on-accent); }
 
     .header-bar {
       display: flex;
@@ -1299,14 +1436,14 @@
       letter-spacing: 0.04em;
       font-weight: 700;
     }
-    tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
-    tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.015); }
+    tbody tr:hover { background: color-mix(in srgb, var(--text) 3%, transparent); }
+    tbody tr:nth-child(even) { background: color-mix(in srgb, var(--text) 1.5%, transparent); }
 
     .modal-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(12, 8, 26, 0.78);
+      background: var(--scrim);
       backdrop-filter: blur(6px);
       z-index: 1000;
       justify-content: center;
@@ -1361,4 +1498,4 @@
       transition: all 0.15s ease;
     }
 
-    .modal-close-btn:hover { background: var(--error); border-color: var(--error); color: #16112e; }
+    .modal-close-btn:hover { background: var(--error); border-color: var(--error); color: var(--on-accent); }
