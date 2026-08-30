@@ -607,25 +607,43 @@ function resolveWordLine(word) {
         return;
       }
 
-      // "Add" is always clickable, signed in or not — if signed out, it
-      // starts Google sign-in right here instead of sitting there disabled.
+      // Two-layer grouping: a song (layer 1, language-pair-independent —
+      // title/artist/source language) can have more than one translation
+      // (layer 2, "editions" — one per target language). Group rows by
+      // song here so a song with 2 translations shows as one card with 2
+      // addable editions, instead of two duplicate-looking cards. Once
+      // added, each edition is still its own separate library entry (see
+      // catalogLibraryId) — the grouping is purely a catalog-browsing
+      // convenience, not a library-page concept.
+      const groups = new Map();
       notYetAdded.forEach(row => {
         const song = row.songs;
-        const item = document.createElement("div");
-        item.className = "song-card";
-        item.style.marginBottom = "0.6rem";
-        item.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.6rem;">
-            <div>
-              <div style="font-weight:600;">${escapeHtml(song.title)}</div>
-              <div style="color: var(--text-muted); font-size: 0.85rem;">${escapeHtml(song.artist)}</div>
-              <div style="color: var(--azul); font-size: 0.8rem;">${escapeHtml(song.source_lang)} → ${escapeHtml(row.target_lang)}</div>
-            </div>
-            <button class="practice-btn" style="white-space:nowrap;"
-              onclick="addCatalogSongToLibrary('${song.id}', '${row.target_lang}')">➕ Add</button>
+        if (!groups.has(song.id)) groups.set(song.id, { song, editions: [] });
+        groups.get(song.id).editions.push(row.target_lang);
+      });
+
+      // "Add" is always clickable, signed in or not — if signed out, it
+      // starts Google sign-in right here instead of sitting there disabled.
+      groups.forEach(({ song, editions }) => {
+        const group = document.createElement("div");
+        group.className = "song-card";
+        group.style.marginBottom = "0.6rem";
+        group.innerHTML = `
+          <div style="margin-bottom:0.6rem;">
+            <div style="font-weight:600;">${escapeHtml(song.title)}</div>
+            <div style="color: var(--text-muted); font-size: 0.85rem;">${escapeHtml(song.artist)} • ${escapeHtml(song.source_lang)}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.4rem;">
+            ${editions.map(lang => `
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:0.6rem; padding:0.45rem 0.7rem; background: var(--sunken); border-radius: var(--radius-sm);">
+                <span style="color: var(--azul); font-size:0.85rem;">→ ${escapeHtml(lang)}</span>
+                <button class="practice-btn" style="white-space:nowrap; padding:0.35rem 0.8rem; font-size:0.85rem;"
+                  onclick="addCatalogSongToLibrary('${song.id}', '${lang}')">➕ Add</button>
+              </div>
+            `).join("")}
           </div>
         `;
-        list.appendChild(item);
+        list.appendChild(group);
       });
     }
 
