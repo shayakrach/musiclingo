@@ -2688,19 +2688,17 @@ function resolveWordLine(word) {
       });
     }
 
+    // Used to force-open Clue & Notes / Context / Tenses together right
+    // after answering — flooded the screen with three stacked panels and
+    // no visible way to collapse them (the toggle row that controls them
+    // was hidden at the same moment), burying the Next Word button below
+    // all of it. Now it only un-hides the spoiler text *inside* whichever
+    // panels the user already had open — no point keeping something
+    // spoiler-blurred once the round is answered — without opening
+    // anything new. The toggle row stays visible and usable throughout
+    // (see finishQuestionInteractions), so seeing more is one deliberate
+    // tap away instead of forced on everyone.
     function autoRevealClues() {
-      document.getElementById("clueNotesBox").style.display = "block";
-      document.getElementById("toggleClueBtn").textContent = t("clueNotesBtnHide");
-      document.getElementById("toggleClueBtn").classList.add("active-btn");
-
-      document.getElementById("contextBox").style.display = "block";
-      document.getElementById("toggleContextBtn").textContent = t("songContextBtnHide");
-      document.getElementById("toggleContextBtn").classList.add("active-btn");
-
-      document.getElementById("tenseBox").style.display = "block";
-      document.getElementById("toggleTenseBtn").textContent = t("tensesBtnHide");
-      document.getElementById("toggleTenseBtn").classList.add("active-btn");
-
       const contextEnglishEl = document.getElementById("contextEnglishText");
       if (contextEnglishEl.dataset.full) {
         contextEnglishEl.textContent = contextEnglishEl.dataset.full;
@@ -2944,7 +2942,10 @@ function resolveWordLine(word) {
       document.getElementById("dontKnowBtn").style.display = "none";
       document.getElementById("scoreDisplay").textContent = score;
       document.getElementById("nextBtn").classList.add("visible");
-      document.getElementById("topActionsRow").style.display = "none";
+      // Left visible (was hidden) — these are the only controls for
+      // opening/closing Clue & Notes / Context / Tenses, so hiding them
+      // right when those panels might be open left no way to collapse
+      // anything or dig deeper on purpose.
 
       DB.stats.save(activeSongId, stats);
       saveActiveRoundState();
