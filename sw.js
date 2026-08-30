@@ -2,7 +2,7 @@
 // Caches the app shell so it can still open without a network connection
 // once it's been visited at least once.
 
-const CACHE_NAME = "musiclingo-cache-v2";
+const CACHE_NAME = "musiclingo-cache-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -15,7 +15,17 @@ const APP_SHELL = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL))
+      .then((cache) => Promise.all(
+        // Fetch with no-store rather than cache.addAll()'s default request
+        // behavior — otherwise the browser's own HTTP cache can hand back a
+        // stale response here, baking staleness straight into a "fresh"
+        // precache on install.
+        APP_SHELL.map((url) =>
+          fetch(url, { cache: "no-store" }).then((response) => {
+            if (response && response.status === 200) return cache.put(url, response);
+          })
+        )
+      ))
       .catch(() => {
         // If the exact filenames don't match (e.g. hosted under a different
         // name), installation still succeeds — caching just happens lazily
@@ -39,7 +49,10 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      const networkFetch = fetch(event.request)
+      // no-store: without this, the browser's own HTTP cache can hand back
+      // a stale response here even though we're explicitly trying to
+      // revalidate — silently defeating this whole background-refresh step.
+      const networkFetch = fetch(event.request, { cache: "no-store" })
         .then((response) => {
           if (response && response.status === 200) {
             const clone = response.clone();

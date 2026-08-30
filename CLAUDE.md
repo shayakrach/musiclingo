@@ -97,11 +97,17 @@ hardcoded colors in the file on purpose are Spotify's actual brand green.
 
 - Edit `assets/app.js` and `assets/style.css` directly — do not reintroduce
   inline `<style>`/`<script>` blocks into `index.html`.
-- When bumping the app version (shown in the `<title>` and the in-app
-  version badge), update it in both `index.html` and `assets/app.js`.
-- If you change which files need to be available offline, update the
-  `APP_SHELL` array in `sw.js` and bump `CACHE_NAME` (e.g. `v2` → `v3`) so
-  clients pick up the new precache list.
+- When bumping the app version, both occurrences are in `index.html` (the
+  `<title>` and the version badge span) — `assets/app.js` doesn't duplicate it.
+- **Bump `CACHE_NAME` in `sw.js` (e.g. `v2` → `v3`) on every commit that
+  changes `assets/app.js`, `assets/style.css`, or `index.html`** — not just
+  when `APP_SHELL`'s file list changes. This actually happened: CACHE_NAME
+  sat at `v2` across ~8 subsequent app.js-changing releases, so returning
+  users' service workers kept serving old JS (a real bug got "fixed" in the
+  repo but stayed broken for anyone with a cached copy, until they happened
+  to reload twice). The `fetch` handler's stale-while-revalidate does
+  self-heal eventually, but bumping the cache name on every relevant change
+  is what makes updates actually show up promptly instead of relying on that.
 
 ## Workflow note
 
