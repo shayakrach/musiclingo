@@ -23,6 +23,10 @@ sw.js                   — service worker, enables offline support
 data/                   — real song data, fetched at runtime (NOT included in this repo — see below)
 ```
 
+For a rundown of every external service this app uses (Supabase, Google
+sign-in, GitHub) and where each one's credentials live, see
+[`INTEGRATIONS.md`](INTEGRATIONS.md).
+
 ## About the `data/` folder
 
 This repo does **not** include real song data, since song lyrics are copyrighted. The song library starts empty — real songs come from either the shared Supabase catalog (see `supabase/README.md`; sign in and use "📚 Browse Catalog" to add one to your own library) or, optionally, a local `data/` folder that is deliberately excluded via `.gitignore`.

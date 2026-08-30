@@ -21,6 +21,10 @@ sw.js                  — offline service worker (cache-first app shell + runti
 data/                  — real song content, fetched at runtime (gitignored, see below)
 ```
 
+See [`INTEGRATIONS.md`](INTEGRATIONS.md) for every external service this app
+depends on (Supabase, Google OAuth, GitHub) — what each is for and where its
+credentials live. Check it before assuming something's misconfigured.
+
 ## The `data/` folder and copyrighted content
 
 Real song lyrics are copyrighted, so real song data is **never committed**.
