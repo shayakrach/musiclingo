@@ -778,6 +778,7 @@ function resolveWordLine(word) {
     let thisRoundMistakes = [];
 
     let availableVoices = [];
+    let warnedNoVoiceLangs = new Set();
 
     // ============================================================================
     // 4. SETTINGS & LOCALIZATION
@@ -952,6 +953,10 @@ function resolveWordLine(word) {
         exitGameConfirm: "Are you sure you want to exit the current round? Your unfinished progress for this round will be discarded.",
         noFilterMatch: "No words match this filter! Please select another option.",
         roundCompleteTemplate: "Round {round} Completed, {name}!\nMode: {mode}\nYour Score: {score}/{total} ({pct}%)\n\nSetting up Round {nextRound}...",
+        roundSummaryTitle: "Round {round} Complete!",
+        roundSummaryEncouragement: "Nice work, {name}!",
+        roundSummaryNextBtn: "▶ Next Round",
+        roundSummaryLibraryBtn: "📚 Back to Library",
         allWordsMastered: "🎉 Amazing! You have practiced every single word in this song!",
         noRoundsYet: "No completed rounds yet for this song!",
         dangerZoneLabel: "Danger Zone",
@@ -963,6 +968,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Play",
         wordsInRoundTemplate: "{count} words in this round",
         ticketCountTemplate: "🎫 {count} song ticket(s) ready to practice",
+        libraryEmptyStateText: "Your library is empty — browse the catalog to add your first song.",
         continueBtn: "Continue →",
         confusableHintLabel: "Don't confuse with",
         findLyricsLinkText: "Search for the lyrics",
@@ -1041,6 +1047,10 @@ function resolveWordLine(word) {
         exitGameConfirm: "Are you sure you want to exit the current round? Your unfinished progress for this round will be discarded.",
         noFilterMatch: "No words match this filter! Please select another option.",
         roundCompleteTemplate: "Round {round} Completed, {name}!\nMode: {mode}\nYour Score: {score}/{total} ({pct}%)\n\nSetting up Round {nextRound}...",
+        roundSummaryTitle: "Round {round} Complete!",
+        roundSummaryEncouragement: "Nice work, {name}!",
+        roundSummaryNextBtn: "▶ Next Round",
+        roundSummaryLibraryBtn: "📚 Back to Library",
         allWordsMastered: "🎉 Amazing! You have practiced every single word in this song!",
         noRoundsYet: "No completed rounds yet for this song!",
         dangerZoneLabel: "Danger Zone",
@@ -1052,6 +1062,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Play",
         wordsInRoundTemplate: "{count} words in this round",
         ticketCountTemplate: "🎫 {count} song ticket(s) ready to practice",
+        libraryEmptyStateText: "Your library is empty — browse the catalog to add your first song.",
         continueBtn: "Continue →",
         confusableHintLabel: "Don't confuse with",
         findLyricsLinkText: "Search for the lyrics",
@@ -1130,6 +1141,10 @@ function resolveWordLine(word) {
         exitGameConfirm: "האם אתה בטוח שברצונך לצאת מהסבב הנוכחי? ההתקדמות שלא נשמרה תימחק.",
         noFilterMatch: "אין מילים התואמות את הסינון הזה! בחר אפשרות אחרת.",
         roundCompleteTemplate: "סבב {round} הושלם, {name}!\nמצב: {mode}\nהניקוד שלך: {score}/{total} ({pct}%)\n\nמכין את סבב {nextRound}...",
+        roundSummaryTitle: "סבב {round} הושלם!",
+        roundSummaryEncouragement: "כל הכבוד, {name}!",
+        roundSummaryNextBtn: "▶ הסבב הבא",
+        roundSummaryLibraryBtn: "📚 חזרה לספרייה",
         allWordsMastered: "🎉 מדהים! תרגלת כל מילה בשיר הזה!",
         noRoundsYet: "עדיין אין סבבים שהושלמו בשיר הזה!",
         dangerZoneLabel: "אזור מסוכן",
@@ -1141,6 +1156,7 @@ function resolveWordLine(word) {
         playBtn: "▶ שחק",
         wordsInRoundTemplate: "{count} מילים בסבב הזה",
         ticketCountTemplate: "🎫 {count} כרטיסי שירים מוכנים לתרגול",
+        libraryEmptyStateText: "הספרייה שלך ריקה — עיין בקטלוג כדי להוסיף את השיר הראשון שלך.",
         continueBtn: "המשך ←",
         listenOnPrefix: "האזן ב",
         addLinkBtn: "+ הוסף קישור",
@@ -1219,6 +1235,10 @@ function resolveWordLine(word) {
         exitGameConfirm: "¿Estás seguro de que quieres salir de la ronda actual? Tu progreso sin terminar se descartará.",
         noFilterMatch: "¡Ninguna palabra coincide con este filtro! Selecciona otra opción.",
         roundCompleteTemplate: "¡Ronda {round} Completada, {name}!\nModo: {mode}\nTu Puntaje: {score}/{total} ({pct}%)\n\nPreparando la Ronda {nextRound}...",
+        roundSummaryTitle: "¡Ronda {round} Completada!",
+        roundSummaryEncouragement: "¡Buen trabajo, {name}!",
+        roundSummaryNextBtn: "▶ Siguiente Ronda",
+        roundSummaryLibraryBtn: "📚 Volver a la Biblioteca",
         allWordsMastered: "🎉 ¡Increíble! ¡Has practicado cada palabra de esta canción!",
         noRoundsYet: "¡Aún no hay rondas completadas para esta canción!",
         dangerZoneLabel: "Zona de Peligro",
@@ -1230,6 +1250,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Jugar",
         wordsInRoundTemplate: "{count} palabras en esta ronda",
         ticketCountTemplate: "🎫 {count} entradas de canciones listas para practicar",
+        libraryEmptyStateText: "Tu biblioteca está vacía — explora el catálogo para agregar tu primera canción.",
         continueBtn: "Continuar →",
         listenOnPrefix: "Escuchar en",
         addLinkBtn: "+ Agregar enlace",
@@ -1308,6 +1329,10 @@ function resolveWordLine(word) {
         exitGameConfirm: "Tem certeza de que deseja sair da rodada atual? Seu progresso não salvo será descartado.",
         noFilterMatch: "Nenhuma palavra corresponde a este filtro! Selecione outra opção.",
         roundCompleteTemplate: "Rodada {round} Concluída, {name}!\nModo: {mode}\nSua Pontuação: {score}/{total} ({pct}%)\n\nPreparando a Rodada {nextRound}...",
+        roundSummaryTitle: "Rodada {round} Concluída!",
+        roundSummaryEncouragement: "Bom trabalho, {name}!",
+        roundSummaryNextBtn: "▶ Próxima Rodada",
+        roundSummaryLibraryBtn: "📚 Voltar à Biblioteca",
         allWordsMastered: "🎉 Incrível! Você praticou todas as palavras desta música!",
         noRoundsYet: "Ainda não há rodadas concluídas para esta música!",
         dangerZoneLabel: "Zona de Perigo",
@@ -1319,6 +1344,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Jogar",
         wordsInRoundTemplate: "{count} palavras nesta rodada",
         ticketCountTemplate: "🎫 {count} ingressos de músicas prontos para praticar",
+        libraryEmptyStateText: "Sua biblioteca está vazia — explore o catálogo para adicionar sua primeira música.",
         continueBtn: "Continuar →",
         listenOnPrefix: "Ouvir no",
         addLinkBtn: "+ Adicionar link",
@@ -1397,6 +1423,10 @@ function resolveWordLine(word) {
         exitGameConfirm: "Es-tu sûr de vouloir quitter le round actuel ? Ta progression non enregistrée sera perdue.",
         noFilterMatch: "Aucun mot ne correspond à ce filtre ! Sélectionne une autre option.",
         roundCompleteTemplate: "Round {round} Terminé, {name} !\nMode : {mode}\nTon Score : {score}/{total} ({pct}%)\n\nPréparation du Round {nextRound}...",
+        roundSummaryTitle: "Round {round} Terminé !",
+        roundSummaryEncouragement: "Bon travail, {name} !",
+        roundSummaryNextBtn: "▶ Round Suivant",
+        roundSummaryLibraryBtn: "📚 Retour à la Bibliothèque",
         allWordsMastered: "🎉 Incroyable ! Tu as pratiqué chaque mot de cette chanson !",
         noRoundsYet: "Aucun round terminé pour cette chanson pour le moment !",
         dangerZoneLabel: "Zone de Danger",
@@ -1408,6 +1438,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Jouer",
         wordsInRoundTemplate: "{count} mots dans ce round",
         ticketCountTemplate: "🎫 {count} billets de chansons prêts à pratiquer",
+        libraryEmptyStateText: "Ta bibliothèque est vide — explore le catalogue pour ajouter ta première chanson.",
         continueBtn: "Continuer →",
         listenOnPrefix: "Écouter sur",
         addLinkBtn: "+ Ajouter un lien",
@@ -1486,6 +1517,10 @@ function resolveWordLine(word) {
         exitGameConfirm: "Sei sicuro di voler uscire dal round attuale? I tuoi progressi non salvati andranno persi.",
         noFilterMatch: "Nessuna parola corrisponde a questo filtro! Seleziona un'altra opzione.",
         roundCompleteTemplate: "Round {round} Completato, {name}!\nModalità: {mode}\nIl Tuo Punteggio: {score}/{total} ({pct}%)\n\nPreparazione del Round {nextRound}...",
+        roundSummaryTitle: "Round {round} Completato!",
+        roundSummaryEncouragement: "Ottimo lavoro, {name}!",
+        roundSummaryNextBtn: "▶ Round Successivo",
+        roundSummaryLibraryBtn: "📚 Torna alla Libreria",
         allWordsMastered: "🎉 Incredibile! Hai praticato ogni singola parola di questa canzone!",
         noRoundsYet: "Ancora nessun round completato per questa canzone!",
         dangerZoneLabel: "Zona Pericolosa",
@@ -1497,6 +1532,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Gioca",
         wordsInRoundTemplate: "{count} parole in questo round",
         ticketCountTemplate: "🎫 {count} biglietti di canzoni pronti per esercitarti",
+        libraryEmptyStateText: "La tua libreria è vuota — sfoglia il catalogo per aggiungere la tua prima canzone.",
         continueBtn: "Continua →",
         listenOnPrefix: "Ascolta su",
         addLinkBtn: "+ Aggiungi link",
@@ -1575,6 +1611,10 @@ function resolveWordLine(word) {
         exitGameConfirm: "Bist du sicher, dass du die aktuelle Runde verlassen möchtest? Dein ungespeicherter Fortschritt geht verloren.",
         noFilterMatch: "Keine Wörter entsprechen diesem Filter! Wähle eine andere Option.",
         roundCompleteTemplate: "Runde {round} Abgeschlossen, {name}!\nModus: {mode}\nDeine Punktzahl: {score}/{total} ({pct}%)\n\nRunde {nextRound} wird vorbereitet...",
+        roundSummaryTitle: "Runde {round} Abgeschlossen!",
+        roundSummaryEncouragement: "Gut gemacht, {name}!",
+        roundSummaryNextBtn: "▶ Nächste Runde",
+        roundSummaryLibraryBtn: "📚 Zurück zur Bibliothek",
         allWordsMastered: "🎉 Fantastisch! Du hast jedes einzelne Wort in diesem Lied geübt!",
         noRoundsYet: "Noch keine abgeschlossenen Runden für dieses Lied!",
         dangerZoneLabel: "Gefahrenzone",
@@ -1586,6 +1626,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Spielen",
         wordsInRoundTemplate: "{count} Wörter in dieser Runde",
         ticketCountTemplate: "🎫 {count} Lied-Tickets bereit zum Üben",
+        libraryEmptyStateText: "Deine Bibliothek ist leer — durchstöbere den Katalog, um dein erstes Lied hinzuzufügen.",
         continueBtn: "Weiter →",
         listenOnPrefix: "Anhören auf",
         addLinkBtn: "+ Link hinzufügen",
@@ -1837,10 +1878,17 @@ function resolveWordLine(word) {
         container.appendChild(card);
       });
 
+      const count = Object.keys(SongLibrary).length;
       const ticketCountEl = document.getElementById("libraryTicketCount");
       if (ticketCountEl) {
-        const count = Object.keys(SongLibrary).length;
+        ticketCountEl.style.display = count > 0 ? "" : "none";
         ticketCountEl.textContent = t("ticketCountTemplate").replace("{count}", count);
+      }
+
+      const emptyStateEl = document.getElementById("libraryEmptyState");
+      if (emptyStateEl) {
+        emptyStateEl.style.display = count === 0 ? "block" : "none";
+        document.getElementById("libraryEmptyStateText").textContent = t("libraryEmptyStateText");
       }
 
       filterSongLibrary();
@@ -1917,10 +1965,15 @@ function resolveWordLine(word) {
         || (song.sourceLang === "Spanish" ? "🇦🇷 Argentine Rioplatense" : "");
 
       if (effectiveAccentLabel) {
-        document.getElementById("songInfoAccent").textContent = effectiveAccentLabel.replace(/^🇦🇷\s*/, "");
+        const accentText = effectiveAccentLabel.replace(/^🇦🇷\s*/, "");
+        document.getElementById("songInfoAccent").textContent = accentText;
         accentChip.style.display = "inline-flex";
+        document.getElementById("listenBtn").title = `Hear ${accentText} pronunciation`;
+        document.getElementById("listenLineBtn").title = `Hear full lyric line with ${accentText} cadence`;
       } else {
         accentChip.style.display = "none";
+        document.getElementById("listenBtn").title = "Hear pronunciation";
+        document.getElementById("listenLineBtn").title = "Hear full lyric line";
       }
 
       renderStreamingIcon(song);
@@ -2259,8 +2312,11 @@ function resolveWordLine(word) {
       } else {
         u.lang = targetLang;
         // Only warn once voices have actually finished loading (avoids a
-        // false alarm during the brief async window before they're ready).
-        if (availableVoices.length > 0) {
+        // false alarm during the brief async window before they're ready),
+        // and only once per language per session — otherwise this repeats
+        // on every single word, which gets noisy fast.
+        if (availableVoices.length > 0 && !warnedNoVoiceLangs.has(targetLang)) {
+          warnedNoVoiceLangs.add(targetLang);
           const song = SongLibrary[activeSongId];
           const langLabel = (song && song.sourceLang) || targetLang;
           showVoiceWarning(t("noVoiceWarningTemplate").replace("{lang}", langLabel));
@@ -2494,6 +2550,11 @@ function resolveWordLine(word) {
       const current = currentQueue[currentIndex];
       document.getElementById("currentWord").textContent = current.es;
       renderClueNotes(current.es);
+
+      // No point offering an empty "Tenses & Conjugations" panel for words
+      // that don't have any forms data.
+      document.getElementById("toggleTenseBtn").style.display =
+        (current.tenses && current.tenses.length > 0) ? "" : "none";
 
       const confusableHint = document.getElementById("confusableHint");
       if (current.confusableWith && current.confusableWith.word) {
@@ -2869,23 +2930,34 @@ function resolveWordLine(word) {
       });
       DB.history.save(activeSongId, roundHistory);
 
+      const completedRound = currentRound;
       currentRound++;
       DB.currentRound.save(activeSongId, currentRound);
 
-      alert(t("roundCompleteTemplate")
-        .replace("{round}", currentRound - 1)
-        .replace("{name}", tName())
-        .replace("{mode}", currentActiveFilterName)
-        .replace("{score}", score)
-        .replace("{total}", currentQueue.length)
-        .replace("{pct}", percentage)
-        .replace("{nextRound}", currentRound));
-      
       document.getElementById("quizView").style.display = "none";
       document.getElementById("setupView").style.display = "block";
       document.getElementById("topBar").style.display = "none";
       updateFilterCounts();
       renderContinueBanner();
+
+      showRoundSummaryModal(completedRound, percentage);
+    }
+
+    function showRoundSummaryModal(completedRound, percentage) {
+      const tier = percentage >= 90 ? "🎉" : percentage >= 70 ? "💪" : percentage >= 50 ? "👍" : "📚";
+      document.getElementById("roundSummaryEmoji").textContent = tier;
+      document.getElementById("roundSummaryTitle").textContent = t("roundSummaryTitle").replace("{round}", completedRound);
+      document.getElementById("roundSummaryEncouragement").textContent = t("roundSummaryEncouragement").replace("{name}", tName());
+      document.getElementById("roundSummaryScore").textContent = `${score} / ${currentQueue.length}`;
+      document.getElementById("roundSummaryPct").textContent = `${percentage}%`;
+      document.getElementById("roundSummaryLibraryBtn").textContent = t("roundSummaryLibraryBtn");
+      document.getElementById("roundSummaryNextBtn").textContent = t("roundSummaryNextBtn");
+      document.getElementById("roundSummaryModal").style.display = "flex";
+    }
+
+    function closeRoundSummaryModal(goToLibrary) {
+      document.getElementById("roundSummaryModal").style.display = "none";
+      if (goToLibrary) returnToLibrary();
     }
 
     function toggleClue() {

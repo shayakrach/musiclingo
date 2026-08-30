@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MusicLingo v3.49.0</title>
+  <title>MusicLingo v3.50.0</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/icon.svg">
   <link rel="apple-touch-icon" href="assets/icons/icon.svg">
@@ -25,7 +25,7 @@
     <div class="voice-warning-toast" id="voiceWarningToast"></div>
     <div class="top-bar" id="topBar">
       <div class="app-title" id="appTitleBar" onclick="returnToLibrary()">
-        🎵 MusicLingo <span class="version-badge">v3.49.0</span>
+        🎵 MusicLingo <span class="version-badge">v3.50.0</span>
       </div>
       <div class="top-bar-search">
         <input type="search" id="librarySearchInput" placeholder="Search your songs…" autocomplete="off" spellcheck="false" oninput="filterSongLibrary()" />
@@ -59,6 +59,11 @@
             <button class="nav-menu-item" id="tabHistoryMenuItem" onclick="handleTabClick('history'); closeNavMenu();">Round History</button>
           </div>
         </div>
+        <button class="icon-btn" id="songInfoFeedbackBtn" title="Send feedback" onclick="openFeedbackModal()">💬</button>
+        <button class="icon-btn" id="songInfoThemeToggleBtn" title="Toggle light/dark theme" onclick="toggleTheme()">
+          <svg viewBox="0 0 24 24" class="ico-sun" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+          <svg viewBox="0 0 24 24" class="ico-moon" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
         <button class="icon-btn" id="settingsGearBtn" title="Settings" onclick="handleTabClick('settings')">⚙️</button>
       </div>
       <div class="song-info-chips-row">
@@ -84,6 +89,12 @@
 
       <div class="song-grid" id="songCardsContainer">
         <!-- Rendered by JavaScript dynamically -->
+      </div>
+
+      <div id="libraryEmptyState" style="display:none; text-align:center; padding: 2.5rem 1rem;">
+        <div style="font-size: 2.4rem; margin-bottom: 0.6rem;">🎵</div>
+        <p id="libraryEmptyStateText" style="color: var(--text-muted); margin-bottom: 1rem;"></p>
+        <button class="add-song-btn" onclick="openCatalogModal()">📚 Browse Catalog</button>
       </div>
     </div>
 
@@ -202,7 +213,7 @@
         <div class="word-header">
           <span></span>
           <div class="spanish-word" id="currentWord">palabra</div>
-          <button class="audio-btn" id="listenBtn" title="Hear Argentine pronunciation">
+          <button class="audio-btn" id="listenBtn" title="Hear pronunciation">
             <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
           </button>
         </div>
@@ -210,7 +221,7 @@
         <div class="context-box" id="contextBox">
           <div class="context-line-header" id="contextLineHeader">
             <span class="context-spanish-line" id="contextSpanishText" onclick="openLineContextModal()" title="Tap to view"></span>
-            <button class="context-audio-btn" id="listenLineBtn" title="Hear full lyric line with Argentine cadence">🔊</button>
+            <button class="context-audio-btn" id="listenLineBtn" title="Hear full lyric line">🔊</button>
             <button class="context-audio-btn" id="expandLineContextBtn" onclick="openLineContextModal()" title="View surrounding lines">🔎</button>
           </div>
           <div class="context-english-line" id="contextEnglishText"></div>
@@ -439,6 +450,20 @@
       <p class="prompt-note-text" id="feedbackSuccessNote" style="display:none; text-align:center; margin: 0 0 0.6rem;"></p>
 
       <button class="start-round-btn" id="feedbackSubmitBtn" style="padding: 0.65rem;" onclick="submitFeedback()">Submit</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="roundSummaryModal">
+    <div class="modal-content" style="max-width: 380px; padding: 1.6rem; text-align: center;">
+      <div id="roundSummaryEmoji" style="font-size: 2.6rem; line-height: 1; margin-bottom: 0.5rem;">🎉</div>
+      <h3 id="roundSummaryTitle" style="font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem; margin-bottom: 0.3rem;">Round Complete!</h3>
+      <p id="roundSummaryEncouragement" style="color: var(--text-muted); margin-bottom: 1.3rem;"></p>
+      <div id="roundSummaryScore" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 800; color: var(--accent);"></div>
+      <div id="roundSummaryPct" style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;"></div>
+      <div style="display:flex; gap: 0.6rem;">
+        <button class="tab-btn" id="roundSummaryLibraryBtn" style="flex:1; border:1px solid var(--border); padding: 0.65rem;" onclick="closeRoundSummaryModal(true)">📚 Back to Library</button>
+        <button class="start-round-btn" id="roundSummaryNextBtn" style="flex:1; padding: 0.65rem;" onclick="closeRoundSummaryModal(false)">▶ Next Round</button>
+      </div>
     </div>
   </div>
 
