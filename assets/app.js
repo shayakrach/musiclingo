@@ -887,6 +887,71 @@ function resolveWordLine(word) {
       }
     }
 
+    // Bug reports / feature requests, sent to a Supabase Edge Function which
+    // files them as GitHub issues (see supabase/functions/submit-feedback).
+    // Doesn't require sign-in — works for anonymous visitors too, though a
+    // signed-in user's email is attached server-side for follow-up.
+    function setFeedbackError(message) {
+      const errorEl = document.getElementById("feedbackError");
+      errorEl.textContent = message || "";
+      errorEl.classList.toggle("visible", !!message);
+    }
+
+    function openFeedbackModal() {
+      document.getElementById("feedbackTagSelect").value = "bug";
+      document.getElementById("feedbackMessageInput").value = "";
+      setFeedbackError("");
+      document.getElementById("feedbackSuccessNote").style.display = "none";
+      const btn = document.getElementById("feedbackSubmitBtn");
+      btn.disabled = false;
+      btn.textContent = "Submit";
+      document.getElementById("feedbackModal").style.display = "flex";
+    }
+
+    function closeFeedbackModal() {
+      document.getElementById("feedbackModal").style.display = "none";
+    }
+
+    async function submitFeedback() {
+      const successEl = document.getElementById("feedbackSuccessNote");
+      const btn = document.getElementById("feedbackSubmitBtn");
+      setFeedbackError("");
+      successEl.style.display = "none";
+
+      if (!supabaseClient) {
+        setFeedbackError("Feedback isn't available right now.");
+        return;
+      }
+
+      const tag = document.getElementById("feedbackTagSelect").value;
+      const message = document.getElementById("feedbackMessageInput").value.trim();
+      if (!message) {
+        setFeedbackError("Please enter a message.");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+
+      try {
+        const { data, error } = await supabaseClient.functions.invoke("submit-feedback", {
+          body: { tag, message }
+        });
+        if (error || !data || data.error) {
+          setFeedbackError((data && data.error) || "Couldn't send feedback — please try again.");
+          return;
+        }
+        successEl.textContent = "Thanks! Your feedback was sent.";
+        successEl.style.display = "block";
+        document.getElementById("feedbackMessageInput").value = "";
+      } catch (e) {
+        setFeedbackError("Couldn't send feedback — please try again.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Submit";
+      }
+    }
+
     // ============================================================================
     // 3. APP STATE — in-memory only. Reset on page reload; not persisted directly
     // (the DB layer above handles what gets saved and when).
@@ -3932,11 +3997,15 @@ function resolveWordLine(word) {
       const lineContext = document.getElementById("lineContextModal");
       const addSong = document.getElementById("addSongModal");
       const streamingLink = document.getElementById("streamingLinkModal");
+      const catalog = document.getElementById("catalogModal");
+      const feedback = document.getElementById("feedbackModal");
       if (event.target === modal) closeModal();
       if (event.target === notice) closeNoticeModal();
       if (event.target === lineContext) closeLineContextModal();
       if (event.target === addSong) closeAddSongModal();
       if (event.target === streamingLink) closeStreamingLinkModal();
+      if (event.target === catalog) closeCatalogModal();
+      if (event.target === feedback) closeFeedbackModal();
 
       const navMenuWrapper = document.getElementById("navMenuWrapper");
       if (navMenuWrapper && !navMenuWrapper.contains(event.target)) {
