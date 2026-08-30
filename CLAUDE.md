@@ -27,13 +27,13 @@ Real song lyrics are copyrighted, so real song data is **never committed**.
 `data/` is in `.gitignore`. At runtime, `assets/app.js` tries to fetch:
 
 - `data/manifest.json` — `{ "songs": ["some_song.json", ...] }`
-- `data/<song>.json` — one song object per file (same shape as the demo songs
-  hardcoded in `assets/app.js`)
+- `data/<song>.json` — one song object per file (see README.md for the shape)
 
 If `data/` or any file in it is missing, that's treated as a silent no-op —
-the app still works fine on its built-in demo song(s). This fetch requires
-the page to be served over `http(s)://` or `localhost`; it's skipped when
-opened directly as `file://`.
+the app still works fine, just with an empty library (or whatever the
+Supabase catalog provides — see below). This fetch requires the page to be
+served over `http(s)://` or `localhost`; it's skipped when opened directly
+as `file://`.
 
 There is also a legacy `data.js` file (older `<script>`-based loading
 mechanism, superseded by the `data/` fetch approach above but kept
@@ -55,13 +55,14 @@ There's no in-app admin flow to add catalog songs yet — they're added by
 running `insert` statements directly in the Supabase SQL Editor (see
 `supabase/README.md`). This integration is optional like the `data/` fetch:
 if the Supabase CDN script fails to load, every Supabase-related function in
-`assets/app.js` becomes a no-op and the app still works on demo/custom songs.
+`assets/app.js` becomes a no-op and the app still works, just with an empty
+library.
 
 Vocabulary/line field names in the `songs` table intentionally match what
-`assets/app.js` actually renders (`es`/`en`/`tenses`) — not the newer
-`word`/`meaning`/`forms` naming the (currently unused, still broken) in-app
-"➕ Add New Song" prompt generates. Don't build a schema or feature around
-that prompt's shape without fixing this mismatch first.
+`assets/app.js` actually renders (`es`/`en`/`tenses`), not `word`/`meaning`/
+`forms` — see git history for the in-app "Add New Song" prompt generator
+that used the latter naming and was removed for being disconnected from the
+renderer.
 
 ## Editing the app
 

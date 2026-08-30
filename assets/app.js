@@ -3,8 +3,8 @@
     //
     // This file is organized top-to-bottom in the order things run/are used:
     //
-    //   1. SongLibrary        — hardcoded song + vocabulary data (see DATA LAYER
-    //                           notes below for how this gets extended/persisted)
+    //   1. SongLibrary        — starts empty, populated from the Supabase catalog
+    //                           and/or the data/ folder (see notes below)
     //   2. DB                 — the ONLY place that talks to localStorage.
     //                           Every read/write of saved data goes through here.
     //   3. App state           — in-memory variables for "what's happening right
@@ -18,7 +18,6 @@
     //  10. Quiz engine         — the actual question-by-question gameplay
     //  11. Clue & notes        — per-word hints and personal notes
     //  12. Navigation/tabs     — switching between screens within a song
-    //  13. Add New Song flow   — form → AI prompt → paste response → import
     //  14. Settings page nav   — opening/closing the settings screen
     //  15. Modals              — the generic overlay used for Stats/History/etc.
     //  16. Table renderers     — Stats / History / Untested Words tables
@@ -28,298 +27,23 @@
     // ============================================================================
 
     // ============================================================================
-    // 1. SONG LIBRARY DATA (hardcoded)
+    // 1. SONG LIBRARY DATA
     // ============================================================================
-    // ============================================================================
-    // SONG DATA — HARDCODED DEMO SONGS + REAL DATA FROM data.js
-    // ============================================================================
-    // The song(s) below are original, made-up content — invented for this app,
-    // not based on any real/copyrighted song — so they're safe to keep directly
-    // in this file and commit to version control. They're marked with
-    // "isDemo: true" and shown with a small "🧪 Demo" label in the library so
-    // they're clearly distinguishable from real songs.
-    //
-    // The actual real-song data (if any) lives in a separate file, data.js,
-    // kept alongside this HTML file locally and excluded from version control
-    // (see .gitignore). The final SongLibrary used by the app is the
-    // concatenation of the demo songs below plus whatever data.js provides —
-    // if data.js is missing, the app still runs fine on just the demo songs.
-    const HARDCODED_DEMO_SONGS = {
-      "cafe_y_lluvia_demo": {
-        id: "cafe_y_lluvia_demo",
-        title: "Café y Lluvia",
-        artist: "Luna Marino (Demo Song)",
-        difficulty: "Beginner / Intermediate",
-        sourceLang: "Spanish",
-        targetLang: "American English",
-        accentLabel: "",
-        isDemo: true,
-        streamingLinks: {
-          spotify: "https://open.spotify.com/track/1QPjHLJWBXvE5Ymck4wtfW?si=C6FggUM3QomogLP54lZuuA",
-          appleMusic: "",
-          youtube: "",
-          youtubeMusic: ""
-        },
-        lines: [
-          { id: 1, es: "Despierto lento con el cielo gris", en: "I wake up slowly under a gray sky", order: 1 },
-          { id: 2, es: "La lluvia canta sobre mi jardín", en: "The rain sings over my garden", order: 2 },
-          { id: 3, es: "Preparo un café para calentar", en: "I make a coffee to warm up", order: 3 },
-          { id: 4, es: "Y pienso en ti sin querer parar", en: "And I think of you without wanting to stop", order: 4 },
-          { id: 5, es: "Café y lluvia, mi rutina es así", en: "Coffee and rain, that's my routine", order: 5 },
-          { id: 6, es: "Cada gota me recuerda a ti", en: "Every drop reminds me of you", order: 6 },
-          { id: 7, es: "Café y lluvia, no me quiero ir", en: "Coffee and rain, I don't want to leave", order: 7 },
-          { id: 8, es: "Quédate un poco más aquí", en: "Stay a little longer here", order: 8 },
-          { id: 9, es: "El vapor sube, dibuja tu nombre", en: "The steam rises, drawing your name", order: 9 },
-          { id: 10, es: "Afuera el mundo se vuelve más lento", en: "Outside the world becomes slower", order: 10 },
-          { id: 11, es: "Guardo tu risa en un rincón del alma", en: "I keep your laugh in a corner of my soul", order: 11 },
-          { id: 12, es: "Y espero el sol con toda mi calma", en: "And I wait for the sun with all my calm", order: 12 },
-          { id: 13, es: "Si el invierno se queda, no me importa", en: "If winter stays, I don't mind", order: 13 },
-          { id: 14, es: "Contigo cualquier día se transforma", en: "With you any day transforms", order: 14 },
-          { id: 15, es: "En una taza llena de calor", en: "Into a cup full of warmth", order: 15 },
-          { id: 16, es: "En una historia simple de amor", en: "Into a simple love story", order: 16 }
-        ],
-        vocabulary: [
-          {
-            es: "despierto", en: "I wake up",
-            clue: "From despertar (to wake up); despierto = I wake up.",
-            lineId: 1,
-            confusableWith: { word: "despierta", meaning: "wakes up / wake up! (to a woman)", difference: "despierto is 'I wake up' (yo form); despierta is 'he/she wakes up' or a command to a woman." },
-            distractors: ["I sleep", "I dream", "I rest"],
-            tenses: [{ label: "infinitive", word: "despertar", meaning: "to wake up" }, { label: "present (tú)", word: "despiertas", meaning: "you wake up" }]
-          },
-          {
-            es: "cielo", en: "sky",
-            clue: "Ceiling of the world -> cielo.",
-            lineId: 1,
-            confusableWith: { word: "cielo raso", meaning: "ceiling (of a room)", difference: "cielo alone usually means sky/heaven; cielo raso specifically means a room's ceiling." },
-            distractors: ["cloud", "star", "moon"],
-            tenses: [{ label: "plural", word: "cielos", meaning: "skies" }]
-          },
-          {
-            es: "lluvia", en: "rain",
-            clue: "Llueve = it rains; lluvia = rain (noun).",
-            lineId: 2,
-            confusableWith: { word: "llovizna", meaning: "drizzle", difference: "lluvia is regular rain; llovizna is a light drizzle." },
-            distractors: ["wind", "snow", "fog"],
-            tenses: [{ label: "verb (present)", word: "llueve", meaning: "it rains" }]
-          },
-          {
-            es: "jardín", en: "garden",
-            clue: "Jardín sounds like 'garden'.",
-            lineId: 2,
-            confusableWith: { word: "jardinero", meaning: "gardener", difference: "jardín is the place; jardinero is the person who tends it." },
-            distractors: ["kitchen", "roof", "balcony"],
-            tenses: [{ label: "plural", word: "jardines", meaning: "gardens" }]
-          },
-          {
-            es: "preparo", en: "I prepare / I make",
-            clue: "Preparar = to prepare; preparo = I prepare.",
-            lineId: 3,
-            confusableWith: { word: "reparo", meaning: "I fix / I repair", difference: "preparo means I prepare; reparo means I fix or repair." },
-            distractors: ["I drink", "I spill", "I forget"],
-            tenses: [{ label: "infinitive", word: "preparar", meaning: "to prepare" }, { label: "past (pret.)", word: "preparé", meaning: "I prepared" }]
-          },
-          {
-            es: "calentar", en: "to warm up",
-            clue: "Caliente (hot) -> calentar (to heat/warm up).",
-            lineId: 3,
-            confusableWith: { word: "calmar", meaning: "to calm", difference: "calentar means to warm/heat; calmar means to calm down." },
-            distractors: ["to cool down", "to clean", "to break"],
-            tenses: [{ label: "present (yo)", word: "caliento", meaning: "I warm up" }]
-          },
-          {
-            es: "pienso", en: "I think",
-            clue: "Pensar = to think; pienso = I think.",
-            lineId: 4,
-            confusableWith: { word: "pesco", meaning: "I fish", difference: "pienso means I think; pesco means I fish/catch." },
-            distractors: ["I forget", "I dream", "I doubt"],
-            tenses: [{ label: "infinitive", word: "pensar", meaning: "to think" }, { label: "past (pret.)", word: "pensé", meaning: "I thought" }]
-          },
-          {
-            es: "parar", en: "to stop",
-            clue: "Parar sounds like 'park' -> stop the car.",
-            lineId: 4,
-            confusableWith: { word: "pasar", meaning: "to pass / to happen", difference: "parar means to stop; pasar means to pass or happen." },
-            distractors: ["to continue", "to run", "to jump"],
-            tenses: [{ label: "present (yo)", word: "paro", meaning: "I stop" }]
-          },
-          {
-            es: "rutina", en: "routine",
-            clue: "Direct cognate with 'routine'.",
-            lineId: 5,
-            confusableWith: { word: "ruina", meaning: "ruin", difference: "rutina means routine; ruina means ruin/collapse." },
-            distractors: ["surprise", "vacation", "party"],
-            tenses: [{ label: "plural", word: "rutinas", meaning: "routines" }]
-          },
-          {
-            es: "gota", en: "drop",
-            clue: "Think of a small droplet -> gota.",
-            lineId: 6,
-            confusableWith: { word: "bota", meaning: "boot", difference: "gota means drop (of liquid); bota means boot (footwear)." },
-            distractors: ["wave", "cloud", "puddle"],
-            tenses: [{ label: "plural", word: "gotas", meaning: "drops" }]
-          },
-          {
-            es: "recuerda", en: "reminds",
-            clue: "Recordar = to remember/remind; recuerda = reminds.",
-            lineId: 6,
-            confusableWith: { word: "recuerdo", meaning: "I remember / a memory", difference: "recuerda is 'it/he/she reminds'; recuerdo is 'I remember' or 'a memory' (noun)." },
-            distractors: ["forgets", "hides", "changes"],
-            tenses: [{ label: "infinitive", word: "recordar", meaning: "to remember/remind" }]
-          },
-          {
-            es: "quiero", en: "I want",
-            clue: "Te quiero = I love/want you; quiero = I want.",
-            lineId: 7,
-            confusableWith: { word: "quiera", meaning: "(that) I/he/she want (subjunctive)", difference: "quiero is present indicative 'I want'; quiera is the subjunctive form." },
-            distractors: ["I need", "I fear", "I doubt"],
-            tenses: [{ label: "infinitive", word: "querer", meaning: "to want/love" }]
-          },
-          {
-            es: "quédate", en: "stay",
-            clue: "Quedarse = to stay; quédate = stay! (command to a friend).",
-            lineId: 8,
-            confusableWith: { word: "quítate", meaning: "take off / move away", difference: "quédate means 'stay'; quítate means 'take off' or 'get out of the way'." },
-            distractors: ["leave", "run", "hide"],
-            tenses: [{ label: "infinitive", word: "quedarse", meaning: "to stay" }]
-          },
-          {
-            es: "vapor", en: "steam",
-            clue: "Direct cognate with 'vapor'.",
-            lineId: 9,
-            confusableWith: { word: "favor", meaning: "favor", difference: "vapor means steam; favor means a favor/kindness." },
-            distractors: ["smoke", "fire", "ice"],
-            tenses: [{ label: "plural", word: "vapores", meaning: "vapors/steams" }]
-          },
-          {
-            es: "dibuja", en: "draws",
-            clue: "Dibujar = to draw; dibuja = draws/is drawing.",
-            lineId: 9,
-            confusableWith: { word: "trabaja", meaning: "works", difference: "dibuja means draws; trabaja means works." },
-            distractors: ["erases", "hides", "breaks"],
-            tenses: [{ label: "infinitive", word: "dibujar", meaning: "to draw" }]
-          },
-          {
-            es: "afuera", en: "outside",
-            clue: "Fuera = outside/out; afuera = outside (adverb).",
-            lineId: 10,
-            confusableWith: { word: "adentro", meaning: "inside", difference: "afuera means outside; adentro means inside." },
-            distractors: ["above", "below", "inside"],
-            tenses: []
-          },
-          {
-            es: "lento", en: "slow",
-            clue: "Think of 'lentivirus' -> slow-acting; lento = slow.",
-            lineId: 10,
-            confusableWith: { word: "lente", meaning: "lens", difference: "lento means slow (adjective); lente means lens (noun)." },
-            distractors: ["fast", "loud", "bright"],
-            tenses: [{ label: "feminine", word: "lenta", meaning: "slow (f)" }]
-          },
-          {
-            es: "guardo", en: "I keep",
-            clue: "Guardar = to keep/save; guardo = I keep.",
-            lineId: 11,
-            confusableWith: { word: "guardia", meaning: "guard", difference: "guardo means I keep/save; guardia means a guard (person) or watch duty." },
-            distractors: ["I lose", "I sell", "I break"],
-            tenses: [{ label: "infinitive", word: "guardar", meaning: "to keep/save" }]
-          },
-          {
-            es: "risa", en: "laugh",
-            clue: "Reír = to laugh; risa = laughter/laugh (noun).",
-            lineId: 11,
-            confusableWith: { word: "risa floja", meaning: "fit of giggles", difference: "risa alone just means laugh/laughter; risa floja is an idiom for uncontrollable giggling." },
-            distractors: ["tear", "voice", "whisper"],
-            tenses: [{ label: "verb (infinitive)", word: "reír", meaning: "to laugh" }]
-          },
-          {
-            es: "alma", en: "soul",
-            clue: "Direct cognate with 'soul' via Latin anima -> alma.",
-            lineId: 11,
-            confusableWith: { word: "almohada", meaning: "pillow", difference: "alma means soul; almohada means pillow." },
-            distractors: ["heart", "mind", "body"],
-            tenses: [{ label: "plural", word: "almas", meaning: "souls" }]
-          },
-          {
-            es: "espero", en: "I wait / I hope",
-            clue: "Esperar = to wait/hope; espero = I wait/hope.",
-            lineId: 12,
-            confusableWith: { word: "esparzo", meaning: "I scatter", difference: "espero means I wait/hope; esparzo means I scatter/spread." },
-            distractors: ["I run", "I forget", "I sleep"],
-            tenses: [{ label: "infinitive", word: "esperar", meaning: "to wait/hope" }]
-          },
-          {
-            es: "calma", en: "calm",
-            clue: "Direct cognate with 'calm'.",
-            lineId: 12,
-            confusableWith: { word: "palma", meaning: "palm (tree/hand)", difference: "calma means calm; palma means palm (of hand or tree)." },
-            distractors: ["storm", "noise", "rush"],
-            tenses: [{ label: "verb (infinitive)", word: "calmar", meaning: "to calm" }]
-          },
-          {
-            es: "invierno", en: "winter",
-            clue: "Think 'hibernate' -> invierno (winter).",
-            lineId: 13,
-            confusableWith: { word: "invierte", meaning: "invests / inverts", difference: "invierno means winter (noun); invierte is a verb form meaning invests or inverts." },
-            distractors: ["summer", "autumn", "spring"],
-            tenses: []
-          },
-          {
-            es: "importa", en: "matters",
-            clue: "No importa = it doesn't matter; importa = matters.",
-            lineId: 13,
-            confusableWith: { word: "importar", meaning: "to matter / to import", difference: "importa is the conjugated 'it matters'; importar is the infinitive, which can also mean 'to import' goods." },
-            distractors: ["helps", "hurts", "changes"],
-            tenses: [{ label: "infinitive", word: "importar", meaning: "to matter" }]
-          },
-          {
-            es: "taza", en: "cup",
-            clue: "Think of a cup/mug -> taza.",
-            lineId: 15,
-            confusableWith: { word: "plaza", meaning: "square (plaza)", difference: "taza means cup; plaza means a town square." },
-            distractors: ["plate", "spoon", "bottle"],
-            tenses: [{ label: "plural", word: "tazas", meaning: "cups" }]
-          },
-          {
-            es: "calor", en: "warmth / heat",
-            clue: "Direct cognate with 'calorie' -> calor (heat).",
-            lineId: 15,
-            confusableWith: { word: "color", meaning: "color", difference: "calor means heat/warmth; color means color." },
-            distractors: ["cold", "light", "sound"],
-            tenses: []
-          },
-          {
-            es: "historia", en: "story",
-            clue: "Direct cognate with 'history/story'.",
-            lineId: 16,
-            confusableWith: { word: "historieta", meaning: "comic strip", difference: "historia means story/history; historieta is a diminutive meaning comic strip." },
-            distractors: ["song", "dream", "secret"],
-            tenses: [{ label: "plural", word: "historias", meaning: "stories" }]
-          },
-          {
-            es: "amor", en: "love",
-            clue: "Amor / amore / amorous.",
-            lineId: 16,
-            confusableWith: { word: "amar", meaning: "to love (verb)", difference: "amor is the noun 'love'; amar is the verb 'to love'." },
-            distractors: ["fear", "hope", "peace"],
-            tenses: [{ label: "verb (infinitive)", word: "amar", meaning: "to love" }]
-          }
-        ]
-      }
-    };
+    // No hardcoded songs — SongLibrary starts empty and is populated at
+    // runtime from the Supabase catalog (signed-in users only, see the
+    // SUPABASE section below) and/or a local data/ folder (see DATA REPO
+    // below). This used to include a placeholder demo song; removed since
+    // real songs are now added directly to the Supabase catalog instead.
 
-    // The app's SongLibrary starts as just the demo songs above — a safe,
-    // always-available baseline. Real songs are loaded lazily afterward from
-    // a data repo folder (see loadSongsFromDataRepo below) and merged in on
-    // top once/if they're found, without ever blocking startup.
-    const SongLibrary = Object.assign({}, HARDCODED_DEMO_SONGS);
+    const SongLibrary = {};
 
     // ============================================================================
     // DATA REPO — lazy-loaded external songs, one file per song
     // ============================================================================
     // Expects, alongside this HTML file:
     //   data/manifest.json          — { "songs": ["some_song.json", ...] }
-    //   data/some_song.json         — a single song object (same shape as the
-    //                                  entries in HARDCODED_DEMO_SONGS above)
+    //   data/some_song.json         — a single song object (see README.md for
+    //                                  the expected shape)
     //
     // This is entirely optional. If the "data" folder, the manifest, or any
     // individual song file is missing or fails to load, that's treated as a

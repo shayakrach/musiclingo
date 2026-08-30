@@ -25,9 +25,9 @@ data/                   — real song data, fetched at runtime (NOT included in 
 
 ## About the `data/` folder
 
-This repo does **not** include real song data, since song lyrics are copyrighted. `index.html` ships with a small placeholder "demo" song so the app runs out of the box, but the actual song content is loaded at runtime from a `data/` folder that is deliberately excluded via `.gitignore`.
+This repo does **not** include real song data, since song lyrics are copyrighted. The song library starts empty — real songs come from either the shared Supabase catalog (see `supabase/README.md`; sign in and use "📚 Browse Catalog" to add one to your own library) or, optionally, a local `data/` folder that is deliberately excluded via `.gitignore`.
 
-If `data/manifest.json` is present alongside `index.html`, its songs are fetched and merged into the library. If it's missing, the app just runs on the demo song instead of breaking.
+If `data/manifest.json` is present alongside `index.html`, its songs are fetched and merged into the library. If it's missing, that's a normal no-op — the app still runs fine, just with whatever the Supabase catalog provides.
 
 **Expected layout:**
 
