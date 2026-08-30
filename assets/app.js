@@ -429,21 +429,55 @@ function resolveWordLine(word) {
       : null;
 
     let currentUser = null;
-    let catalogSongsCache = null; // null = not fetched yet
+    let catalogTranslationsCache = null; // null = not fetched yet
 
-    function supabaseRowToSong(row) {
+    // A catalog entry is a song_translations row with its parent songs row
+    // embedded (see fetchCatalogTranslations) — merge the two into the flat
+    // shape the quiz engine expects. The song's lyrics/word list (songs.*)
+    // are language-pair-independent; the translation row supplies the
+    // per-word meaning/clue/etc, written in the target language.
+    function catalogLibraryId(songId, targetLang) {
+      return songId + "__" + targetLang;
+    }
+
+    function mergeSongTranslation(row) {
+      const song = row.songs;
+      if (!song) return null;
+
+      const translationLinesById = {};
+      (row.lines || []).forEach(l => { translationLinesById[l.lineId] = l.translation; });
+
+      const translationVocabById = {};
+      (row.vocabulary || []).forEach(v => { translationVocabById[v.vocabId] = v; });
+
       return {
-        id: row.id,
-        title: row.title,
-        artist: row.artist,
-        difficulty: row.difficulty,
-        sourceLang: row.source_lang,
+        id: catalogLibraryId(song.id, row.target_lang),
+        title: song.title,
+        artist: song.artist,
+        difficulty: song.difficulty,
+        sourceLang: song.source_lang,
         targetLang: row.target_lang,
-        accentLabel: row.accent_label || "",
-        streamingLinks: row.streaming_links || {},
+        accentLabel: song.accent_label || "",
+        streamingLinks: song.streaming_links || {},
         isDemo: false,
-        lines: row.lines || [],
-        vocabulary: row.vocabulary || []
+        lines: (song.lines || []).map(l => ({
+          id: l.id,
+          es: l.text,
+          en: translationLinesById[l.id] || "",
+          order: l.order
+        })),
+        vocabulary: (song.vocabulary || []).map(v => {
+          const t = translationVocabById[v.id] || {};
+          return {
+            es: v.word,
+            en: t.meaning || "",
+            clue: t.clue || "",
+            lineId: v.lineId,
+            confusableWith: t.confusableWith || null,
+            distractors: t.distractors || [],
+            tenses: t.tenses || []
+          };
+        })
       };
     }
 
@@ -489,22 +523,23 @@ function resolveWordLine(word) {
       await supabaseClient.auth.signOut();
     }
 
-    // Pulls the signed-in user's previously-added catalog songs (from
-    // user_songs, joined against songs) and merges them into the local
-    // library — this is what makes "add to my library" show up again after
-    // signing in on a different device/browser.
+    // Pulls the signed-in user's previously-added (song, target_lang) pairs
+    // and merges them into the local library — this is what makes "add to
+    // my library" show up again after signing in on a different device.
     async function syncMyCatalogSongsIntoLibrary() {
       if (!supabaseClient || !currentUser) return;
       try {
-        const { data, error } = await supabaseClient
+        const { data: mine, error: mineError } = await supabaseClient
           .from("user_songs")
-          .select("songs(*)");
-        if (error || !Array.isArray(data)) return;
-        data.forEach(row => {
-          if (row.songs) {
-            DB.songs.add(supabaseRowToSong(row.songs));
-          }
+          .select("song_id, target_lang");
+        if (mineError || !Array.isArray(mine) || mine.length === 0) return;
+
+        const translations = await fetchCatalogTranslations();
+        mine.forEach(({ song_id, target_lang }) => {
+          const row = translations.find(r => r.songs && r.songs.id === song_id && r.target_lang === target_lang);
+          if (row) DB.songs.add(mergeSongTranslation(row));
         });
+
         const libraryView = document.getElementById("libraryView");
         if (libraryView && libraryView.style.display !== "none") {
           renderSongLibrary();
@@ -532,13 +567,18 @@ function resolveWordLine(word) {
       });
     }
 
-    async function fetchCatalogSongs() {
+    // Each row is one (song, target_lang) pair with its parent song
+    // embedded — a song with two translations shows up as two rows here,
+    // each addable independently.
+    async function fetchCatalogTranslations() {
       if (!supabaseClient) return [];
-      if (catalogSongsCache) return catalogSongsCache;
+      if (catalogTranslationsCache) return catalogTranslationsCache;
       try {
-        const { data, error } = await supabaseClient.from("songs").select("*");
+        const { data, error } = await supabaseClient
+          .from("song_translations")
+          .select("target_lang, lines, vocabulary, songs(*)");
         if (error || !Array.isArray(data)) return [];
-        catalogSongsCache = data;
+        catalogTranslationsCache = data;
         return data;
       } catch (e) {
         return [];
@@ -558,27 +598,29 @@ function resolveWordLine(word) {
       emptyNote.style.display = "none";
       list.innerHTML = "";
 
-      const rows = await fetchCatalogSongs();
+      const rows = await fetchCatalogTranslations();
       loadingNote.style.display = "none";
 
-      const notYetAdded = rows.filter(row => !SongLibrary[row.id]);
+      const notYetAdded = rows.filter(row => row.songs && !SongLibrary[catalogLibraryId(row.songs.id, row.target_lang)]);
       if (notYetAdded.length === 0) {
         emptyNote.style.display = "block";
         return;
       }
 
       notYetAdded.forEach(row => {
+        const song = row.songs;
         const item = document.createElement("div");
         item.className = "song-card";
         item.style.marginBottom = "0.6rem";
         item.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; gap:0.6rem;">
             <div>
-              <div style="font-weight:600;">${escapeHtml(row.title)}</div>
-              <div style="color: var(--text-muted); font-size: 0.85rem;">${escapeHtml(row.artist)}</div>
+              <div style="font-weight:600;">${escapeHtml(song.title)}</div>
+              <div style="color: var(--text-muted); font-size: 0.85rem;">${escapeHtml(song.artist)}</div>
+              <div style="color: var(--azul); font-size: 0.8rem;">${escapeHtml(song.source_lang)} → ${escapeHtml(row.target_lang)}</div>
             </div>
             <button class="practice-btn" style="white-space:nowrap;" ${currentUser ? "" : "disabled"}
-              onclick="addCatalogSongToLibrary('${row.id}')">➕ Add</button>
+              onclick="addCatalogSongToLibrary('${song.id}', '${row.target_lang}')">➕ Add</button>
           </div>
         `;
         list.appendChild(item);
@@ -589,17 +631,17 @@ function resolveWordLine(word) {
       document.getElementById("catalogModal").style.display = "none";
     }
 
-    async function addCatalogSongToLibrary(songId) {
+    async function addCatalogSongToLibrary(songId, targetLang) {
       if (!supabaseClient || !currentUser) return;
-      const rows = await fetchCatalogSongs();
-      const row = rows.find(r => r.id === songId);
+      const rows = await fetchCatalogTranslations();
+      const row = rows.find(r => r.songs && r.songs.id === songId && r.target_lang === targetLang);
       if (!row) return;
 
-      DB.songs.add(supabaseRowToSong(row));
+      DB.songs.add(mergeSongTranslation(row));
 
       const { error } = await supabaseClient
         .from("user_songs")
-        .insert({ user_id: currentUser.id, song_id: songId });
+        .insert({ user_id: currentUser.id, song_id: songId, target_lang: targetLang });
       if (error && error.code !== "23505") {
         // 23505 = already added (unique violation) — fine, treat as success.
       }

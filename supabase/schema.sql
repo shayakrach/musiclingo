@@ -1,63 +1,92 @@
--- MusicLingo — Supabase schema
+-- MusicLingo — Supabase schema (v2: normalized song / translation split)
 -- Run this once in the Supabase SQL Editor (Project → SQL Editor → New query).
 --
--- Model: the song catalog is shared and publicly readable. Signed-in users
--- can add catalog songs to their own personal library; they cannot add or
--- edit catalog songs themselves. For now there's no in-app admin write flow —
--- catalog songs get added by running INSERT statements directly in the SQL
--- Editor (which runs with full DB access and isn't restricted by the RLS
--- policies below), so no admin auth/policy is needed yet. Add a write policy
--- here later if an in-app admin flow gets built.
+-- This replaces the earlier one-table-per-language-pair design. A song's
+-- lyrics and word list (source_lang side) are language-pair-independent —
+-- they shouldn't be re-typed/re-generated every time the same song gets a
+-- new target-language translation. So:
 --
--- Field names inside `lines`/`vocabulary` intentionally match assets/app.js's
--- current shape (es/en/tenses), not the newer word/meaning/forms naming used
--- by the (currently unused) in-app "Add New Song" prompt — see CLAUDE.md for
--- that discrepancy. These are generic labels, not literally Spanish/English —
--- source_lang/target_lang vary per song since the app supports many language
--- pairs.
+--   songs             — one row per real song: lyrics, extracted word list,
+--                        difficulty, streaming links. Independent of target
+--                        language.
+--   song_translations — one row per (song, target_lang): the actual
+--                        teaching content (translated lines, word meanings,
+--                        clues, confusables, distractors, tenses) — this is
+--                        the part that's inherently written IN the target
+--                        language, so it's the part that repeats per pair.
+--
+-- Adding a second target language for an existing song = one new
+-- song_translations row, not a whole duplicated songs row.
+--
+-- Model: both tables are shared and publicly readable, no write policy (see
+-- supabase/README.md — added via SQL Editor directly, which bypasses RLS).
+-- user_songs now also carries target_lang, since a user can add the same
+-- song under more than one translation.
 
 -- ============================================================================
--- 1. Shared song catalog
+-- 0. Decommission the old (v1) schema
+-- ============================================================================
+-- The old `songs` table stored one full row per (song, target_lang) pair —
+-- being replaced by the songs/song_translations split above. If you have
+-- real song rows in the old shape, export/regenerate them into the new
+-- shape BEFORE running this (see supabase/README.md) — this drops them.
+drop table if exists user_songs;
+drop table if exists songs;
+
+-- ============================================================================
+-- 1. Songs — language-pair-independent content
 -- ============================================================================
 create table if not exists songs (
-  id text primary key,                          -- e.g. "cafe_y_lluvia"
+  id text primary key,                          -- e.g. "yafyufa_eyal_golan"
   title text not null,
   artist text not null,
   difficulty text not null,
   source_lang text not null,
-  target_lang text not null,
   accent_label text not null default '',
   streaming_links jsonb not null default '{}',   -- {spotify, appleMusic, youtube, youtubeMusic}
   unique_word_count int not null default 0,
-  lines jsonb not null,                          -- [{id, es, en, order}, ...]
-  vocabulary jsonb not null,                     -- [{es, en, clue, lineId, confusableWith, distractors, tenses}, ...]
+  lines jsonb not null,                          -- [{id, text, order}, ...]
+  vocabulary jsonb not null,                     -- [{id, word, lineId}, ...]
   created_at timestamptz not null default now()
 );
 
 alter table songs enable row level security;
 
--- Anyone (including anonymous visitors) can read the catalog.
 create policy "songs are publicly readable"
   on songs for select
   using (true);
 
--- No insert/update/delete policy on purpose: with RLS enabled and no write
--- policy, the public API can't write to this table at all. Catalog songs are
--- added via SQL Editor `insert` statements instead (see supabase/README.md).
+-- ============================================================================
+-- 2. Song translations — the per-(song, target_lang) teaching content
+-- ============================================================================
+create table if not exists song_translations (
+  song_id text references songs(id) not null,
+  target_lang text not null,
+  lines jsonb not null,                          -- [{lineId, translation}, ...]
+  vocabulary jsonb not null,                     -- [{vocabId, meaning, clue, confusableWith, distractors, tenses}, ...]
+  created_at timestamptz not null default now(),
+  primary key (song_id, target_lang)
+);
+
+alter table song_translations enable row level security;
+
+create policy "song_translations are publicly readable"
+  on song_translations for select
+  using (true);
 
 -- ============================================================================
--- 2. Per-user personal library (which catalog songs a user has added)
+-- 3. Per-user personal library
 -- ============================================================================
 create table if not exists user_songs (
   user_id uuid references auth.users(id) not null,
   song_id text references songs(id) not null,
+  target_lang text not null,
   added_at timestamptz not null default now(),
-  primary key (user_id, song_id)
+  primary key (user_id, song_id, target_lang)
 );
 
 alter table user_songs enable row level security;
 
--- Users can only see/manage their own library entries.
 create policy "users manage their own library"
   on user_songs for all
   using (auth.uid() = user_id)
