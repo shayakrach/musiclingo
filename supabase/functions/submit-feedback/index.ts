@@ -16,6 +16,7 @@ const GITHUB_REPO = "shayakrach/musiclingo";
 const TAG_LABELS: Record<string, string> = {
   bug: "bug",
   feature: "enhancement",
+  song_request: "song-request",
   question: "question"
 };
 
@@ -76,7 +77,7 @@ Deno.serve(async (req) => {
   }
 
   const titleLine = message.split("\n")[0].slice(0, 60);
-  const title = `[${tag}] ${titleLine}`;
+  const title = `[${tag.replace(/_/g, " ")}] ${titleLine}`;
   const body = `**Reported by:** ${reporter}\n\n${message}`;
 
   const ghResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/issues`, {

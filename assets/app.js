@@ -669,9 +669,23 @@ function resolveWordLine(word) {
       errorEl.classList.toggle("visible", !!message);
     }
 
+    // The "Request a song" type swaps the free-text message box for
+    // structured fields (name/artist/languages) instead — the resulting
+    // GitHub issue is composed from those, not typed freeform.
+    function updateFeedbackFormForTag() {
+      const isSongRequest = document.getElementById("feedbackTagSelect").value === "song_request";
+      document.getElementById("feedbackMessageGroup").style.display = isSongRequest ? "none" : "block";
+      document.getElementById("feedbackSongRequestGroup").style.display = isSongRequest ? "block" : "none";
+    }
+
     function openFeedbackModal() {
       document.getElementById("feedbackTagSelect").value = "bug";
       document.getElementById("feedbackMessageInput").value = "";
+      document.getElementById("feedbackSongNameInput").value = "";
+      document.getElementById("feedbackSongArtistInput").value = "";
+      populateLanguageSelect(document.getElementById("feedbackSongSourceLangSelect"));
+      populateLanguageSelect(document.getElementById("feedbackSongTargetLangSelect"));
+      updateFeedbackFormForTag();
       setFeedbackError("");
       document.getElementById("feedbackSuccessNote").style.display = "none";
       const btn = document.getElementById("feedbackSubmitBtn");
@@ -696,10 +710,24 @@ function resolveWordLine(word) {
       }
 
       const tag = document.getElementById("feedbackTagSelect").value;
-      const message = document.getElementById("feedbackMessageInput").value.trim();
-      if (!message) {
-        setFeedbackError("Please enter a message.");
-        return;
+      let message;
+
+      if (tag === "song_request") {
+        const songName = document.getElementById("feedbackSongNameInput").value.trim();
+        const artist = document.getElementById("feedbackSongArtistInput").value.trim();
+        const sourceLang = document.getElementById("feedbackSongSourceLangSelect").value;
+        const targetLang = document.getElementById("feedbackSongTargetLangSelect").value;
+        if (!songName || !artist) {
+          setFeedbackError("Please fill in the song name and artist.");
+          return;
+        }
+        message = `Song: ${songName}\nBy: ${artist}\nOriginal language: ${sourceLang}\nRequested translation language: ${targetLang}`;
+      } else {
+        message = document.getElementById("feedbackMessageInput").value.trim();
+        if (!message) {
+          setFeedbackError("Please enter a message.");
+          return;
+        }
       }
 
       btn.disabled = true;
@@ -716,6 +744,8 @@ function resolveWordLine(word) {
         successEl.textContent = "Thanks! Your feedback was sent.";
         successEl.style.display = "block";
         document.getElementById("feedbackMessageInput").value = "";
+        document.getElementById("feedbackSongNameInput").value = "";
+        document.getElementById("feedbackSongArtistInput").value = "";
       } catch (e) {
         setFeedbackError("Couldn't send feedback — please try again.");
       } finally {
