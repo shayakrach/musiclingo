@@ -1782,6 +1782,8 @@ function resolveWordLine(word) {
 
         const card = document.createElement("div");
         card.className = "song-card";
+        card.dataset.title = song.title.toLowerCase();
+        card.dataset.artist = song.artist.toLowerCase();
         card.innerHTML = `
           <button class="song-delete-btn" title="${t("deleteSongBtn")}" onclick="deleteSong('${song.id}')">🗑️</button>
           <div class="song-info">
@@ -1804,6 +1806,22 @@ function resolveWordLine(word) {
         const count = Object.keys(SongLibrary).length;
         ticketCountEl.textContent = t("ticketCountTemplate").replace("{count}", count);
       }
+
+      filterSongLibrary();
+    }
+
+    // Live-filters the already-rendered song cards by title/artist — no
+    // re-fetch, just show/hide based on the search box's current value.
+    function filterSongLibrary() {
+      const input = document.getElementById("librarySearchInput");
+      const container = document.getElementById("songCardsContainer");
+      if (!input || !container) return;
+
+      const query = input.value.trim().toLowerCase();
+      container.querySelectorAll(".song-card").forEach(card => {
+        const matches = !query || card.dataset.title.includes(query) || card.dataset.artist.includes(query);
+        card.style.display = matches ? "" : "none";
+      });
     }
 
     function getHiddenSongIds() {
@@ -3230,7 +3248,46 @@ function resolveWordLine(word) {
       }
     };
 
+    // ============================================================================
+    // THEME — manual light/dark override, persisted; falls back to the
+    // system's prefers-color-scheme when nothing's been chosen yet (see the
+    // @media block in style.css, which handles that case with no JS at all).
+    // ============================================================================
+    function initTheme() {
+      const saved = localStorage.getItem("spa_theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute("data-theme")
+        || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("spa_theme", next);
+    }
+
+    // ============================================================================
+    // OFFLINE PILL — shows when the browser goes offline, hides when back
+    // online. Purely informational; the app already works offline via sw.js
+    // regardless of whether this is shown.
+    // ============================================================================
+    function updateOfflinePill() {
+      const pill = document.getElementById("offlinePill");
+      if (!pill) return;
+      pill.hidden = navigator.onLine;
+    }
+
+    function initOfflinePill() {
+      updateOfflinePill();
+      window.addEventListener("online", updateOfflinePill);
+      window.addEventListener("offline", updateOfflinePill);
+    }
+
     // Immediate initial mount execution
+    initTheme();
+    initOfflinePill();
     DB.songs.loadCustomIntoLibrary();
     mergeSurroundingLines();
     mergeLineOrder();
