@@ -679,7 +679,7 @@ function resolveWordLine(word) {
     }
 
     function openFeedbackModal() {
-      document.getElementById("feedbackTagSelect").value = "bug";
+      document.getElementById("feedbackTagSelect").value = "song_request";
       document.getElementById("feedbackMessageInput").value = "";
       document.getElementById("feedbackSongNameInput").value = "";
       document.getElementById("feedbackSongArtistInput").value = "";
@@ -3112,6 +3112,17 @@ function resolveWordLine(word) {
       document.getElementById("navMenuWrapper").style.display = "none";
       loadSettingsIntoForm(false);
       document.getElementById("settingsView").style.display = "block";
+    }
+
+    // Topbar gear icon: open Settings if closed, close it if already open —
+    // so clicking the same icon twice takes you back where you started.
+    function toggleSettingsFromLibrary() {
+      const settingsView = document.getElementById("settingsView");
+      if (settingsView && settingsView.style.display === "block") {
+        closeSettingsPage();
+      } else {
+        openSettingsFromLibrary();
+      }
     }
 
     function closeSettingsPage() {
