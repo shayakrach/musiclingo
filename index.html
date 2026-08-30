@@ -67,14 +67,9 @@
           <p id="libraryGreetingText" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.2rem;"></p>
           <p id="libraryTicketCount" class="library-ticket-count"></p>
         </div>
-        <div style="display:flex; gap:0.5rem; flex-wrap: wrap;">
-          <button class="add-song-btn" id="browseCatalogBtnText" onclick="openCatalogModal()">
-            📚 Browse Catalog
-          </button>
-          <button class="add-song-btn" id="addNewSongBtnText" onclick="openAddSongModal()">
-            ➕ Add New Song
-          </button>
-        </div>
+        <button class="add-song-btn" id="browseCatalogBtnText" onclick="openCatalogModal()">
+          📚 Browse Catalog
+        </button>
       </div>
 
       <div class="song-grid" id="songCardsContainer">
@@ -363,36 +358,6 @@
         <button class="tab-btn" id="streamingLinkCancelBtn" style="flex:1;" onclick="closeStreamingLinkModal()">Cancel</button>
         <button class="start-round-btn" id="streamingLinkSaveBtn" style="flex:1; padding: 0.6rem;" onclick="saveStreamingLinkInput()">Save</button>
       </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="addSongModal">
-    <div class="modal-content" style="max-width: 400px; padding: 1.2rem;">
-      <div class="modal-header" style="justify-content: center; position: relative; margin-bottom: 0.6rem;">
-        <h3 id="addSongModalTitle" style="color: var(--accent); font-size: 1.1rem;">➕ Add New Song</h3>
-        <button class="modal-close-btn" style="position: absolute; right: 0;" onclick="closeAddSongModal()">✕</button>
-      </div>
-
-      <p id="addSongOneLinerNote" class="prompt-note-text" style="margin: 0 0 0.8rem; text-align: center;">
-        This only generates a prompt to copy elsewhere — it doesn't add the song automatically yet.
-      </p>
-
-      <div class="settings-field" style="margin-bottom: 0.6rem;">
-        <label id="addSongSourceLangLabelModal" for="addSongSourceLangSelect" style="font-size: 0.85rem;">Language of the Song</label>
-        <select id="addSongSourceLangSelect" class="settings-input" style="padding: 0.5rem 0.7rem;" onchange="validateAddSongLangs()"></select>
-      </div>
-
-      <div class="settings-field" style="margin-bottom: 0.6rem;">
-        <label id="addSongTargetLangLabelModal" for="addSongTargetLangSelect" style="font-size: 0.85rem;">Translate Meanings Into</label>
-        <select id="addSongTargetLangSelect" class="settings-input" style="padding: 0.5rem 0.7rem;" onchange="validateAddSongLangs()"></select>
-        <p class="field-error" id="addSongLangError"></p>
-      </div>
-
-      <button class="start-round-btn" id="addSongCopyBtn" style="padding: 0.65rem;" onclick="copyAddSongPrompt()">📋 Copy Prompt</button>
-      <textarea id="addSongPromptPreview" class="settings-input generated-prompt-textarea" rows="6" readonly style="position:fixed; top:0; left:0; opacity:0; pointer-events:none; z-index:-1;"></textarea>
-      <p class="field-error" id="addSongCopyFallbackNote" style="display:none; text-align:center; margin-top: 0.6rem;"></p>
-      <button type="button" id="addSongShowTextBtn" onclick="toggleAddSongPromptText()" style="display:block; margin: 0.5rem auto 0; background:none; border:none; color: var(--text-muted); font-size: 0.78rem; text-decoration: underline; cursor: pointer; font-family: inherit;">Didn't copy? Tap to view the text</button>
-      <textarea id="addSongPromptVisible" class="settings-input generated-prompt-textarea" rows="6" readonly style="margin-top:0.6rem; display:none;"></textarea>
     </div>
   </div>
 
