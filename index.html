@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MusicLingo v3.47.0</title>
+  <title>MusicLingo v3.48.0</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/icon.svg">
   <link rel="apple-touch-icon" href="assets/icons/icon.svg">
@@ -25,7 +25,7 @@
     <div class="voice-warning-toast" id="voiceWarningToast"></div>
     <div class="top-bar" id="topBar">
       <div class="app-title" id="appTitleBar" onclick="returnToLibrary()">
-        🎵 MusicLingo <span class="version-badge">v3.47.0</span>
+        🎵 MusicLingo <span class="version-badge">v3.48.0</span>
       </div>
       <div class="top-bar-search">
         <input type="search" id="librarySearchInput" placeholder="Search your songs…" autocomplete="off" spellcheck="false" oninput="filterSongLibrary()" />
@@ -403,16 +403,36 @@
 
       <div class="settings-field" style="margin-bottom: 0.6rem;">
         <label for="feedbackTagSelect" style="font-size: 0.85rem;">Type</label>
-        <select id="feedbackTagSelect" class="settings-input">
+        <select id="feedbackTagSelect" class="settings-input" onchange="updateFeedbackFormForTag()">
           <option value="bug">🐛 Bug</option>
           <option value="feature">💡 Feature idea</option>
+          <option value="song_request">🎵 Request a song</option>
           <option value="question">❓ Question</option>
         </select>
       </div>
 
-      <div class="settings-field" style="margin-bottom: 0.6rem;">
+      <div class="settings-field" id="feedbackMessageGroup" style="margin-bottom: 0.6rem;">
         <label for="feedbackMessageInput" style="font-size: 0.85rem;">Message</label>
         <textarea id="feedbackMessageInput" class="settings-input" rows="5" placeholder="What's on your mind?"></textarea>
+      </div>
+
+      <div id="feedbackSongRequestGroup" style="display:none;">
+        <div class="settings-field" style="margin-bottom: 0.6rem;">
+          <label for="feedbackSongNameInput" style="font-size: 0.85rem;">Song Name</label>
+          <input type="text" id="feedbackSongNameInput" class="settings-input" placeholder="Song name" />
+        </div>
+        <div class="settings-field" style="margin-bottom: 0.6rem;">
+          <label for="feedbackSongArtistInput" style="font-size: 0.85rem;">By</label>
+          <input type="text" id="feedbackSongArtistInput" class="settings-input" placeholder="Artist" />
+        </div>
+        <div class="settings-field" style="margin-bottom: 0.6rem;">
+          <label for="feedbackSongSourceLangSelect" style="font-size: 0.85rem;">Original Language</label>
+          <select id="feedbackSongSourceLangSelect" class="settings-input"></select>
+        </div>
+        <div class="settings-field" style="margin-bottom: 0.6rem;">
+          <label for="feedbackSongTargetLangSelect" style="font-size: 0.85rem;">Requested Translation Language</label>
+          <select id="feedbackSongTargetLangSelect" class="settings-input"></select>
+        </div>
       </div>
 
       <p class="field-error" id="feedbackError"></p>
