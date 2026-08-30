@@ -1030,7 +1030,6 @@ function resolveWordLine(word) {
         resetBtn: "🗑️ Reset",
         libraryTitle: "Song Practice Library",
         libraryGreeting: "Welcome back, {name}!",
-        addNewSongBtn: "➕ Add New Song",
         editSettingsBtn: "⚙️ Edit Settings",
         wordsLabel: "Words",
         practicedLabel: "Practiced",
@@ -1097,41 +1096,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Play",
         wordsInRoundTemplate: "{count} words in this round",
         ticketCountTemplate: "🎫 {count} song ticket(s) ready to practice",
-        addSongPageTitle: "Add New Song",
-        addSongIntroText: "Fill in the song's details below. This is a preview of the flow — adding songs isn't connected yet.",
-        fieldSongName: "Song Name",
-        fieldArtistName: "Artist Name",
-        fieldSourceLang: "Language of the Song",
-        fieldTargetLang: "Translate Meanings Into",
-        validationRequired: "Required",
-        validationSameLang: "Source and target language should be different.",
         continueBtn: "Continue →",
-        addSongComingNextText: "Next: we'll generate an AI prompt to fetch this song's lyrics & vocabulary. That part is coming in the next update.",
-        promptSectionTitle: "2. Copy this prompt into an AI assistant",
-        promptNote: "This prompt is kept in English for the most reliable AI results, regardless of your app language.",
-        copyPromptBtn: "📋 Copy Prompt",
-        copiedLabel: "✓ Copied",
-        pasteSectionTitle: "3. Paste the AI's response here",
-        pastePlaceholder: "Paste the JSON response here once you have it...",
-        addSongFinalBtn: "➕ Add Song to Library",
-        addSongComingSoon: "Song creation isn't connected yet — this button is a preview.",
-        copyFallbackText: "Couldn't copy automatically — please try again.",
-        fieldExcerpt: "Paste a Short Lyric Excerpt",
-        excerptHelpText: "A verse or chorus (a few lines) is plenty — grab it from a lyrics site you trust. Most AI assistants won't reproduce full song lyrics from memory due to copyright, so giving them a short excerpt yourself gets far better, more reliable results.",
-        addSongModeLabel: "How would you like to provide the song?",
-        modeUrlBtn: "🔗 I have a lyrics link",
-        modeManualBtn: "✍️ I'll type it myself",
-        fieldLyricsUrl: "Link to the Lyrics",
-        urlHelpText: "Paste a link from a lyrics site (Genius, Shironet, Musixmatch, etc.). The AI will open it and pull the song details and an excerpt itself — no typing needed.",
-        validationInvalidUrl: "Please enter a valid link (starting with http:// or https://).",
-        confirmDetailsTitle: "4. Confirm song details",
-        importEmptyError: "Paste the AI's response first.",
-        importInvalidJsonError: "That doesn't look like valid JSON — check for extra text before or after the array, or missing commas/brackets.",
-        importNotArrayError: "Expected a JSON array of vocabulary words.",
-        importNoValidWordsError: "No valid vocabulary entries found — each one needs at least a \"word\" and a \"meaning\".",
-        importMissingConfirmError: "Please confirm the song name and artist.",
-        importPreviewTemplate: "{count} words ready to import.",
-        importSuccessTemplate: "✓ \"{title}\" added! Opening it now...",
         confusableHintLabel: "Don't confuse with",
         findLyricsLinkText: "Search for the lyrics",
         noVoiceWarningTemplate: "🔇 No {lang} voice found on this device — check your device's text-to-speech / accessibility settings.",
@@ -1139,18 +1104,14 @@ function resolveWordLine(word) {
         layoutSideBySideBtn: "Side by Side",
         layoutInlineBtn: "Inline",
         lineContextEmptyNote: "No extra surrounding lines added for this word yet.",
-        copiedConfirmation: "✓ Copied!",
-        showPromptTextBtn: "Didn't copy? Tap to view the text",
         listenOnPrefix: "Listen on",
         addLinkBtn: "+ Add link",
         addLinkModalTitlePrefix: "Add",
         pasteLinkLabel: "Paste the link",
         invalidLinkError: "That doesn't look like a valid link — it should start with {prefix}",
-        collapsePromptTextBtn: "▲ Collapse",
         deleteSongBtn: "Delete this song",
         demoBadge: "Demo",
         deleteSongConfirmTemplate: 'Delete "{song}"? This removes all your progress, stats, and notes for it — this can\'t be undone.',
-        addSongPausedNote: "Importing songs is paused for now while we work out some issues — we'll pick this back up soon."
       },
       "British English": {
         argentineVoiceBadge: "🇦🇷 Argentine Voice",
@@ -1158,7 +1119,6 @@ function resolveWordLine(word) {
         resetBtn: "🗑️ Reset",
         libraryTitle: "Song Practice Library",
         libraryGreeting: "Welcome back, {name}!",
-        addNewSongBtn: "➕ Add New Song",
         editSettingsBtn: "⚙️ Edit Settings",
         wordsLabel: "Words",
         practicedLabel: "Practised",
@@ -1225,41 +1185,7 @@ function resolveWordLine(word) {
         playBtn: "▶ Play",
         wordsInRoundTemplate: "{count} words in this round",
         ticketCountTemplate: "🎫 {count} song ticket(s) ready to practice",
-        addSongPageTitle: "Add New Song",
-        addSongIntroText: "Fill in the song's details below. This is a preview of the flow — adding songs isn't connected yet.",
-        fieldSongName: "Song Name",
-        fieldArtistName: "Artist Name",
-        fieldSourceLang: "Language of the Song",
-        fieldTargetLang: "Translate Meanings Into",
-        validationRequired: "Required",
-        validationSameLang: "Source and target language should be different.",
         continueBtn: "Continue →",
-        addSongComingNextText: "Next: we'll generate an AI prompt to fetch this song's lyrics & vocabulary. That part is coming in the next update.",
-        promptSectionTitle: "2. Copy this prompt into an AI assistant",
-        promptNote: "This prompt is kept in English for the most reliable AI results, regardless of your app language.",
-        copyPromptBtn: "📋 Copy Prompt",
-        copiedLabel: "✓ Copied",
-        pasteSectionTitle: "3. Paste the AI's response here",
-        pastePlaceholder: "Paste the JSON response here once you have it...",
-        addSongFinalBtn: "➕ Add Song to Library",
-        addSongComingSoon: "Song creation isn't connected yet — this button is a preview.",
-        copyFallbackText: "Couldn't copy automatically — please try again.",
-        fieldExcerpt: "Paste a Short Lyric Excerpt",
-        excerptHelpText: "A verse or chorus (a few lines) is plenty — grab it from a lyrics site you trust. Most AI assistants won't reproduce full song lyrics from memory due to copyright, so giving them a short excerpt yourself gets far better, more reliable results.",
-        addSongModeLabel: "How would you like to provide the song?",
-        modeUrlBtn: "🔗 I have a lyrics link",
-        modeManualBtn: "✍️ I'll type it myself",
-        fieldLyricsUrl: "Link to the Lyrics",
-        urlHelpText: "Paste a link from a lyrics site (Genius, Shironet, Musixmatch, etc.). The AI will open it and pull the song details and an excerpt itself — no typing needed.",
-        validationInvalidUrl: "Please enter a valid link (starting with http:// or https://).",
-        confirmDetailsTitle: "4. Confirm song details",
-        importEmptyError: "Paste the AI's response first.",
-        importInvalidJsonError: "That doesn't look like valid JSON — check for extra text before or after the array, or missing commas/brackets.",
-        importNotArrayError: "Expected a JSON array of vocabulary words.",
-        importNoValidWordsError: "No valid vocabulary entries found — each one needs at least a \"word\" and a \"meaning\".",
-        importMissingConfirmError: "Please confirm the song name and artist.",
-        importPreviewTemplate: "{count} words ready to import.",
-        importSuccessTemplate: "✓ \"{title}\" added! Opening it now...",
         confusableHintLabel: "Don't confuse with",
         findLyricsLinkText: "Search for the lyrics",
         noVoiceWarningTemplate: "🔇 No {lang} voice found on this device — check your device's text-to-speech / accessibility settings.",
@@ -1267,18 +1193,14 @@ function resolveWordLine(word) {
         layoutSideBySideBtn: "Side by Side",
         layoutInlineBtn: "Inline",
         lineContextEmptyNote: "No extra surrounding lines added for this word yet.",
-        copiedConfirmation: "✓ Copied!",
-        showPromptTextBtn: "Didn't copy? Tap to view the text",
         listenOnPrefix: "Listen on",
         addLinkBtn: "+ Add link",
         addLinkModalTitlePrefix: "Add",
         pasteLinkLabel: "Paste the link",
         invalidLinkError: "That doesn't look like a valid link — it should start with {prefix}",
-        collapsePromptTextBtn: "▲ Collapse",
         deleteSongBtn: "Delete this song",
         demoBadge: "Demo",
         deleteSongConfirmTemplate: 'Delete "{song}"? This removes all your progress, stats, and notes for it — this can\'t be undone.',
-        addSongPausedNote: "Importing songs is paused for now while we work out some issues — we'll pick this back up soon."
       },
       "Hebrew": {
         argentineVoiceBadge: "🇦🇷 קול ארגנטינאי",
@@ -1286,7 +1208,6 @@ function resolveWordLine(word) {
         resetBtn: "🗑️ איפוס",
         libraryTitle: "ספריית תרגול שירים",
         libraryGreeting: "ברוך שובך, {name}!",
-        addNewSongBtn: "➕ הוסף שיר חדש",
         editSettingsBtn: "⚙️ ערוך הגדרות",
         wordsLabel: "מילים",
         practicedLabel: "תורגלו",
@@ -1353,49 +1274,12 @@ function resolveWordLine(word) {
         playBtn: "▶ שחק",
         wordsInRoundTemplate: "{count} מילים בסבב הזה",
         ticketCountTemplate: "🎫 {count} כרטיסי שירים מוכנים לתרגול",
-        addSongPageTitle: "הוסף שיר חדש",
-        addSongIntroText: "מלא את פרטי השיר למטה. זוהי תצוגה מקדימה של התהליך — הוספת שירים עדיין לא מחוברת.",
-        fieldSongName: "שם השיר",
-        fieldArtistName: "שם האמן",
-        fieldSourceLang: "שפת השיר",
-        fieldTargetLang: "תרגם משמעויות ל",
-        validationRequired: "שדה חובה",
-        validationSameLang: "שפת המקור והיעד צריכות להיות שונות.",
         continueBtn: "המשך ←",
-        addSongComingNextText: "בשלב הבא: ניצור פרומפט ל-AI לשליפת מילות השיר ואוצר המילים. זה יגיע בעדכון הבא.",
-        promptSectionTitle: "2. העתק פרומפט זה לעוזר AI",
-        promptNote: "הפרומפט נשאר באנגלית לתוצאות AI אמינות יותר, ללא קשר לשפת האפליקציה שלך.",
-        copyPromptBtn: "📋 העתק פרומפט",
-        copiedLabel: "✓ הועתק",
-        pasteSectionTitle: "3. הדבק כאן את תשובת ה-AI",
-        pastePlaceholder: "הדבק כאן את תשובת ה-JSON כשתהיה מוכנה...",
-        addSongFinalBtn: "➕ הוסף שיר לספרייה",
-        addSongComingSoon: "יצירת שירים עדיין לא מחוברת — כפתור זה הוא תצוגה מקדימה.",
-        copyFallbackText: "לא ניתן היה להעתיק אוטומטית — נסה שוב.",
-        copiedConfirmation: "✓ הועתק!",
-        showPromptTextBtn: "לא הועתק? הקש לצפייה בטקסט",
         listenOnPrefix: "האזן ב",
         addLinkBtn: "+ הוסף קישור",
         addLinkModalTitlePrefix: "הוסף",
         pasteLinkLabel: "הדבק את הקישור",
         invalidLinkError: "זה לא נראה כמו קישור תקין — הוא צריך להתחיל ב-{prefix}",
-        collapsePromptTextBtn: "▲ כווץ",
-        fieldExcerpt: "הדבק קטע קצר ממילות השיר",
-        excerptHelpText: "בית או פזמון (כמה שורות) זה מספיק — קח אותם מאתר מילים אמין. רוב עוזרי ה-AI לא ישחזרו מילות שיר מלאות מהזיכרון בגלל זכויות יוצרים, אז מתן קטע קצר בעצמך ייתן תוצאות טובות ואמינות הרבה יותר.",
-        addSongModeLabel: "כיצד תרצה לספק את השיר?",
-        modeUrlBtn: "🔗 יש לי קישור למילים",
-        modeManualBtn: "✍️ אקליד בעצמי",
-        fieldLyricsUrl: "קישור למילות השיר",
-        urlHelpText: "הדבק קישור מאתר מילים (Genius, שירונט, Musixmatch וכו׳). ה-AI יפתח אותו וישלוף את פרטי השיר וקטע בעצמו — אין צורך להקליד.",
-        validationInvalidUrl: "אנא הזן קישור תקין (המתחיל ב-http:// או https://).",
-        confirmDetailsTitle: "4. אשר את פרטי השיר",
-        importEmptyError: "הדבק קודם את תשובת ה-AI.",
-        importInvalidJsonError: "זה לא נראה כמו JSON תקין — בדוק אם יש טקסט נוסף לפני/אחרי המערך, או פסיקים/סוגריים חסרים.",
-        importNotArrayError: "ציפינו למערך JSON של מילות אוצר מילים.",
-        importNoValidWordsError: "לא נמצאו רשומות אוצר מילים תקינות — לכל אחת נדרש לפחות \"word\" ו-\"meaning\".",
-        importMissingConfirmError: "אנא אשר את שם השיר והאמן.",
-        importPreviewTemplate: "{count} מילים מוכנות לייבוא.",
-        importSuccessTemplate: "✓ \"{title}\" נוסף! פותח עכשיו...",
         confusableHintLabel: "אל תתבלבל עם",
         findLyricsLinkText: "חפש את מילות השיר",
         hearLineBtn: "השמע שורה",
@@ -1406,7 +1290,6 @@ function resolveWordLine(word) {
         deleteSongBtn: "מחק שיר זה",
         demoBadge: "הדגמה",
         deleteSongConfirmTemplate: 'למחוק את "{song}"? פעולה זו תמחק את כל ההתקדמות, הסטטיסטיקות וההערות שלך עבורו — לא ניתן לבטל פעולה זו.',
-        addSongPausedNote: "ייבוא שירים מושהה כרגע בזמן שאנחנו פותרים כמה בעיות — נחזור לזה בקרוב."
       },
       "Spanish": {
         argentineVoiceBadge: "🇦🇷 Voz Argentina",
@@ -1414,7 +1297,6 @@ function resolveWordLine(word) {
         resetBtn: "🗑️ Reiniciar",
         libraryTitle: "Biblioteca de Práctica de Canciones",
         libraryGreeting: "¡Bienvenido de nuevo, {name}!",
-        addNewSongBtn: "➕ Agregar Nueva Canción",
         editSettingsBtn: "⚙️ Editar Configuración",
         wordsLabel: "Palabras",
         practicedLabel: "Practicadas",
@@ -1481,49 +1363,12 @@ function resolveWordLine(word) {
         playBtn: "▶ Jugar",
         wordsInRoundTemplate: "{count} palabras en esta ronda",
         ticketCountTemplate: "🎫 {count} entradas de canciones listas para practicar",
-        addSongPageTitle: "Agregar Nueva Canción",
-        addSongIntroText: "Completa los detalles de la canción a continuación. Esta es una vista previa del flujo — agregar canciones aún no está conectado.",
-        fieldSongName: "Nombre de la Canción",
-        fieldArtistName: "Nombre del Artista",
-        fieldSourceLang: "Idioma de la Canción",
-        fieldTargetLang: "Traducir Significados A",
-        validationRequired: "Obligatorio",
-        validationSameLang: "El idioma de origen y destino deben ser diferentes.",
         continueBtn: "Continuar →",
-        addSongComingNextText: "Próximo paso: generaremos un prompt de IA para obtener la letra y el vocabulario de esta canción. Esa parte llegará en la próxima actualización.",
-        promptSectionTitle: "2. Copia este prompt en un asistente de IA",
-        promptNote: "Este prompt se mantiene en inglés para obtener los resultados de IA más confiables, sin importar el idioma de tu aplicación.",
-        copyPromptBtn: "📋 Copiar Prompt",
-        copiedLabel: "✓ Copiado",
-        pasteSectionTitle: "3. Pega la respuesta de la IA aquí",
-        pastePlaceholder: "Pega la respuesta JSON aquí cuando la tengas...",
-        addSongFinalBtn: "➕ Agregar Canción a la Biblioteca",
-        addSongComingSoon: "La creación de canciones aún no está conectada — este botón es una vista previa.",
-        copyFallbackText: "No se pudo copiar automáticamente — inténtalo de nuevo.",
-        copiedConfirmation: "✓ ¡Copiado!",
-        showPromptTextBtn: "¿No se copió? Toca para ver el texto",
         listenOnPrefix: "Escuchar en",
         addLinkBtn: "+ Agregar enlace",
         addLinkModalTitlePrefix: "Agregar",
         pasteLinkLabel: "Pega el enlace",
         invalidLinkError: "Eso no parece un enlace válido — debe comenzar con {prefix}",
-        collapsePromptTextBtn: "▲ Contraer",
-        fieldExcerpt: "Pega un Breve Fragmento de la Letra",
-        excerptHelpText: "Un verso o coro (unas pocas líneas) es suficiente — tómalo de un sitio de letras confiable. La mayoría de los asistentes de IA no reproducen letras completas de memoria por derechos de autor, así que darles un breve fragmento tú mismo da resultados mucho mejores y más confiables.",
-        addSongModeLabel: "¿Cómo te gustaría proporcionar la canción?",
-        modeUrlBtn: "🔗 Tengo un enlace a la letra",
-        modeManualBtn: "✍️ La escribiré yo mismo",
-        fieldLyricsUrl: "Enlace a la Letra",
-        urlHelpText: "Pega un enlace de un sitio de letras (Genius, Shironet, Musixmatch, etc.). La IA lo abrirá y extraerá los detalles y un fragmento por sí misma — no necesitas escribir nada.",
-        validationInvalidUrl: "Por favor ingresa un enlace válido (que comience con http:// o https://).",
-        confirmDetailsTitle: "4. Confirma los detalles de la canción",
-        importEmptyError: "Pega primero la respuesta de la IA.",
-        importInvalidJsonError: "Eso no parece ser JSON válido — revisa si hay texto extra antes o después del array, o comas/corchetes faltantes.",
-        importNotArrayError: "Se esperaba un array JSON de palabras de vocabulario.",
-        importNoValidWordsError: "No se encontraron entradas de vocabulario válidas — cada una necesita al menos \"word\" y \"meaning\".",
-        importMissingConfirmError: "Por favor confirma el nombre de la canción y el artista.",
-        importPreviewTemplate: "{count} palabras listas para importar.",
-        importSuccessTemplate: "✓ ¡\"{title}\" agregada! Abriéndola ahora...",
         confusableHintLabel: "No confundir con",
         findLyricsLinkText: "Buscar la letra",
         hearLineBtn: "Escuchar Línea",
@@ -1534,7 +1379,6 @@ function resolveWordLine(word) {
         deleteSongBtn: "Eliminar esta canción",
         demoBadge: "Demo",
         deleteSongConfirmTemplate: '¿Eliminar "{song}"? Esto borra todo tu progreso, estadísticas y notas para ella — esto no se puede deshacer.',
-        addSongPausedNote: "La importación de canciones está pausada por ahora mientras resolvemos algunos problemas — retomaremos esto pronto."
       },
       "Portuguese": {
         argentineVoiceBadge: "🇦🇷 Voz Argentina",
@@ -1542,7 +1386,6 @@ function resolveWordLine(word) {
         resetBtn: "🗑️ Redefinir",
         libraryTitle: "Biblioteca de Prática de Músicas",
         libraryGreeting: "Bem-vindo de volta, {name}!",
-        addNewSongBtn: "➕ Adicionar Nova Música",
         editSettingsBtn: "⚙️ Editar Configurações",
         wordsLabel: "Palavras",
         practicedLabel: "Praticadas",
@@ -1609,49 +1452,12 @@ function resolveWordLine(word) {
         playBtn: "▶ Jogar",
         wordsInRoundTemplate: "{count} palavras nesta rodada",
         ticketCountTemplate: "🎫 {count} ingressos de músicas prontos para praticar",
-        addSongPageTitle: "Adicionar Nova Música",
-        addSongIntroText: "Preencha os detalhes da música abaixo. Esta é uma prévia do fluxo — adicionar músicas ainda não está conectado.",
-        fieldSongName: "Nome da Música",
-        fieldArtistName: "Nome do Artista",
-        fieldSourceLang: "Idioma da Música",
-        fieldTargetLang: "Traduzir Significados Para",
-        validationRequired: "Obrigatório",
-        validationSameLang: "O idioma de origem e destino devem ser diferentes.",
         continueBtn: "Continuar →",
-        addSongComingNextText: "Próximo passo: vamos gerar um prompt de IA para buscar a letra e o vocabulário desta música. Essa parte chega na próxima atualização.",
-        promptSectionTitle: "2. Copie este prompt em um assistente de IA",
-        promptNote: "Este prompt permanece em inglês para obter os resultados de IA mais confiáveis, independentemente do idioma do seu aplicativo.",
-        copyPromptBtn: "📋 Copiar Prompt",
-        copiedLabel: "✓ Copiado",
-        pasteSectionTitle: "3. Cole a resposta da IA aqui",
-        pastePlaceholder: "Cole a resposta JSON aqui quando estiver pronta...",
-        addSongFinalBtn: "➕ Adicionar Música à Biblioteca",
-        addSongComingSoon: "A criação de músicas ainda não está conectada — este botão é uma prévia.",
-        copyFallbackText: "Não foi possível copiar automaticamente — tente novamente.",
-        copiedConfirmation: "✓ Copiado!",
-        showPromptTextBtn: "Não copiou? Toque para ver o texto",
         listenOnPrefix: "Ouvir no",
         addLinkBtn: "+ Adicionar link",
         addLinkModalTitlePrefix: "Adicionar",
         pasteLinkLabel: "Cole o link",
         invalidLinkError: "Isso não parece um link válido — deve começar com {prefix}",
-        collapsePromptTextBtn: "▲ Recolher",
-        fieldExcerpt: "Cole um Pequeno Trecho da Letra",
-        excerptHelpText: "Uma estrofe ou refrão (algumas linhas) já é suficiente — pegue de um site de letras confiável. A maioria dos assistentes de IA não reproduz letras completas de memória por causa de direitos autorais, então fornecer um trecho curto você mesmo gera resultados muito melhores e mais confiáveis.",
-        addSongModeLabel: "Como você gostaria de fornecer a música?",
-        modeUrlBtn: "🔗 Tenho um link da letra",
-        modeManualBtn: "✍️ Vou digitar eu mesmo",
-        fieldLyricsUrl: "Link da Letra",
-        urlHelpText: "Cole um link de um site de letras (Genius, Shironet, Musixmatch, etc.). A IA vai abri-lo e extrair os detalhes e um trecho sozinha — sem necessidade de digitar.",
-        validationInvalidUrl: "Por favor, insira um link válido (começando com http:// ou https://).",
-        confirmDetailsTitle: "4. Confirme os detalhes da música",
-        importEmptyError: "Cole primeiro a resposta da IA.",
-        importInvalidJsonError: "Isso não parece um JSON válido — verifique se há texto extra antes ou depois do array, ou vírgulas/colchetes faltando.",
-        importNotArrayError: "Esperava-se um array JSON de palavras de vocabulário.",
-        importNoValidWordsError: "Nenhuma entrada de vocabulário válida encontrada — cada uma precisa de pelo menos \"word\" e \"meaning\".",
-        importMissingConfirmError: "Por favor, confirme o nome da música e o artista.",
-        importPreviewTemplate: "{count} palavras prontas para importar.",
-        importSuccessTemplate: "✓ \"{title}\" adicionada! Abrindo agora...",
         confusableHintLabel: "Não confundir com",
         findLyricsLinkText: "Buscar a letra",
         hearLineBtn: "Ouvir Linha",
@@ -1662,7 +1468,6 @@ function resolveWordLine(word) {
         deleteSongBtn: "Excluir esta música",
         demoBadge: "Demo",
         deleteSongConfirmTemplate: 'Excluir "{song}"? Isso remove todo o seu progresso, estatísticas e notas para ela — isso não pode ser desfeito.',
-        addSongPausedNote: "A importação de músicas está pausada por enquanto enquanto resolvemos alguns problemas — voltaremos a isso em breve."
       },
       "French": {
         argentineVoiceBadge: "🇦🇷 Voix Argentine",
@@ -1670,7 +1475,6 @@ function resolveWordLine(word) {
         resetBtn: "🗑️ Réinitialiser",
         libraryTitle: "Bibliothèque de Pratique des Chansons",
         libraryGreeting: "Content de te revoir, {name} !",
-        addNewSongBtn: "➕ Ajouter une Nouvelle Chanson",
         editSettingsBtn: "⚙️ Modifier les Paramètres",
         wordsLabel: "Mots",
         practicedLabel: "Pratiqués",
@@ -1737,49 +1541,12 @@ function resolveWordLine(word) {
         playBtn: "▶ Jouer",
         wordsInRoundTemplate: "{count} mots dans ce round",
         ticketCountTemplate: "🎫 {count} billets de chansons prêts à pratiquer",
-        addSongPageTitle: "Ajouter une Nouvelle Chanson",
-        addSongIntroText: "Remplis les détails de la chanson ci-dessous. Ceci est un aperçu du flux — l'ajout de chansons n'est pas encore connecté.",
-        fieldSongName: "Nom de la Chanson",
-        fieldArtistName: "Nom de l'Artiste",
-        fieldSourceLang: "Langue de la Chanson",
-        fieldTargetLang: "Traduire les Significations Vers",
-        validationRequired: "Obligatoire",
-        validationSameLang: "Les langues source et cible doivent être différentes.",
         continueBtn: "Continuer →",
-        addSongComingNextText: "Prochaine étape : nous allons générer un prompt IA pour récupérer les paroles et le vocabulaire de cette chanson. Cette partie arrive dans la prochaine mise à jour.",
-        promptSectionTitle: "2. Copie ce prompt dans un assistant IA",
-        promptNote: "Ce prompt reste en anglais pour des résultats IA plus fiables, quelle que soit la langue de ton application.",
-        copyPromptBtn: "📋 Copier le Prompt",
-        copiedLabel: "✓ Copié",
-        pasteSectionTitle: "3. Colle la réponse de l'IA ici",
-        pastePlaceholder: "Colle la réponse JSON ici une fois que tu l'as...",
-        addSongFinalBtn: "➕ Ajouter la Chanson à la Bibliothèque",
-        addSongComingSoon: "La création de chansons n'est pas encore connectée — ce bouton est un aperçu.",
-        copyFallbackText: "Impossible de copier automatiquement — réessaie.",
-        copiedConfirmation: "✓ Copié !",
-        showPromptTextBtn: "Pas copié ? Touche pour voir le texte",
         listenOnPrefix: "Écouter sur",
         addLinkBtn: "+ Ajouter un lien",
         addLinkModalTitlePrefix: "Ajouter",
         pasteLinkLabel: "Colle le lien",
         invalidLinkError: "Cela ne ressemble pas à un lien valide — il doit commencer par {prefix}",
-        collapsePromptTextBtn: "▲ Réduire",
-        fieldExcerpt: "Colle un Court Extrait des Paroles",
-        excerptHelpText: "Un couplet ou un refrain (quelques lignes) suffit — prends-le sur un site de paroles fiable. La plupart des assistants IA ne reproduisent pas des paroles complètes de mémoire pour des raisons de droits d'auteur, donc leur fournir un court extrait toi-même donne des résultats bien meilleurs et plus fiables.",
-        addSongModeLabel: "Comment souhaites-tu fournir la chanson ?",
-        modeUrlBtn: "🔗 J'ai un lien vers les paroles",
-        modeManualBtn: "✍️ Je vais les saisir moi-même",
-        fieldLyricsUrl: "Lien vers les Paroles",
-        urlHelpText: "Colle un lien d'un site de paroles (Genius, Shironet, Musixmatch, etc.). L'IA l'ouvrira et extraira les détails et un extrait elle-même — pas besoin de taper quoi que ce soit.",
-        validationInvalidUrl: "Merci d'entrer un lien valide (commençant par http:// ou https://).",
-        confirmDetailsTitle: "4. Confirme les détails de la chanson",
-        importEmptyError: "Colle d'abord la réponse de l'IA.",
-        importInvalidJsonError: "Cela ne ressemble pas à du JSON valide — vérifie s'il y a du texte en trop avant ou après le tableau, ou des virgules/crochets manquants.",
-        importNotArrayError: "Un tableau JSON de mots de vocabulaire était attendu.",
-        importNoValidWordsError: "Aucune entrée de vocabulaire valide trouvée — chacune a besoin d'au moins \"word\" et \"meaning\".",
-        importMissingConfirmError: "Merci de confirmer le nom de la chanson et l'artiste.",
-        importPreviewTemplate: "{count} mots prêts à être importés.",
-        importSuccessTemplate: "✓ \"{title}\" ajoutée ! Ouverture en cours...",
         confusableHintLabel: "Ne pas confondre avec",
         findLyricsLinkText: "Rechercher les paroles",
         hearLineBtn: "Écouter la Ligne",
@@ -1790,7 +1557,6 @@ function resolveWordLine(word) {
         deleteSongBtn: "Supprimer cette chanson",
         demoBadge: "Démo",
         deleteSongConfirmTemplate: "Supprimer « {song} » ? Cela efface toute ta progression, tes statistiques et tes notes pour elle — c'est irréversible.",
-        addSongPausedNote: "L'importation de chansons est en pause pour le moment le temps de résoudre quelques problèmes — nous reviendrons dessus bientôt."
       },
       "Italian": {
         argentineVoiceBadge: "🇦🇷 Voce Argentina",
@@ -1798,7 +1564,6 @@ function resolveWordLine(word) {
         resetBtn: "🗑️ Reimposta",
         libraryTitle: "Libreria di Pratica delle Canzoni",
         libraryGreeting: "Bentornato, {name}!",
-        addNewSongBtn: "➕ Aggiungi Nuova Canzone",
         editSettingsBtn: "⚙️ Modifica Impostazioni",
         wordsLabel: "Parole",
         practicedLabel: "Praticate",
@@ -1865,49 +1630,12 @@ function resolveWordLine(word) {
         playBtn: "▶ Gioca",
         wordsInRoundTemplate: "{count} parole in questo round",
         ticketCountTemplate: "🎫 {count} biglietti di canzoni pronti per esercitarti",
-        addSongPageTitle: "Aggiungi Nuova Canzone",
-        addSongIntroText: "Compila i dettagli della canzone qui sotto. Questa è un'anteprima del flusso — l'aggiunta di canzoni non è ancora collegata.",
-        fieldSongName: "Nome della Canzone",
-        fieldArtistName: "Nome dell'Artista",
-        fieldSourceLang: "Lingua della Canzone",
-        fieldTargetLang: "Traduci i Significati In",
-        validationRequired: "Obbligatorio",
-        validationSameLang: "La lingua di origine e di destinazione devono essere diverse.",
         continueBtn: "Continua →",
-        addSongComingNextText: "Prossimo passo: genereremo un prompt IA per recuperare il testo e il vocabolario di questa canzone. Quella parte arriva nel prossimo aggiornamento.",
-        promptSectionTitle: "2. Copia questo prompt in un assistente IA",
-        promptNote: "Questo prompt resta in inglese per i risultati IA più affidabili, indipendentemente dalla lingua della tua app.",
-        copyPromptBtn: "📋 Copia Prompt",
-        copiedLabel: "✓ Copiato",
-        pasteSectionTitle: "3. Incolla qui la risposta dell'IA",
-        pastePlaceholder: "Incolla qui la risposta JSON quando ce l'hai...",
-        addSongFinalBtn: "➕ Aggiungi Canzone alla Libreria",
-        addSongComingSoon: "La creazione di canzoni non è ancora collegata — questo pulsante è un'anteprima.",
-        copyFallbackText: "Impossibile copiare automaticamente — riprova.",
-        copiedConfirmation: "✓ Copiato!",
-        showPromptTextBtn: "Non copiato? Tocca per vedere il testo",
         listenOnPrefix: "Ascolta su",
         addLinkBtn: "+ Aggiungi link",
         addLinkModalTitlePrefix: "Aggiungi",
         pasteLinkLabel: "Incolla il link",
         invalidLinkError: "Non sembra un link valido — deve iniziare con {prefix}",
-        collapsePromptTextBtn: "▲ Comprimi",
-        fieldExcerpt: "Incolla un Breve Estratto del Testo",
-        excerptHelpText: "Una strofa o un ritornello (poche righe) sono sufficienti — prendili da un sito di testi affidabile. La maggior parte degli assistenti IA non riproduce testi completi a memoria per motivi di copyright, quindi fornire un breve estratto tu stesso dà risultati molto migliori e più affidabili.",
-        addSongModeLabel: "Come vorresti fornire la canzone?",
-        modeUrlBtn: "🔗 Ho un link al testo",
-        modeManualBtn: "✍️ Lo digiterò io stesso",
-        fieldLyricsUrl: "Link al Testo",
-        urlHelpText: "Incolla un link da un sito di testi (Genius, Shironet, Musixmatch, ecc.). L'IA lo aprirà ed estrarrà i dettagli e un estratto da sola — nessuna digitazione necessaria.",
-        validationInvalidUrl: "Inserisci un link valido (che inizi con http:// o https://).",
-        confirmDetailsTitle: "4. Conferma i dettagli della canzone",
-        importEmptyError: "Incolla prima la risposta dell'IA.",
-        importInvalidJsonError: "Non sembra un JSON valido — controlla se c'è testo extra prima o dopo l'array, o virgole/parentesi mancanti.",
-        importNotArrayError: "Era previsto un array JSON di parole di vocabolario.",
-        importNoValidWordsError: "Nessuna voce di vocabolario valida trovata — ognuna deve avere almeno \"word\" e \"meaning\".",
-        importMissingConfirmError: "Conferma il nome della canzone e l'artista.",
-        importPreviewTemplate: "{count} parole pronte per l'importazione.",
-        importSuccessTemplate: "✓ \"{title}\" aggiunta! Apertura in corso...",
         confusableHintLabel: "Non confondere con",
         findLyricsLinkText: "Cerca il testo",
         hearLineBtn: "Ascolta la Riga",
@@ -1918,7 +1646,6 @@ function resolveWordLine(word) {
         deleteSongBtn: "Elimina questa canzone",
         demoBadge: "Demo",
         deleteSongConfirmTemplate: 'Eliminare "{song}"? Questo cancella tutti i tuoi progressi, statistiche e note per essa — questa azione non può essere annullata.',
-        addSongPausedNote: "L'importazione delle canzoni è in pausa per ora mentre risolviamo alcuni problemi — ci torneremo presto."
       },
       "German": {
         argentineVoiceBadge: "🇦🇷 Argentinische Stimme",
@@ -1926,7 +1653,6 @@ function resolveWordLine(word) {
         resetBtn: "🗑️ Zurücksetzen",
         libraryTitle: "Lied-Übungsbibliothek",
         libraryGreeting: "Willkommen zurück, {name}!",
-        addNewSongBtn: "➕ Neues Lied Hinzufügen",
         editSettingsBtn: "⚙️ Einstellungen Bearbeiten",
         wordsLabel: "Wörter",
         practicedLabel: "Geübt",
@@ -1993,49 +1719,12 @@ function resolveWordLine(word) {
         playBtn: "▶ Spielen",
         wordsInRoundTemplate: "{count} Wörter in dieser Runde",
         ticketCountTemplate: "🎫 {count} Lied-Tickets bereit zum Üben",
-        addSongPageTitle: "Neues Lied Hinzufügen",
-        addSongIntroText: "Fülle die Liedangaben unten aus. Dies ist eine Vorschau des Ablaufs — das Hinzufügen von Liedern ist noch nicht angebunden.",
-        fieldSongName: "Liedname",
-        fieldArtistName: "Künstlername",
-        fieldSourceLang: "Sprache des Liedes",
-        fieldTargetLang: "Bedeutungen Übersetzen In",
-        validationRequired: "Erforderlich",
-        validationSameLang: "Ausgangs- und Zielsprache sollten unterschiedlich sein.",
         continueBtn: "Weiter →",
-        addSongComingNextText: "Nächster Schritt: Wir erstellen einen KI-Prompt, um Liedtext und Vokabeln zu diesem Lied abzurufen. Das kommt im nächsten Update.",
-        promptSectionTitle: "2. Kopiere diesen Prompt in einen KI-Assistenten",
-        promptNote: "Dieser Prompt bleibt auf Englisch für die zuverlässigsten KI-Ergebnisse, unabhängig von deiner App-Sprache.",
-        copyPromptBtn: "📋 Prompt Kopieren",
-        copiedLabel: "✓ Kopiert",
-        pasteSectionTitle: "3. Füge hier die KI-Antwort ein",
-        pastePlaceholder: "Füge hier die JSON-Antwort ein, sobald du sie hast...",
-        addSongFinalBtn: "➕ Lied zur Bibliothek Hinzufügen",
-        addSongComingSoon: "Das Erstellen von Liedern ist noch nicht angebunden — dieser Button ist eine Vorschau.",
-        copyFallbackText: "Automatisches Kopieren fehlgeschlagen — bitte versuche es erneut.",
-        copiedConfirmation: "✓ Kopiert!",
-        showPromptTextBtn: "Nicht kopiert? Tippen, um den Text zu sehen",
         listenOnPrefix: "Anhören auf",
         addLinkBtn: "+ Link hinzufügen",
         addLinkModalTitlePrefix: "Hinzufügen",
         pasteLinkLabel: "Link einfügen",
         invalidLinkError: "Das sieht nicht nach einem gültigen Link aus — er sollte mit {prefix} beginnen",
-        collapsePromptTextBtn: "▲ Einklappen",
-        fieldExcerpt: "Kurzen Liedtext-Ausschnitt Einfügen",
-        excerptHelpText: "Eine Strophe oder ein Refrain (ein paar Zeilen) reicht völlig aus — hol sie dir von einer vertrauenswürdigen Liedtext-Seite. Die meisten KI-Assistenten geben aus Urheberrechtsgründen keine vollständigen Liedtexte aus dem Gedächtnis wieder, daher liefert ein selbst bereitgestellter kurzer Ausschnitt weitaus bessere, zuverlässigere Ergebnisse.",
-        addSongModeLabel: "Wie möchtest du das Lied bereitstellen?",
-        modeUrlBtn: "🔗 Ich habe einen Liedtext-Link",
-        modeManualBtn: "✍️ Ich tippe es selbst ein",
-        fieldLyricsUrl: "Link zum Liedtext",
-        urlHelpText: "Füge einen Link von einer Liedtext-Seite ein (Genius, Shironet, Musixmatch usw.). Die KI öffnet ihn und extrahiert die Details und einen Ausschnitt selbst — kein Tippen nötig.",
-        validationInvalidUrl: "Bitte gib einen gültigen Link ein (beginnend mit http:// oder https://).",
-        confirmDetailsTitle: "4. Liedangaben bestätigen",
-        importEmptyError: "Füge zuerst die KI-Antwort ein.",
-        importInvalidJsonError: "Das sieht nicht nach gültigem JSON aus — prüfe auf zusätzlichen Text vor oder nach dem Array oder fehlende Kommas/Klammern.",
-        importNotArrayError: "Es wurde ein JSON-Array mit Vokabelwörtern erwartet.",
-        importNoValidWordsError: "Keine gültigen Vokabeleinträge gefunden — jeder braucht mindestens \"word\" und \"meaning\".",
-        importMissingConfirmError: "Bitte bestätige Liedname und Künstler.",
-        importPreviewTemplate: "{count} Wörter bereit zum Importieren.",
-        importSuccessTemplate: "✓ \"{title}\" hinzugefügt! Wird jetzt geöffnet...",
         confusableHintLabel: "Nicht verwechseln mit",
         findLyricsLinkText: "Liedtext suchen",
         hearLineBtn: "Zeile Anhören",
@@ -2046,7 +1735,6 @@ function resolveWordLine(word) {
         deleteSongBtn: "Dieses Lied löschen",
         demoBadge: "Demo",
         deleteSongConfirmTemplate: '"{song}" löschen? Dies entfernt deinen gesamten Fortschritt, Statistiken und Notizen dafür — dies kann nicht rückgängig gemacht werden.',
-        addSongPausedNote: "Das Importieren von Liedern ist vorübergehend pausiert, während wir ein paar Probleme lösen — wir machen bald weiter."
       }
     };
 
@@ -2103,26 +1791,12 @@ function resolveWordLine(word) {
       // Library view
       setText("libraryTitleText", t("libraryTitle"));
       setText("libraryGreetingText", t("libraryGreeting").replace("{name}", tName()));
-      setText("addNewSongBtnText", "➕ " + t("addNewSongBtn").replace(/^➕\s*/, ""));
 
-      // Add Song modal (simplified)
-      setText("addSongModalTitle", "➕ " + t("addNewSongBtn").replace(/^➕\s*/, ""));
-      setText("addSongSourceLangLabelModal", t("fieldSourceLang"));
-      setText("addSongTargetLangLabelModal", t("fieldTargetLang"));
-      setText("addSongCopyBtn", t("copyPromptBtn"));
-      if (document.getElementById("addSongPromptVisible").style.display === "block") {
-        setText("addSongShowTextBtn", t("collapsePromptTextBtn"));
-      } else {
-        setText("addSongShowTextBtn", t("showPromptTextBtn"));
-      }
       setText("confusableHintLabel", t("confusableHintLabel"));
       setText("demoBadge", t("demoBadge"));
       setText("lineContextModalTitle", "🎵 " + t("lineContextModalTitleText"));
       setText("lineContextModalAudioLabel", t("hearLineBtn"));
       updateLineContextLayoutBtnLabel();
-      if (document.getElementById("addSongModal").style.display === "flex") {
-        validateAddSongLangs();
-      }
 
       // Nav tabs
       setText("tabUntestedLabel", t("tabUntested"));
@@ -2496,10 +2170,6 @@ function resolveWordLine(word) {
 
       renderSongLibrary();
       document.getElementById("libraryView").style.display = "block";
-    }
-
-    function notifyAddSongUnavailable() {
-      document.getElementById("noticeModal").style.display = "flex";
     }
 
     function closeNoticeModal() {
@@ -3549,228 +3219,6 @@ function resolveWordLine(word) {
     let settingsBackTarget = "library";
 
     // ============================================================================
-    // 13. ADD NEW SONG FLOW (simplified) — pick languages, copy a hardcoded
-    // prompt. Nothing here parses or imports a response; that logic will be
-    // rebuilt separately later. The template below is the ONE place to edit
-    // if the prompt itself needs to change.
-    // ============================================================================
-    const ADD_SONG_PROMPT_TEMPLATE = [
-      `I am building vocabulary flashcards for a language-learning app. I will give you the COMPLETE lyrics of one song below. Your job is to convert those lyrics into a specific JSON data format. This is a text transformation task on content I am providing directly — you do not need to search for, recall, identify, or verify the song in any way. Treat the lyrics purely as raw input text to restructure.`,
-      ``,
-      `====================================================================`,
-      `SCHEMA`,
-      `====================================================================`,
-      ``,
-      `Return a single JSON object with exactly these top-level keys: "id", "title", "artist", "difficulty", "sourceLang", "targetLang", "accentLabel", "streamingLinks", "uniqueWordCount", "lines", "vocabulary".`,
-      ``,
-      `{`,
-      `  "id": "a short lowercase identifier with underscores, e.g. song_title_artist_name",`,
-      `  "title": "[SONG NAME]",`,
-      `  "artist": "[ARTIST NAME]",`,
-      `  "difficulty": "your best estimate: Beginner, Beginner / Intermediate, Intermediate, or Advanced",`,
-      `  "sourceLang": "{source}",`,
-      `  "targetLang": "{target}",`,
-      `  "accentLabel": "",`,
-      `  "streamingLinks": {`,
-      `    "spotify": "the song's Spotify track URL, or an empty string if unknown",`,
-      `    "appleMusic": "the song's Apple Music URL, or an empty string if unknown",`,
-      `    "youtube": "a link to the official YouTube music video, or an empty string if unknown",`,
-      `    "youtubeMusic": "the song's YouTube Music URL, or an empty string if unknown"`,
-      `  },`,
-      `  "uniqueWordCount": 0,`,
-      `  "lines": [`,
-      `    { "id": 1, "es": "the exact line, in {source}, from the lyrics", "en": "that line translated into {target}", "order": 1 }`,
-      `  ],`,
-      `  "vocabulary": [`,
-      `    {`,
-      `      "word": "a word or short phrase from the lyrics, in {source}",`,
-      `      "meaning": "its natural meaning in {target}",`,
-      `      "clue": "a short mnemonic or memorable association",`,
-      `      "lineId": 1,`,
-      `      "confusableWith": { "word": "a related or easily confused word", "meaning": "...", "difference": "..." },`,
-      `      "distractors": ["plausible but incorrect meaning", "plausible but incorrect meaning", "plausible but incorrect meaning"],`,
-      `      "forms": [{ "label": "grammar label", "form": "a related form", "meaning": "..." }]`,
-      `    }`,
-      `  ]`,
-      `}`,
-      ``,
-      `RULES FOR THE TOP-LEVEL SONG FIELDS:`,
-      `- "id" should be short, lowercase, and use underscores instead of spaces.`,
-      `- "accentLabel" should always be left as an empty string "" — leave any accent/region labeling to the app itself.`,
-      `- "streamingLinks" is an object grouping links to official streaming platforms. If you know a real, correct URL for this song on Spotify, Apple Music, YouTube, or YouTube Music, include it. "youtube" should be a link to the official music video; "youtubeMusic" is the separate YouTube Music streaming link if you know it. If you don't know a URL or aren't certain it's correct, leave that field as an empty string "" rather than guessing — a wrong link is worse than no link. Do not fabricate a URL.`,
-      `- "uniqueWordCount" must equal the exact number of entries in "vocabulary" — count them and use the real number.`,
-      ``,
-      `RULES FOR "lines":`,
-      `- Break the ENTIRE song into its individual lines, in order, from the very first line to the very last.`,
-      `- List EVERY line, including every repeated chorus line — even if a line is word-for-word identical to one already listed earlier, it still gets its own new entry with its own new "id". Do NOT deduplicate repeated lines.`,
-      `- "id" is a simple sequential integer starting at 1, assigned strictly in the order lines appear — with no gaps and no reuse.`,
-      `- "order" is identical to "id" for this field — both simply track position in the song from start to finish.`,
-      `- Do not skip, summarize, paraphrase, or omit any line.`,
-      ``,
-      `RULES FOR "vocabulary":`,
-      `- Go through the ENTIRE song and extract EVERY word or short phrase worth learning — not just a handful. A full song typically yields 25-60+ vocabulary entries. Do not stop early. Do not sample only a few lines — cover the whole song from first line to last.`,
-      `- Skip only true filler words with no independent meaning, unless genuinely useful to a learner.`,
-      `- Each distinct word or phrase should appear only ONCE in "vocabulary", even if it occurs multiple times across the song. Set its "lineId" to the "id" of the line where it FIRST appears — do not create additional entries for later repeats of the same word.`,
-      `- "confusableWith" should name a real word that a learner might mix up with this one — it does not need to appear in the song itself.`,
-      `- "distractors" must be exactly 3 plausible-but-wrong meanings, distinct from each other and from the correct meaning.`,
-      `- "forms" should list up to 3 useful related grammatical forms. Use an empty array [] if none are relevant.`,
-      ``,
-      `====================================================================`,
-      `WORKED EXAMPLE (using an invented song — NOT the real song you'll receive)`,
-      `====================================================================`,
-      ``,
-      `Example input lyrics:`,
-      `"""`,
-      `Camino solo bajo la luna llena`,
-      `Buscando siempre un nuevo comienzo`,
-      `Camino solo bajo la luna llena`,
-      `Y encuentro paz en el silencio`,
-      `"""`,
-      `(Note line 3 is an exact repeat of line 1 — intentional, to show how repeats should be handled.)`,
-      ``,
-      `Example correct output shape:`,
-      `{`,
-      `  "id": "el_camino_sol_y_tierra", "title": "El Camino", "artist": "Sol y Tierra",`,
-      `  "difficulty": "Beginner / Intermediate", "sourceLang": "Spanish", "targetLang": "American English",`,
-      `  "accentLabel": "", "streamingLinks": { "spotify": "", "appleMusic": "", "youtube": "", "youtubeMusic": "" },`,
-      `  "uniqueWordCount": 4,`,
-      `  "lines": [`,
-      `    { "id": 1, "es": "Camino solo bajo la luna llena", "en": "I walk alone under the full moon", "order": 1 },`,
-      `    { "id": 2, "es": "Buscando siempre un nuevo comienzo", "en": "Always searching for a new beginning", "order": 2 },`,
-      `    { "id": 3, "es": "Camino solo bajo la luna llena", "en": "I walk alone under the full moon", "order": 3 },`,
-      `    { "id": 4, "es": "Y encuentro paz en el silencio", "en": "And I find peace in the silence", "order": 4 }`,
-      `  ],`,
-      `  "vocabulary": [`,
-      `    { "word": "camino", "meaning": "I walk", "clue": "Caminar means 'to walk'; camino is 'I walk'.", "lineId": 1, "confusableWith": { "word": "camión", "meaning": "truck", "difference": "camino means I walk; camión means truck." }, "distractors": ["I run", "I dream", "I stay"], "forms": [{ "label": "infinitive", "form": "caminar", "meaning": "to walk" }] },`,
-      `    { "word": "luna", "meaning": "moon", "clue": "Lunar -> luna (moon).", "lineId": 1, "confusableWith": { "word": "laguna", "meaning": "lagoon", "difference": "luna means moon; laguna means lagoon." }, "distractors": ["star", "sun", "cloud"], "forms": [] },`,
-      `    { "word": "buscando", "meaning": "searching", "clue": "Buscar means 'to search'; buscando is the '-ing' form.", "lineId": 2, "confusableWith": { "word": "tocando", "meaning": "touching / playing", "difference": "buscando means searching; tocando means touching or playing." }, "distractors": ["finding", "losing", "waiting"], "forms": [] },`,
-      `    { "word": "silencio", "meaning": "silence", "clue": "Direct cognate with 'silence'.", "lineId": 4, "confusableWith": { "word": "silbido", "meaning": "whistle", "difference": "silencio means silence; silbido means a whistle sound." }, "distractors": ["noise", "music", "echo"], "forms": [{ "label": "adjective", "form": "silencioso", "meaning": "silent, quiet" }] }`,
-      `  ]`,
-      `}`,
-      `Notice "lines" has 4 entries even though only 3 are textually distinct (line 3 repeats line 1's text but still gets its own id). "camino" and "luna" both point to lineId 1 even though "camino" also occurs again at line 3 — it is NOT listed twice. "uniqueWordCount" is 4, matching the 4 vocabulary entries.`,
-      ``,
-      `====================================================================`,
-      `IMPORTANT`,
-      `====================================================================`,
-      ``,
-      `- Process the ENTIRE song below, start to finish. Do not truncate, sample, or summarize.`,
-      `- Do NOT paste the JSON directly into the chat. Instead, create the JSON as a file and attach it for me to download, if your interface supports creating files. If you are unable to create a downloadable file, fall back to wrapping your entire answer in a single Markdown code block (starting with \`\`\`json and ending with \`\`\`), containing only the JSON object and nothing else.`,
-      `- Whichever way you deliver it, output ONLY the JSON — no commentary, no description of the song, no preamble.`,
-      `- Ensure the JSON is valid and complete — check that every line has an entry (including repeats), every vocabulary word has a valid lineId, no word appears more than once in "vocabulary", and "uniqueWordCount" matches the real count before finishing.`,
-      ``,
-      `Here is the complete song:`,
-      ``,
-      `Song: "[SONG NAME]" by [ARTIST NAME]`,
-      ``,
-      `Lyrics:`,
-      `"""`,
-      `[PASTE THE COMPLETE SONG LYRICS HERE]`,
-      `"""`
-    ].join("\n");
-
-    function getAddSongPrompt(source, target) {
-      return ADD_SONG_PROMPT_TEMPLATE
-        .split("{source}").join(source)
-        .split("{target}").join(target);
-    }
-
-    function validateAddSongLangs() {
-      const source = document.getElementById("addSongSourceLangSelect").value;
-      const target = document.getElementById("addSongTargetLangSelect").value;
-      const errorEl = document.getElementById("addSongLangError");
-      const sameLang = source === target;
-
-      errorEl.textContent = sameLang ? t("validationSameLang") : "";
-      errorEl.classList.toggle("visible", sameLang);
-      document.getElementById("addSongCopyBtn").disabled = sameLang;
-
-      return !sameLang;
-    }
-
-    function openAddSongModal() {
-      populateLanguageSelect(document.getElementById("addSongSourceLangSelect"));
-      populateLanguageSelect(document.getElementById("addSongTargetLangSelect"));
-      document.getElementById("addSongSourceLangSelect").value = currentLang;
-      document.getElementById("addSongTargetLangSelect").value =
-        (currentLang === "American English" || currentLang === "British English") ? "Spanish" : "American English";
-
-      const preview = document.getElementById("addSongPromptPreview");
-      preview.value = "";
-      document.getElementById("addSongCopyFallbackNote").style.display = "none";
-      document.getElementById("addSongPromptVisible").style.display = "none";
-      document.getElementById("addSongPromptVisible").value = "";
-      document.getElementById("addSongShowTextBtn").style.display = "block";
-      document.getElementById("addSongShowTextBtn").textContent = t("showPromptTextBtn");
-
-      validateAddSongLangs();
-      document.getElementById("addSongModal").style.display = "flex";
-    }
-
-    function closeAddSongModal() {
-      document.getElementById("addSongModal").style.display = "none";
-    }
-
-    function toggleAddSongPromptText() {
-      const visible = document.getElementById("addSongPromptVisible");
-      const btn = document.getElementById("addSongShowTextBtn");
-      const isShown = visible.style.display === "block";
-
-      if (isShown) {
-        visible.style.display = "none";
-        btn.textContent = t("showPromptTextBtn");
-      } else {
-        visible.style.display = "block";
-        visible.select();
-        btn.textContent = t("collapsePromptTextBtn");
-      }
-    }
-
-    function copyAddSongPrompt() {
-      if (!validateAddSongLangs()) return;
-
-      const source = document.getElementById("addSongSourceLangSelect").value;
-      const target = document.getElementById("addSongTargetLangSelect").value;
-      const prompt = getAddSongPrompt(source, target);
-      document.getElementById("addSongPromptVisible").value = prompt;
-
-      const textarea = document.getElementById("addSongPromptPreview");
-      textarea.value = prompt;
-
-      const fallbackNote = document.getElementById("addSongCopyFallbackNote");
-
-      function showCopiedConfirmation() {
-        fallbackNote.textContent = t("copiedConfirmation");
-        fallbackNote.style.display = "block";
-        setTimeout(() => { fallbackNote.style.display = "none"; }, 2200);
-      }
-
-      function showCopyFailedMessage() {
-        fallbackNote.textContent = t("copyFallbackText");
-        fallbackNote.style.display = "block";
-      }
-
-      function tryLegacyCopy() {
-        try {
-          textarea.select();
-          const success = document.execCommand("copy");
-          if (success) {
-            showCopiedConfirmation();
-          } else {
-            showCopyFailedMessage();
-          }
-        } catch (e) {
-          showCopyFailedMessage();
-        }
-      }
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(prompt).then(showCopiedConfirmation).catch(tryLegacyCopy);
-      } else {
-        tryLegacyCopy();
-      }
-    }
-
-    // ============================================================================
     // 14. SETTINGS PAGE NAVIGATION
     // ============================================================================
     function openSettingsFromLibrary() {
@@ -3930,12 +3378,10 @@ function resolveWordLine(word) {
       const modal = document.getElementById("infoModal");
       const notice = document.getElementById("noticeModal");
       const lineContext = document.getElementById("lineContextModal");
-      const addSong = document.getElementById("addSongModal");
       const streamingLink = document.getElementById("streamingLinkModal");
       if (event.target === modal) closeModal();
       if (event.target === notice) closeNoticeModal();
       if (event.target === lineContext) closeLineContextModal();
-      if (event.target === addSong) closeAddSongModal();
       if (event.target === streamingLink) closeStreamingLinkModal();
 
       const navMenuWrapper = document.getElementById("navMenuWrapper");
