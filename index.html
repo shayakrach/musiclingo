@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MusicLingo v3.42.1</title>
+  <title>MusicLingo v3.43.0</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/icon.svg">
   <link rel="apple-touch-icon" href="assets/icons/icon.svg">
@@ -24,7 +24,7 @@
     <div class="voice-warning-toast" id="voiceWarningToast"></div>
     <div class="top-bar" id="topBar">
       <div class="app-title" id="appTitleBar" onclick="returnToLibrary()">
-        🎵 MusicLingo <span class="version-badge">v3.42.1</span>
+        🎵 MusicLingo <span class="version-badge">v3.43.0</span>
       </div>
       <button class="icon-btn" id="librarySettingsGearBtn" title="Settings" onclick="openSettingsFromLibrary()">⚙️</button>
     </div>
@@ -115,6 +115,12 @@
             <p class="danger-zone-desc">Signed in as <strong id="accountEmailDisplay"></strong></p>
             <button class="tab-btn" style="border:1px solid var(--border);" onclick="handleSignOut()">Sign Out</button>
           </div>
+        </div>
+
+        <div class="danger-zone" style="margin-bottom: 1rem;">
+          <div class="danger-zone-label">Feedback</div>
+          <p class="danger-zone-desc">Found a bug, or have a feature idea?</p>
+          <button class="tab-btn" style="border:1px solid var(--border);" onclick="openFeedbackModal()">💬 Send Feedback</button>
         </div>
 
         <div class="danger-zone">
@@ -375,6 +381,34 @@
       </p>
 
       <div id="catalogList"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="feedbackModal">
+    <div class="modal-content" style="max-width: 420px; padding: 1.2rem;">
+      <div class="modal-header" style="justify-content: center; position: relative; margin-bottom: 0.6rem;">
+        <h3 style="color: var(--accent); font-size: 1.1rem;">💬 Send Feedback</h3>
+        <button class="modal-close-btn" style="position: absolute; right: 0;" onclick="closeFeedbackModal()">✕</button>
+      </div>
+
+      <div class="settings-field" style="margin-bottom: 0.6rem;">
+        <label for="feedbackTagSelect" style="font-size: 0.85rem;">Type</label>
+        <select id="feedbackTagSelect" class="settings-input">
+          <option value="bug">🐛 Bug</option>
+          <option value="feature">💡 Feature idea</option>
+          <option value="question">❓ Question</option>
+        </select>
+      </div>
+
+      <div class="settings-field" style="margin-bottom: 0.6rem;">
+        <label for="feedbackMessageInput" style="font-size: 0.85rem;">Message</label>
+        <textarea id="feedbackMessageInput" class="settings-input" rows="5" placeholder="What's on your mind?"></textarea>
+      </div>
+
+      <p class="field-error" id="feedbackError"></p>
+      <p class="prompt-note-text" id="feedbackSuccessNote" style="display:none; text-align:center; margin: 0 0 0.6rem;"></p>
+
+      <button class="start-round-btn" id="feedbackSubmitBtn" style="padding: 0.65rem;" onclick="submitFeedback()">Submit</button>
     </div>
   </div>
 
