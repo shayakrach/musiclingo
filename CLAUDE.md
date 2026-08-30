@@ -45,11 +45,22 @@ chat or commit them to git** — they contain real copyrighted lyrics.
 ## Supabase (shared song catalog + per-user libraries)
 
 `assets/app.js` also loads songs from Supabase (see `supabase/schema.sql`,
-`supabase/README.md`) — a `songs` table (shared, publicly readable catalog)
-and a `user_songs` table (which catalog songs each signed-in user has added
-to their own library). The Supabase project URL and anon/publishable key are
-hardcoded near the top of `assets/app.js` (`SUPABASE_URL`/`SUPABASE_ANON_KEY`)
-— safe to be public, not secret.
+`supabase/README.md`), split across three tables:
+- `songs` — one row per real song (lyrics, extracted word list, difficulty),
+  independent of target language
+- `song_translations` — one row per (song, target_lang): the translated
+  lines and per-word meanings/clues/etc, written in the target language
+- `user_songs` — which (song, target_lang) pairs each signed-in user has
+  added to their own library
+
+A catalog entry the app deals with is a `song_translations` row merged with
+its parent `songs` row client-side (`mergeSongTranslation()` in
+`assets/app.js`) into the flat shape the quiz engine expects, with a
+synthetic id of `songId + "__" + targetLang` (since the same song can appear
+more than once in a user's library, once per translation). The Supabase
+project URL and anon/publishable key are hardcoded near the top of
+`assets/app.js` (`SUPABASE_URL`/`SUPABASE_ANON_KEY`) — safe to be public,
+not secret.
 
 There's no in-app admin flow to add catalog songs yet — they're added by
 running `insert` statements directly in the Supabase SQL Editor (see
@@ -58,11 +69,11 @@ if the Supabase CDN script fails to load, every Supabase-related function in
 `assets/app.js` becomes a no-op and the app still works, just with an empty
 library.
 
-Vocabulary/line field names in the `songs` table intentionally match what
-`assets/app.js` actually renders (`es`/`en`/`tenses`), not `word`/`meaning`/
-`forms` — see git history for the in-app "Add New Song" prompt generator
-that used the latter naming and was removed for being disconnected from the
-renderer.
+Vocabulary/line field names inside `songs`/`song_translations` JSON columns
+intentionally match what `assets/app.js` actually renders (`es`/`en`/
+`tenses`), not `word`/`meaning`/`forms` — see git history for the in-app
+"Add New Song" prompt generator that used the latter naming and was removed
+for being disconnected from the renderer.
 
 ## Editing the app
 
