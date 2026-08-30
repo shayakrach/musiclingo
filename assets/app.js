@@ -3453,6 +3453,118 @@ function resolveWordLine(word) {
       window.addEventListener("offline", updateOfflinePill);
     }
 
+    // ============================================================================
+    // ONBOARDING TOUR — a short spotlight walkthrough of the topbar, for
+    // first-time visitors (auto-started once, only if their library is
+    // still empty) and replayable anytime via the ❓ button. Deliberately
+    // small and custom rather than a tour library, to match the rest of
+    // this app: no dependencies, no build step.
+    // ============================================================================
+    const TOUR_STEPS = [
+      {
+        targetId: "browseCatalogBtnText",
+        title: "Browse the catalog",
+        body: "Add songs from the shared catalog to your own practice library — that's where you'll start."
+      },
+      {
+        targetId: "librarySearchInput",
+        title: "Find a song fast",
+        body: "Once you've added a few songs, search here to jump straight to one by title or artist."
+      },
+      {
+        targetId: "themeToggleBtn",
+        title: "Light or dark",
+        body: "Switch between light and dark themes anytime — it remembers your choice."
+      },
+      {
+        targetId: "feedbackTopBarBtn",
+        title: "We're listening",
+        body: "Spot a bug or want to request a new song? Tap here anytime — it only takes a few seconds."
+      }
+    ];
+
+    let tourStepIndex = 0;
+    let tourRepositionHandler = null;
+
+    function startTour() {
+      tourStepIndex = 0;
+      document.getElementById("tourBackdrop").style.display = "block";
+      renderTourStep();
+
+      tourRepositionHandler = () => renderTourStep();
+      window.addEventListener("resize", tourRepositionHandler);
+      window.addEventListener("scroll", tourRepositionHandler, true);
+    }
+
+    function renderTourStep() {
+      const step = TOUR_STEPS[tourStepIndex];
+      const target = step && document.getElementById(step.targetId);
+      if (!step || !target) {
+        endTour();
+        return;
+      }
+
+      const highlight = document.getElementById("tourHighlight");
+      const tooltip = document.getElementById("tourTooltip");
+      const rect = target.getBoundingClientRect();
+      const pad = 6;
+
+      highlight.style.display = "block";
+      highlight.style.top = `${rect.top - pad}px`;
+      highlight.style.left = `${rect.left - pad}px`;
+      highlight.style.width = `${rect.width + pad * 2}px`;
+      highlight.style.height = `${rect.height + pad * 2}px`;
+
+      document.getElementById("tourStepCounter").textContent = `${tourStepIndex + 1} / ${TOUR_STEPS.length}`;
+      document.getElementById("tourStepTitle").textContent = step.title;
+      document.getElementById("tourStepBody").textContent = step.body;
+      document.getElementById("tourNextBtn").textContent = tourStepIndex === TOUR_STEPS.length - 1 ? "Done" : "Next →";
+
+      tooltip.style.display = "block";
+      const tw = tooltip.offsetWidth;
+      const th = tooltip.offsetHeight;
+      const margin = 12;
+
+      let top = rect.bottom + margin;
+      if (top + th > window.innerHeight - margin) {
+        top = rect.top - th - margin;
+      }
+      top = Math.max(margin, Math.min(top, window.innerHeight - th - margin));
+
+      let left = rect.left + rect.width / 2 - tw / 2;
+      left = Math.max(margin, Math.min(left, window.innerWidth - tw - margin));
+
+      tooltip.style.top = `${top}px`;
+      tooltip.style.left = `${left}px`;
+    }
+
+    function nextTourStep() {
+      tourStepIndex++;
+      if (tourStepIndex >= TOUR_STEPS.length) {
+        endTour();
+      } else {
+        renderTourStep();
+      }
+    }
+
+    function endTour() {
+      document.getElementById("tourBackdrop").style.display = "none";
+      document.getElementById("tourHighlight").style.display = "none";
+      document.getElementById("tourTooltip").style.display = "none";
+      if (tourRepositionHandler) {
+        window.removeEventListener("resize", tourRepositionHandler);
+        window.removeEventListener("scroll", tourRepositionHandler, true);
+        tourRepositionHandler = null;
+      }
+      localStorage.setItem("spa_tour_seen", "1");
+    }
+
+    function maybeAutoStartTour() {
+      if (localStorage.getItem("spa_tour_seen")) return;
+      if (Object.keys(SongLibrary).length > 0) return;
+      startTour();
+    }
+
     // Immediate initial mount execution
     initTheme();
     initOfflinePill();
@@ -3484,3 +3596,8 @@ function resolveWordLine(word) {
         });
       });
     }
+
+    // Give the async Supabase library sync a moment to resolve first, so a
+    // returning signed-in user whose songs are still loading doesn't
+    // briefly look like a first-time visitor with an empty library.
+    setTimeout(maybeAutoStartTour, 1200);
