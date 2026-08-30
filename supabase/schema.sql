@@ -31,6 +31,7 @@
 -- real song rows in the old shape, export/regenerate them into the new
 -- shape BEFORE running this (see supabase/README.md) — this drops them.
 drop table if exists user_songs;
+drop table if exists song_translations;
 drop table if exists songs;
 
 -- ============================================================================
