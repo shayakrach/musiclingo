@@ -207,6 +207,12 @@ function resolveWordLine(word) {
           }
           custom[song.id] = song;
           localStorage.setItem("spa_custom_songs", JSON.stringify(custom));
+          // A song being added back should never stay suppressed by an
+          // earlier deletion — otherwise re-adding a previously-deleted
+          // song looks like it "sticks" until reload, then vanishes again
+          // (applyHiddenSongs/syncMyCatalogSongsIntoLibrary both still
+          // treat it as hidden).
+          DB.hiddenSongs.remove(song.id);
         },
         remove(id) {
           delete SongLibrary[id];
@@ -247,6 +253,13 @@ function resolveWordLine(word) {
           if (!hidden.includes(id)) {
             hidden.push(id);
             localStorage.setItem("spa_hidden_songs", JSON.stringify(hidden));
+          }
+        },
+        remove(id) {
+          const hidden = DB.hiddenSongs.getAll();
+          const next = hidden.filter(hiddenId => hiddenId !== id);
+          if (next.length !== hidden.length) {
+            localStorage.setItem("spa_hidden_songs", JSON.stringify(next));
           }
         },
         applyToLibrary() {
