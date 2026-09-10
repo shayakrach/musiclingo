@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MusicLingo v3.56.0</title>
+  <title>MusicLingo v3.58.0</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/icon.svg">
   <link rel="apple-touch-icon" href="assets/icons/icon.svg">
@@ -25,7 +25,7 @@
     <div class="voice-warning-toast" id="voiceWarningToast"></div>
     <div class="top-bar" id="topBar">
       <div class="app-title" id="appTitleBar" onclick="returnToLibrary()">
-        🎵 MusicLingo <span class="version-badge">v3.56.0</span>
+        🎵 MusicLingo <span class="version-badge">v3.58.0</span>
       </div>
       <div class="top-bar-search">
         <input type="search" id="librarySearchInput" placeholder="Search your songs…" autocomplete="off" spellcheck="false" oninput="filterSongLibrary()" />
@@ -200,11 +200,16 @@
         <div class="progress-bar" id="progressBar"></div>
       </div>
 
-      <!-- Top Actions Bar -->
-      <div class="top-actions-row" id="topActionsRow">
-        <button class="top-action-btn" id="toggleClueBtn" onclick="toggleClue()">💡 Clue & Notes</button>
-        <button class="top-action-btn" id="toggleContextBtn" onclick="toggleContext()">🎵 Song Context</button>
-        <button class="top-action-btn" id="toggleTenseBtn" onclick="toggleTense()">⏳ Tenses & Conjugations</button>
+      <!-- Study aids: three mutually exclusive tabs over ONE fixed-height panel
+           (see .info-panel in style.css). Previously each of these toggled its
+           own stacked box, so opening one — or opening several — pushed the
+           answer options and Next button off-screen and the amount of push
+           varied per panel. Now only one is ever open, the panel is always the
+           same height, and it scrolls internally, so the options never move. -->
+      <div class="top-actions-row" id="topActionsRow" role="tablist" aria-label="Study aids">
+        <button class="top-action-btn" id="toggleClueBtn" role="tab" aria-selected="false" aria-controls="clueNotesBox" onclick="showInfoTab('clue')">💡 Clue & Notes</button>
+        <button class="top-action-btn" id="toggleContextBtn" role="tab" aria-selected="false" aria-controls="contextBox" onclick="showInfoTab('context')">🎵 Song Context</button>
+        <button class="top-action-btn" id="toggleTenseBtn" role="tab" aria-selected="false" aria-controls="tenseBox" onclick="showInfoTab('tense')">⏳ Tenses & Conjugations</button>
       </div>
 
       <div class="word-card">
@@ -218,7 +223,10 @@
           </button>
         </div>
 
-        <div class="context-box" id="contextBox">
+        <div class="info-panel" id="infoPanel" data-open="false">
+        <div class="info-panel-scroll" id="infoPanelScroll">
+
+        <div class="context-box" id="contextBox" role="tabpanel" aria-labelledby="toggleContextBtn">
           <div class="context-line-header" id="contextLineHeader">
             <span class="context-spanish-line" id="contextSpanishText" onclick="openLineContextModal()" title="Tap to view"></span>
             <button class="context-audio-btn" id="listenLineBtn" title="Hear full lyric line">🔊</button>
@@ -227,14 +235,14 @@
           <div class="context-english-line" id="contextEnglishText"></div>
         </div>
 
-        <div class="tense-box" id="tenseBox">
+        <div class="tense-box" id="tenseBox" role="tabpanel" aria-labelledby="toggleTenseBtn">
           <div id="tensesHeaderText" style="font-weight: 700; color: var(--azul); font-size: 0.95rem; margin-bottom: 0.4rem;">
             Tenses & Grammatical Forms:
           </div>
           <div class="tense-grid" id="tenseGrid"></div>
         </div>
 
-        <div class="clue-notes-box" id="clueNotesBox">
+        <div class="clue-notes-box" id="clueNotesBox" role="tabpanel" aria-labelledby="toggleClueBtn">
           <div class="clue-notes-header">
             <span id="cluesHeaderText">💡 Clues &amp; Notes</span>
             <button class="add-clue-btn" id="addClueBtn" onclick="addClueNote()">+ Add Clue</button>
@@ -244,6 +252,9 @@
             ⚠️ <span id="confusableHintLabel">Don't confuse with</span> <strong id="confusableWord"></strong> (<span id="confusableMeaning"></span>) — <span id="confusableDifference"></span>
           </div>
         </div>
+
+        </div><!-- /.info-panel-scroll -->
+        </div><!-- /.info-panel -->
       </div>
 
       <div class="options-grid" id="optionsContainer"></div>
