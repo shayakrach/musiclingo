@@ -765,6 +765,47 @@
     button.top-action-btn:hover { color: var(--text); border-color: var(--azul); }
     button.top-action-btn.active-btn { border-color: var(--azul); color: var(--azul); background: color-mix(in srgb, var(--azul) 14%, transparent); }
 
+    /* ------------------------------------------------------------------
+       Study-aid panel — one container shared by Clue & Notes / Song Context
+       / Tenses, which are mutually exclusive tabs (see #topActionsRow).
+
+       The height is FIXED rather than content-driven, on purpose: these
+       panels sit directly above the answer options, and a content-sized
+       panel moved the options by a different amount for every word and
+       every tab. A constant height means opening a tab shifts the options
+       exactly once, by a predictable amount, and switching between tabs
+       doesn't move them at all. Overflow scrolls inside the panel.
+       ------------------------------------------------------------------ */
+    .info-panel {
+      height: 0;
+      overflow: hidden;
+      transition: height 0.22s ease, margin-top 0.22s ease;
+    }
+
+    .info-panel[data-open="true"] {
+      height: min(200px, 40vh);
+      margin-top: 0.9rem;
+    }
+
+    .info-panel-scroll {
+      height: 100%;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: 0.2rem;
+    }
+
+    /* Only the active tab's box is in flow; the panel supplies the spacing. */
+    .info-panel .context-box,
+    .info-panel .tense-box,
+    .info-panel .clue-notes-box {
+      margin-top: 0;
+      min-height: 100%;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .info-panel { transition: none; }
+    }
+
     button.top-dont-know-btn {
       width: 100%;
       background: color-mix(in srgb, var(--rosa) 10%, transparent);

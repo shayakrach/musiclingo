@@ -1774,12 +1774,9 @@ function resolveWordLine(word) {
       setText("tensesHeaderText", t("tensesHeader"));
 
       // Action buttons — respect current shown/hidden toggle state
-      const clueOpen = document.getElementById("clueNotesBox").style.display === "block";
-      const contextOpen = document.getElementById("contextBox").style.display === "block";
-      const tenseOpen = document.getElementById("tenseBox").style.display === "block";
-      document.getElementById("toggleClueBtn").textContent = clueOpen ? t("clueNotesBtnHide") : t("clueNotesBtn");
-      document.getElementById("toggleContextBtn").textContent = contextOpen ? t("songContextBtnHide") : t("songContextBtn");
-      document.getElementById("toggleTenseBtn").textContent = tenseOpen ? t("tensesBtnHide") : t("tensesBtn");
+      // Re-applies the tab labels in the new language, keeping whichever
+      // tab is currently open open.
+      setInfoTab(activeInfoTab);
       document.getElementById("dontKnowBtn").textContent = t("dontKnowBtn");
 
       // Spoiler placeholders for the currently loaded word (only if not yet revealed)
@@ -2594,17 +2591,9 @@ function resolveWordLine(word) {
       document.getElementById("topActionsRow").style.display = "flex";
       document.getElementById("dontKnowBtn").style.display = "block";
       
-      document.getElementById("clueNotesBox").style.display = "none";
-      document.getElementById("toggleClueBtn").textContent = t("clueNotesBtn");
-      document.getElementById("toggleClueBtn").classList.remove("active-btn");
-
-      document.getElementById("contextBox").style.display = "none";
-      document.getElementById("toggleContextBtn").textContent = t("songContextBtn");
-      document.getElementById("toggleContextBtn").classList.remove("active-btn");
-
-      document.getElementById("tenseBox").style.display = "none";
-      document.getElementById("toggleTenseBtn").textContent = t("tensesBtn");
-      document.getElementById("toggleTenseBtn").classList.remove("active-btn");
+      // Every word starts with the study-aid panel closed, so the answer
+      // options sit in the same place on each question.
+      closeInfoPanel();
 
       document.getElementById("dontKnowBtn").disabled = false;
 
@@ -3022,47 +3011,58 @@ function resolveWordLine(word) {
       if (goToLibrary) returnToLibrary();
     }
 
-    function toggleClue() {
-      const clueNotesBox = document.getElementById("clueNotesBox");
-      const btn = document.getElementById("toggleClueBtn");
+    // ------------------------------------------------------------------
+    // Study-aid tabs — Clue & Notes / Song Context / Tenses.
+    //
+    // These used to be three independent toggles, each opening its own
+    // stacked box inside the word card. Any combination could be open at
+    // once, so the answer options below were pushed down by a different
+    // amount every time, and with all three open the Next button ended up
+    // off-screen. They're now mutually exclusive tabs over one fixed-height
+    // panel (.info-panel): opening one closes the others, and clicking the
+    // active tab closes the panel entirely.
+    // ------------------------------------------------------------------
+    const INFO_TABS = {
+      clue:    { boxId: "clueNotesBox", btnId: "toggleClueBtn",    showKey: "clueNotesBtn",   hideKey: "clueNotesBtnHide" },
+      context: { boxId: "contextBox",   btnId: "toggleContextBtn", showKey: "songContextBtn", hideKey: "songContextBtnHide" },
+      tense:   { boxId: "tenseBox",     btnId: "toggleTenseBtn",   showKey: "tensesBtn",      hideKey: "tensesBtnHide" }
+    };
 
-      if (clueNotesBox.style.display === "block") {
-        clueNotesBox.style.display = "none";
-        btn.textContent = t("clueNotesBtn");
-        btn.classList.remove("active-btn");
-      } else {
-        clueNotesBox.style.display = "block";
-        btn.textContent = t("clueNotesBtnHide");
-        btn.classList.add("active-btn");
-      }
+    let activeInfoTab = null;
+
+    function showInfoTab(name) {
+      // Clicking the tab that's already open closes the panel.
+      setInfoTab(activeInfoTab === name ? null : name);
     }
 
-    function toggleContext() {
-      const box = document.getElementById("contextBox");
-      const btn = document.getElementById("toggleContextBtn");
-      if (box.style.display === "block") {
-        box.style.display = "none";
-        btn.textContent = t("songContextBtn");
-        btn.classList.remove("active-btn");
-      } else {
-        box.style.display = "block";
-        btn.textContent = t("songContextBtnHide");
-        btn.classList.add("active-btn");
-      }
+    function setInfoTab(name) {
+      activeInfoTab = INFO_TABS[name] ? name : null;
+
+      Object.keys(INFO_TABS).forEach(key => {
+        const { boxId, btnId, showKey, hideKey } = INFO_TABS[key];
+        const box = document.getElementById(boxId);
+        const btn = document.getElementById(btnId);
+        const isActive = key === activeInfoTab;
+
+        if (box) box.style.display = isActive ? "block" : "none";
+        if (btn) {
+          btn.textContent = t(isActive ? hideKey : showKey);
+          btn.classList.toggle("active-btn", isActive);
+          btn.setAttribute("aria-selected", isActive ? "true" : "false");
+        }
+      });
+
+      const panel = document.getElementById("infoPanel");
+      if (panel) panel.dataset.open = activeInfoTab ? "true" : "false";
+
+      // A newly opened tab should start at the top, not wherever the
+      // previous tab happened to be scrolled to.
+      const scroller = document.getElementById("infoPanelScroll");
+      if (scroller) scroller.scrollTop = 0;
     }
 
-    function toggleTense() {
-      const box = document.getElementById("tenseBox");
-      const btn = document.getElementById("toggleTenseBtn");
-      if (box.style.display === "block") {
-        box.style.display = "none";
-        btn.textContent = t("tensesBtn");
-        btn.classList.remove("active-btn");
-      } else {
-        box.style.display = "block";
-        btn.textContent = t("tensesBtnHide");
-        btn.classList.add("active-btn");
-      }
+    function closeInfoPanel() {
+      setInfoTab(null);
     }
 
     // ============================================================================
