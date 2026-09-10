@@ -2,7 +2,7 @@
 // Caches the app shell so it can still open without a network connection
 // once it's been visited at least once.
 
-const CACHE_NAME = "musiclingo-cache-v5";
+const CACHE_NAME = "musiclingo-cache-v6";
 const APP_SHELL = [
   "./",
   "./index.html",
