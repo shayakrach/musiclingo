@@ -3065,6 +3065,22 @@ function resolveWordLine(word) {
       setInfoTab(null);
     }
 
+    // The panel floats over the page, so it needs the usual dismissals a
+    // floating layer is expected to have. Both are scoped to the panel —
+    // neither interferes with the modal overlays or the quiz itself.
+    document.addEventListener("click", (event) => {
+      if (!activeInfoTab) return;
+      const panel = document.getElementById("infoPanel");
+      const tabs = document.getElementById("topActionsRow");
+      if (panel && panel.contains(event.target)) return;
+      if (tabs && tabs.contains(event.target)) return; // the tabs handle themselves
+      closeInfoPanel();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && activeInfoTab) closeInfoPanel();
+    });
+
     // ============================================================================
     // 11. CLUE & NOTES (per-word hints and personal notes)
     // ============================================================================
